@@ -1,11 +1,14 @@
-from . import views
+from django.contrib.auth import login
+from django.conf.urls.static import static
 from django.conf import settings
 from django.conf.urls import url
-from django.conf.urls.static import static
+from . import views
 
 
 urlpatterns = [
 	url(r'bidding', views.bidding, name='bidding'),
+	url(r'^login/$', login, {'template_name' : 'bidding/login.html'}),
+	url(r'registration', views.registration, name='registration'),
 ]
 
 
