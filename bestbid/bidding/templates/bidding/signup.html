@@ -1,0 +1,86 @@
+<html>
+	<head>
+		<title>User Registration</title>
+		<meta charset="UTF-8" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		
+		<!-- flatly theme CSS file -->
+		<link rel="stylesheet" type="text/css" href="../css/bootstrap.min.css">
+		<link rel="stylesheet" type="text/css" href="../css/_bootswatch.scss">
+		<link rel="stylesheet" type="text/css" href="../css/_variables.scss">
+
+	</head>
+
+	<body>
+		<div class="container-fluid">
+			<!-- Header Starts-->
+			<header>
+				<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+					<a class="navbar-brand" href="index.html">InfinityWallpapers<small>.com</small></a>
+					<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+					</button>
+
+					<div class="collapse navbar-collapse" id="navbarColor01">
+						<ul class="navbar-nav mr-auto">
+							<li class="nav-item">
+								<a class="nav-link" href="index.html">Home<span class="sr-only">(current)</span></a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="categories.html">Categories</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="contactus.html">Contact Us</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="about.html">About</a>
+							</li>
+						</ul>
+						&nbsp;&nbsp;&nbsp;&nbsp;
+						<form action="login.html" method="post">
+							<input type="submit" class="btn btn-success" name="signin" value="Sign In" />
+						</form>
+					</div>
+				</nav>
+			</header>
+
+			<!-- Header Ends -->
+
+			<br><br>
+			<center><h1>Sign Up</h1></center>
+
+			<h1>FaceBook.com</h1>
+			<center>
+				<form class="form-group" action="signup" method="POST" enctype="multipart/form-data">
+					{% csrf_token %}
+					<h1>Sign Up</h1>
+					*Required Fields
+					<br><br>
+					*User Name : <input type="text" name="unm" value="" size="25" autofocus required/>
+					<br><br>
+					*New Password : <input type="password" name="pwd1" value="" size="25" required/>
+					<br><br>
+					*Re-enter New Password :<input type="password" name="pwd2" value="" size="25"/>
+					<br><br>
+					*Birth Date : <input type="date" name="bday" required />
+					<br><br>
+					*Select Your Profile Picture : <input type="file" name="img" required>
+					<br><br>
+					<input type="submit" value="Submit"/>
+				</form>
+				<a href="login"> Already a Member ?</a>
+			</center>
+		</div>
+	</body>
+</html>
+
+<!--
+		*Gender :
+			Male<input type="radio" name="gender" value="male" checked required/>
+			Female<input type="radio" name="gender" value="female" />
+		Interested in :
+			<input type="checkbox" name="training" value="OFF" />Training
+			<input type="checkbox" name="placement" value="OFF" />Placement
+
+-->

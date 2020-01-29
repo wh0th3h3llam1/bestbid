@@ -1,0 +1,17 @@
+<html>
+    <body>
+        <center>
+            <h1>Login</h1>
+            <form action="lsuccess" method="POST">
+                {% csrf_token %}
+                Username : <input type="text" name="unm" placeholder="Username" autofocus required/>
+                <br><br>
+                Password : <input type="password" name="pwd" placeholder="Password" required/>
+                <br><br>
+                <input type="submit" value="Submit" />
+            </form>
+            <br>
+            <a href="signup"> New to Site ?</a>
+        </center>
+    </body>
+</html>
