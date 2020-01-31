@@ -6,9 +6,12 @@ from . import views
 
 
 urlpatterns = [
-	url(r'bidding', views.bidding, name='bidding'),
-	url(r'^login/$', login, {'template_name' : 'bidding/login.html'}),
-	url(r'registration', views.registration, name='registration'),
+	url(r'login/', views.login, name='login'),
+	url(r'agency/', views.agency, name='agency'),
+ 	url(r'index/', views.index, name='index'),
+	url(r'registration/', views.registration, name='registration'),
+
+	# url(r'login', login, {'template_name' : 'bidding/login.html'}),
 ]
 
 

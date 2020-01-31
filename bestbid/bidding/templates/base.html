@@ -1,15 +1,41 @@
+{% load static %}
+
 <!DOCTYPE html>
 
 <html>
 	<head>
-		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" crossorigin="anonymous" />
+		<meta charset="utf-8">
+		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" crossorigin="anonymous" /> -->
+		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+
 		{% block head %}
-			<title></title>
+			<title>Error</title>
 		{% endblock %}
+
 	</head>
+
 	<body>
-		{% block body %}
-			<h2>Base</h2>
-		{% endblock %}
+
+		<header>
+			{% include 'bidding/header.html' %}
+		</header>
+
+		<main>
+			{% block body %}
+				<center>
+					<h1>
+						Some Error Occurred
+					</h1>
+				</center>
+			{% endblock %}
+		</main>
+
+		<footer>
+
+			{% include 'bidding/footer.html' %}
+		</footer>
 	</body>
+
+
+
 </html>
