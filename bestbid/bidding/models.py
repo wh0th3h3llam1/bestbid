@@ -1,15 +1,51 @@
 from django.db import models
-from django import forms
 
 # Create your models here.
 
 
-# class Assets(models.Model):
+class Buyer(models.Model):
+	name = models.CharField(max_length=50)
+	email = models.EmailField()
+	password = models.CharField(max_length=50)
+	contact = models.DecimalField(max_digits=10, decimal_places=0, default=0)
 
-# 	a_id = models.CharField()
+	def __str__(self):
+		return self.name
 
 
-# class Buyer(models.Model):
-# 	b_id =
+class Seller(models.Model):
+	name = models.CharField(max_length=50)
+	email = models.EmailField()
+	password = models.CharField(max_length=50)
+	contact = models.DecimalField(max_digits=10, decimal_places=0, default=0)
 
-# class Seller(models.Model):
+	def __str__(self):
+		return self.name
+
+
+class Asset(models.Model):
+
+	CATEGORY = (
+				('CAR', 'CAR'),
+				('HOUSE', 'HOUSE')
+				)
+	name = models.CharField(max_length=50)
+	baseprice = models.FloatField()
+	img = models.ImageField(upload_to='uploads/')
+	category = models.CharField(max_length=5, choices=CATEGORY)
+	details = models.CharField(max_length=100)
+	seller = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL)
+
+	def __str__(self):
+		return self.name
+
+
+class Auction(models.Model):
+	date = models.DateTimeField(auto_now_add=True)
+
+
+class AuctionedAsset(models.Model):
+	ac_id = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
+	s_id = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL)
+	b_id = models.ForeignKey(Buyer, null=True, on_delete=models.SET_NULL)
+	price = models.FloatField()
