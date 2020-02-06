@@ -31,7 +31,7 @@ class Asset(models.Model):
 				)
 	name = models.CharField(max_length=50)
 	baseprice = models.FloatField()
-	img = models.ImageField(upload_to='uploads/')
+	image = models.ImageField(upload_to='uploads/')
 	category = models.CharField(max_length=5, choices=CATEGORY)
 	details = models.CharField(max_length=100)
 	seller = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL)
@@ -45,7 +45,8 @@ class Auction(models.Model):
 
 
 class AuctionedAsset(models.Model):
-	ac_id = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
-	s_id = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL)
-	b_id = models.ForeignKey(Buyer, null=True, on_delete=models.SET_NULL)
+	auction_id = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
+	asset = models.ForeignKey(Asset, null=True, on_delete=models.SET_NULL)
+	seller = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL)
+	buyer = models.ForeignKey(Buyer, null=True, on_delete=models.SET_NULL)
 	price = models.FloatField()
