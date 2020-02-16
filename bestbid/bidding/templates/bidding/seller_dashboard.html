@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Home | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+
+		<main>
+			{% block body %}
+				<h1>Seller Dashboard</h1>
+				<div class="container">
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Seller Info</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Contact</th>
+						</thead>
+						<tbody>
+							<tr>
+								<th scope="row">{{ seller.id }}</th>
+								<td>{{ seller.name }}</td>
+								<td>{{ seller.email }}</td>
+								<td>{{ seller.contact }}</td>
+								<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+								<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+							</tr>
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Your Assets</th>
+								<th scope="col">Name</th>
+								<th scope="col">Baseprice</th>
+								<th scope="col">Category</th>
+								<th scope="col">Seller</th>
+						</thead>
+						<tbody>
+							{% for asset in assets %}
+								<tr>
+									<th scope="row">{{ asset.id }}</th>
+									<td>{{ asset.name }}</td>
+									<td>{{ asset.baseprice }}</td>
+									<td>{{ asset.category }}</td>
+									<td>{{ asset.seller.name }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% endblock %}
+		</main>
+	</body>
+</html>

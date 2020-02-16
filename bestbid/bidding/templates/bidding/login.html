@@ -1,19 +1,36 @@
+{% extends 'base.html' %}
 
+<!DOCTYPE html>
 <html>
 	<head>
-
+		{% block head %}
+			<title>Login | BestBid.com</title>
+		{% endblock %}
 	</head>
+
 	<body>
-		<center>
-			<h1>Login</h1>
+		{% block body %}
+		<main class="container">
 
-			<form action="/url/to/submit/" method="post" class="form">
-			    {% csrf_token %}
-		        <button type="submit" class="btn btn-primary">Submit</button>
-			</form>
-
+			<h1>Buyer Login</h1>
+			<form action="{% url 'buyer_login' %}" method="POST">
+                {% csrf_token %}
+                {{ buyer_form.as_p }}
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+            <br>
 			<br>
-			<a href="signup"> New to Site ?</a>
-		</center>
+			<h1>Seller Login</h1>
+			<form action="{% url 'seller_login' %}" method="POST">
+                {% csrf_token %}
+                {{ seller_form.as_p }}
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+            <br><br>
+            <a href="{% url 'registration' %}"> New to Site ?</a>
+
+		</main>
+		<br><br>
+		{% endblock %}
 	</body>
 </html>

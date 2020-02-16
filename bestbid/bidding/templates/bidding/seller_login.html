@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+<html>
+	<head>
+        {% block head %}
+        <title>Seller Login</title>
+        {% endblock %}
+	</head>
+	<body>
+        {% block body %}
+		<main>
+
+			<h1>Login</h1>
+
+			<form action="seller_login" method="POST">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" class="btn btn-primary" value="Submit">
+            </form>
+            <br>
+            <a href="{% url 'registration' %}"> New to Site ?</a>
+        </main>
+		<br><br>
+		{% endblock %}
+	</body>
+</html>

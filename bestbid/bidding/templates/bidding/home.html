@@ -1,0 +1,137 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Home | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+
+		<main>
+			{% block body %}
+				<div class="container">
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Buyers</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Contact</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for buyer in buyers %}
+								
+								<tr>
+									<th scope="row">{{ buyer.id }}</th>
+									<td>{{ buyer.name }}</td>
+									<td>{{ buyer.email }}</td>
+									<td>{{ buyer.contact }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Sellers</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Contact</th>
+						</thead>
+						<tbody>
+							{% for seller in sellers %}
+								<tr>
+									<th scope="row">{{ seller.id }}</th>
+									<td>{{ seller.name }}</td>
+									<td>{{ seller.email }}</td>
+									<td>{{ seller.contact }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">All Assets</th>
+								<th scope="col">Name</th>
+								<th scope="col">Baseprice</th>
+								<th scope="col">Category</th>
+								<th scope="col">Seller</th>
+						</thead>
+						<tbody>
+							{% for asset in assets %}
+								<tr>
+									<th scope="row">{{ asset.id }}</th>
+									<td>{{ asset.name }}</td>
+									<td>{{ asset.baseprice }}</td>
+									<td>{{ asset.category }}</td>
+									<td>{{ asset.seller.name }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Auctioned Assets</th>
+								<th scope="col">Name</th>
+								<th scope="col">Price</th>
+								<th scope="col">Category</th>
+								<th scope="col">Seller</th>
+								<th scope="col">Buyer</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for auctionedAsset in auctionedAssets %}
+								<tr>
+									<th scope="row">{{ auctionedAsset.id }}</th>
+									<td>{{ auctionedAsset.asset }}</td>
+									<td>{{ auctionedAsset.price }}</td>
+									<td>{{ auctionedAsset.category }}</td>
+									<td>{{ auctionedAsset.seller.name }}</td>
+									<td>{{ auctionedAsset.buyer.name }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Auctions</th>
+								<th scope="col">Name</th>
+								<th scope="col">Category</th>
+								<th scope="col">Date</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for auction in auctions %}
+								<tr>
+									<th scope="row">{{ auction.id }}</th>
+									<td>{{ auction.asset }}</td>
+									<td>{{ auction.category }}</td>
+									<td>{{ auction.date }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% endblock %}
+		</main>
+	</body>
+</html>

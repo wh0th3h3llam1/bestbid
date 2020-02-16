@@ -1,24 +1,147 @@
-from django.shortcuts import render
+# from django.core.files.storage import FileSystemStorage
+# from django.contrib.auth.forms import UserCreationForm
+from django.shortcuts import render, redirect
+from django.contrib.auth import authenticate, login, logout
+from django.contrib import messages
 from django.http import HttpResponse
 from django.conf import settings
+from .models import *
+from .forms import *
 
 # Create your views here.
 
 
-def login(request):
-	return render(request, 'bidding/login.html')
+# Admin - Home Page
+def home(request):
+
+	assets = Asset.objects.all()
+	sellers = Seller.objects.all()
+	buyers = Buyer.objects.all()
+	auctions = Auction.objects.all()
+	auctionedAssets = AuctionedAsset.objects.all()
+	
+	context = {
+		'assets' : assets,
+		'sellers' : sellers,
+		'buyers' : buyers,
+		'auctions' : auctions,
+		'auctionedAssets' : auctionedAssets,
+	}
+	return render(request, 'bidding/home.html', context)
 
 
+# Login 
+def loginUser(request):
+
+	buyer_form = BuyerLoginForm()
+	seller_form = SellerLoginForm()
+	context = {'seller_form' : seller_form, 'buyer_form' : buyer_form}
+	return render(request, 'bidding/login.html', context)
+
+
+def buyer_login(request):
+	print("In buyer_login method")
+	if request.method == 'POST':
+		print("In POST method")
+		form = BuyerLoginForm(request.POST)
+		
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+
+		user = authenticate(request, email=email, password=password)
+		if	user is not None:
+			login(request, email)
+			return redirect('buyer_dashboard', user)
+		else:
+			return HttpResponse("User Not verified")
+	
+	form = BuyerLoginForm()
+	context = {'form' : form}
+	
+	return render(request, 'bidding/buyer_login.html', context)
+
+
+def seller_login(request):
+	if request.method == 'POST':
+		print("In seller POST method")
+		form = SellerLoginForm(request.POST)
+		
+		email = request.POST.get('email')
+		password = request.POST.get('password')
+		print(email)
+		print(password)
+		user = authenticate(request, email=email, password=password)
+		if	user is not None:
+			login(request, email)
+			return redirect('seller_dashboard', user)
+		else:
+			return HttpResponse("User Not verified")
+	
+	form = SellerLoginForm()
+	context = {'form' : form}
+	return render(request, 'bidding/seller_login.html', context)
+
+
+# Registration
 def registration(request):
-	return render(request, 'bidding/registration.html')
+
+	context = {}
+	return render(request, 'bidding/registration.html', context)
+
+
+def buyer_reg(request):
+
+	form = BuyerRegistrationForm()
+
+	if request.method == 'POST':
+		form = BuyerRegistrationForm(request.POST)
+		if	form.is_valid():
+			form.save()
+			unm = form.cleaned_data.get('name')
+			messages.success(request, 'Buyer Profile Created Successfully for ' + unm)
+			return redirect('loginUser')
+
+	context = {'form' : form}
+	return render(request, 'bidding/buyer_reg.html', context)
+
+
+def seller_reg(request):
+
+	form = SellerRegistrationForm()
+
+	if request.method == 'POST':
+		form = SellerRegistrationForm(request.POST)
+		if	form.is_valid():
+			form.save()
+			unm = form.cleaned_data.get('name')
+			messages.success(request, 'Seller Profile Created Successfully for ' + unm)
+			return redirect('loginUser')
+			
+	context = {'form' : form}
+	return render(request, 'bidding/seller_reg.html', context)
+
+
+# Dashboard
+def buyer_dashboard(request, user):
+	print(user)
+	context = {}
+	return render(request, 'bidding/buyer_dashboard.html', context)
+
+
+def seller_dashboard(request, user):
+	print(user)
+	context = {}
+	return render(request, 'bidding/seller_dashboard.html', context)
 
 
 def index(request):
-	STATIC_URL = settings.STATIC_URL
-	print(STATIC_URL)
-	context = {'su' : STATIC_URL}
+	assets = Asset.objects.all()
+
+	context = {'assets' : assets}
 	return render(request, 'bidding/index.html', context)
 
 
-def agency(request):
-	return render(request, 'bidding/agency.html')
+# Logout
+def logoutUser(request):
+	logout(request)
+	return redirect('loginPage')

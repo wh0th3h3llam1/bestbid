@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Login | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+		<main>
+			<hr>
+			{% block body %}
+				<center>
+					<div>
+						<a href="/seller_login">Login as Seller</a>
+					</div>
+					<br>
+					<div>
+						<a href="/buyer_login">Login as Buyer</a>
+					</div>
+				</center>
+			{% endblock %}
+			<hr>
+		</main>
+	</body>
+</html>

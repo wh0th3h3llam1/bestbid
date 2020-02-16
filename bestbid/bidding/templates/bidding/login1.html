@@ -1,37 +1,41 @@
 {% extends 'base.html' %}
 
 <!DOCTYPE html>
-
 <html>
 	<head>
 		{% block head %}
-			<title>Registration</title>
+			<title>Login | BestBid.com</title>
 		{% endblock %}
 	</head>
-	
+
 	<body>
 		{% block body %}
-
 		<main class="container">
 
-			<h1>Registration</h1>
+			<h1>Login</h1>
 			
 			<div class="card border-primary mb-3" style="max-width: 20rem;">
 				<div class="card-header">Seller</div>
 				<div class="card-body">
-				  <h4 class="card-title">Register as Seller</h4>
-				  <p class="card-text"><a href="{% url 'seller_reg' %}">Regsiter as Seller</a></p>
+				  <h4 class="card-title">Login as Seller</h4>
+				  <p class="card-text"><a href="{% url 'seller_login' %}">Login as Seller</a></p>
 				</div>
 			</div>
 			
 			<div class="card border-primary mb-3" style="max-width: 20rem;">
 				<div class="card-header">Buyer</div>
 				<div class="card-body">
-				  <h4 class="card-title">Register as Buyer</h4>
-				  <p class="card-text"><a href="{% url 'buyer_reg' %}">Regsiter as Buyer</a></p>
+				  <h4 class="card-title">Login as Buyer</h4>
+				  <p class="card-text"><a href="{% url 'buyer_login' %}">Login as Buyer</a></p>
 				</div>
 			</div>
 			
+			<a href="{% url 'registration' %}">Register</a>
+			
+			{% for msg in messages %}
+				<p id="msg">{{ msg }}</p>
+			{% endfor %}
+
 		</main>
 		<br><br>
 		{% endblock %}

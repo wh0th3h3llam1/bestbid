@@ -1,26 +1,51 @@
-from django import forms
+from django.contrib.auth.forms import UserCreationForm
+from django.forms import ModelForm
+from .models import *
 
 
-class Assets(forms.Form):
+class AssetForm(ModelForm):
 
-	a_name = forms.CharField(label="Asset Name", max_length=50)
-	a_baseprice = forms.DecimalField(label="Enter Base Price", max_length=10)
-	a_img = forms.ImageField(label="Upload An Image")
-	a_type = forms.CharField(label="Asset Type", max_length=2)
-	a_details = forms.CharField(label="Asset Name", max_length=100)
+	class Meta:
+		model = Asset
+		fields = '__all__'
 
 
-class Buyer(forms.Form):
+class BuyerForm(ModelForm):
 
-	b_name = forms.CharField(label="Asset Name", max_length=50)
-	email = forms.EmailField(label="Enter Email")
-	password = forms.
-	b_contact = forms.
+	class Meta:
+		model = Buyer
+		fields = '__all__'
 
 
-class Seller(forms.Form):
+class SellerForm(ModelForm):
 
-	a_name = forms.CharField(label="Seller Name", max_length=50)
-	email = forms.EmailField()
-	password = forms.
-	s_contact = forms.
+	class Meta:
+		model = Seller
+		fields = '__all__'
+
+
+class BuyerRegistrationForm(ModelForm):
+	class Meta:
+		model = Buyer
+		fields = '__all__'
+
+
+class SellerRegistrationForm(ModelForm):
+	class Meta:
+		model = Seller
+		fields = '__all__'
+
+
+class BuyerLoginForm(ModelForm):
+	
+	class Meta:
+		model = Buyer
+		fields = ['email', 'password']
+
+
+class SellerLoginForm(ModelForm):
+	
+	class Meta:
+		model = Seller
+		fields = ['email', 'password']
+

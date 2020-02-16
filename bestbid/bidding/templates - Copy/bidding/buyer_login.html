@@ -1,0 +1,22 @@
+
+<html>
+	<head>
+
+	</head>
+	<body>
+		<center>
+			<h1>Login</h1>
+
+			<form action="verify_buyer_login" method="POST">
+                {% csrf_token %}
+                Buyer Email : <input type="text" name="email" placeholder="Email" autofocus required/>
+                <br><br>
+                Password : <input type="password" name="pwd" placeholder="Password" required/>
+                <br><br>
+                <input type="submit" value="Submit" />
+            </form>
+            <br>
+            <a href="registration"> New to Site ?</a>
+		</center>
+	</body>
+</html>

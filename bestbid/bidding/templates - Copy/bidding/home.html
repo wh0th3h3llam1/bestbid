@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Home | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+
+		<main>
+			{% block body %}
+				<div class="container">
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Buyers</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Contact</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% for buyer in buyers %}
+								
+								<tr>
+									<th scope="row">{{ buyer.id }}</th>
+									<td>{{ buyer.name }}</td>
+									<td>{{ buyer.email }}</td>
+									<td>{{ buyer.contact }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Sellers</th>
+								<th scope="col">Name</th>
+								<th scope="col">Email</th>
+								<th scope="col">Contact</th>
+						</thead>
+						<tbody>
+							{% for seller in sellers %}
+								<tr>
+									<th scope="row">{{ seller.id }}</th>
+									<td>{{ seller.name }}</td>
+									<td>{{ seller.email }}</td>
+									<td>{{ seller.contact }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				<!-- </div>
+				<div> -->
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">All Assets</th>
+								<th scope="col">Name</th>
+								<th scope="col">Baseprice</th>
+								<th scope="col">Category</th>
+								<th scope="col">Seller</th>
+						</thead>
+						<tbody>
+							{% for asset in assets %}
+								<tr>
+									<th scope="row">{{ asset.id }}</th>
+									<td>{{ asset.name }}</td>
+									<td>{{ asset.baseprice }}</td>
+									<td>{{ asset.category }}</td>
+									<td>{{ asset.seller.name }}</td>
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+					<table class="table table-hover w-50">
+						<thead>
+							<tr>
+								<th scope="col">Auctioned Assets</th>
+								<th scope="col">Name</th>
+								<th scope="col">Price</th>
+								<th scope="col">Category</th>
+								{% comment %} <th scope="col">Seller</th>
+								<th scope="col">Buyer</th> {% endcomment %}
+							</tr>
+						</thead>
+						<tbody>
+							{% for a in auctionedassets %}
+								<tr>
+									<th scope="row">{{ a.id }}</th>
+									<td>{{ a.name }}</td>
+									<td>{{ a.baseprice }}</td>
+									<td>{{ a.category }}</td>
+									{% comment %} <td>{{ a.seller.name }}</td>
+									<td>{{ a.buyer.name }}</td> {% endcomment %}
+									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
+									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								</tr>
+							{% endfor %}
+						</tbody>
+					</table>
+				</div>
+			{% endblock %}
+		</main>
+	</body>
+</html>

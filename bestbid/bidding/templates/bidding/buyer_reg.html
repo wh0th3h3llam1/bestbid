@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+
+<!DOCTYPE html>
+
+<html>
+	<head>
+		{% block head %}
+			<title>Buyer Registration</title>
+		{% endblock %}
+	</head>
+	
+	<body>
+		{% block body %}
+
+		<main>
+
+			<h1>Buyer Registration</h1>
+			
+			<form action="buyer_reg" method="POST">
+				{% csrf_token %}
+				{{ form.as_p }}
+		
+				<input type="submit" class="btn btn-primary" value="Submit">
+			</form>
+			{{ form.errors }}
+		</main>
+		<br><br>
+		{% endblock %}
+	</body>
+</html>
