@@ -11,11 +11,10 @@
 	</head>
 
 	<body>
-
-		<main>
+		<div class="container">
 			{% block body %}
-				<h1>Buyer Dashboard</h1>
-				<div class="container">
+				<main>
+					<h1>Buyer Dashboard</h1>
 					<table class="table table-hover w-50">
 						<thead>
 							<tr>
@@ -60,8 +59,8 @@
 							{% endfor %}
 						</tbody> -->
 					</table>
-				</div>
+				</main>
 			{% endblock %}
-		</main>
+		</div>
 	</body>
 </html>

@@ -12,22 +12,29 @@
 		{% block body %}
 		<main class="container">
 
-			<h1>Buyer Login</h1>
-			<form action="{% url 'buyer_login' %}" method="POST">
-                {% csrf_token %}
-                {{ buyer_form.as_p }}
-                <input type="submit" class="btn btn-primary" value="Submit">
-            </form>
-            <br>
-			<br>
-			<h1>Seller Login</h1>
-			<form action="{% url 'seller_login' %}" method="POST">
-                {% csrf_token %}
-                {{ seller_form.as_p }}
-                <input type="submit" class="btn btn-primary" value="Submit">
-            </form>
-            <br><br>
-            <a href="{% url 'registration' %}"> New to Site ?</a>
+			<h1>Login</h1>
+			
+			<div class="card border-primary mb-3" style="max-width: 20rem;">
+				<div class="card-header">Seller</div>
+				<div class="card-body">
+				  <h4 class="card-title">Login as Seller</h4>
+				  <p class="card-text"><a href="{% url 'seller_login' %}">Login as Seller</a></p>
+				</div>
+			</div>
+			
+			<div class="card border-primary mb-3" style="max-width: 20rem;">
+				<div class="card-header">Buyer</div>
+				<div class="card-body">
+				  <h4 class="card-title">Login as Buyer</h4>
+				  <p class="card-text"><a href="{% url 'buyer_login' %}">Login as Buyer</a></p>
+				</div>
+			</div>
+			
+			<a href="{% url 'registration' %}">Register</a>
+			
+			{% for msg in messages %}
+				<p id="msg">{{ msg }}</p>
+			{% endfor %}
 
 		</main>
 		<br><br>

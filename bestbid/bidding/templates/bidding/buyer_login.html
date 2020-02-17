@@ -8,19 +8,28 @@
 	</head>
 	<body>
         {% block body %}
-		<main>
+            <div class="container">
+				<main>
+					<h1>Buyer Login</h1>
 
-			<h1>Login</h1>
-
-			<form action="buyer_login" method="POST">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input type="submit" class="btn btn-primary" value="Submit">
-            </form>
-            <br>
-            <a href="{% url 'registration' %}"> New to Site ?</a>
-        </main>
-		<br><br>
+					<form action="{% url 'buyer_login' %}" method="POST">
+						{% csrf_token %}
+						{{ form.as_p }}
+						<input type="submit" class="btn btn-primary" value="Submit">
+					</form>
+					<br>
+					<a href="{% url 'registration' %}"> New to Site ?</a>
+				</main>
+				{{ form.errors }}
+                {% if messages %}
+                    <ul class="messages">
+                        {% for message in messages %}
+                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                    	{% endfor %}
+                    </ul>
+                {% endif %}
+				<br><br>
+			</div>
 		{% endblock %}
 	</body>
 </html>

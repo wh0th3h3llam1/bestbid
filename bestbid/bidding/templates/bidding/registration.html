@@ -20,7 +20,7 @@
 				<div class="card-header">Seller</div>
 				<div class="card-body">
 				  <h4 class="card-title">Register as Seller</h4>
-				  <p class="card-text"><a href="{% url 'seller_reg' %}">Regsiter as Seller</a></p>
+				  <p class="card-text"><a href="{% url 'seller_reg' %}">Register as Seller</a></p>
 				</div>
 			</div>
 			
@@ -28,11 +28,20 @@
 				<div class="card-header">Buyer</div>
 				<div class="card-body">
 				  <h4 class="card-title">Register as Buyer</h4>
-				  <p class="card-text"><a href="{% url 'buyer_reg' %}">Regsiter as Buyer</a></p>
+				  <p class="card-text"><a href="{% url 'buyer_reg' %}">Register as Buyer</a></p>
 				</div>
 			</div>
-			
+			<a href="{% url 'login' %}">Login</a>
 		</main>
+
+		{{ form.errors }}
+		{% if messages %}
+			<ul class="messages">
+				{% for message in messages %}
+				<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+				{% endfor %}
+			</ul>
+		{% endif %}
 		<br><br>
 		{% endblock %}
 	</body>

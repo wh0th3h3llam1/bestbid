@@ -1,4 +1,3 @@
-# from django.contrib.auth import authenticate, login, logout
 # from django.core.files.storage import FileSystemStorage		# for saving images
 # from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
@@ -7,8 +6,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
 from django.db.models import Q
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
+from django.urls import reverse
+from urllib.parse import urlencode
 from .models import *
 from .forms import *
 
@@ -25,12 +26,27 @@ def adminLogin(request):
 		admin_email = 'admin@gmail.com'
 		admin_pwd = 'adminpass'
 		if req_email == admin_email and req_password == admin_pwd:
-			c = {}	
-			c.update(csrf(request))
-			return redirect('home', c)#, context)
+			# c = {}	
+			# c.update(csrf(request))
+			# return redirect('home', c)#, context)
 			# return redirect('home', c, context)
-			# return redirect('home', context)
-			# return render(request, 'bidding/home.html', context)
+
+			assets = Asset.objects.all()
+			sellers = Seller.objects.all()
+			buyers = Buyer.objects.all()
+			auctions = Auction.objects.all()
+			auctionedAssets = AuctionedAsset.objects.all()
+			
+			context = {
+				'assets' : assets,
+				'sellers' : sellers,
+				'buyers' : buyers,
+				'auctions' : auctions,
+				'auctionedAssets' : auctionedAssets,
+			}
+			context.update(csrf(request))
+
+			return render(request, 'bidding/home.html', context)
 		else:
 			return render(request, 'bidding/adminLogin.html')	
 
@@ -76,9 +92,12 @@ def buyer_login(request):
 		if user:
 			c = {}
 			c.update(csrf(request))
-			return render(request, 'bidding/buyer_dashboard.html', c)
+			context = {'c' : c, 'loggedIn' : 'loggedIn'}
+			messages.success(request, 'Buyer Logged In Successfully')
+
+			return render(request, 'bidding/buyer_dashboard.html', context)
 		else:
-			return HttpResponse("Not")
+			messages.error(request, 'Incorrect Credentials')
 
 	form = BuyerLoginForm()
 	context = {'form' : form}
@@ -95,11 +114,14 @@ def seller_login(request):
 		user = Seller.objects.filter(Q(email=req_email) & Q(password=req_password))
 		
 		if user:
+			print(user.id)
 			c = {}
 			c.update(csrf(request))
-			return render(request, 'bidding/seller_dashboard.html', c)
+			context = {'c' : c, 'loggedIn' : 'loggedIn'}
+			messages.success(request, 'Seller Logged In Successfully')
+			return render(request, 'bidding/seller_dashboard.html', context)
 		else:
-			return HttpResponse("Not")
+			messages.error(request, 'Incorrect Credentials')
 
 	form = SellerLoginForm()
 	context = {'form' : form}
@@ -123,7 +145,8 @@ def buyer_reg(request):
 			form.save()
 			unm = form.cleaned_data.get('name')
 			messages.success(request, 'Buyer Profile Created Successfully for ' + unm)
-			return redirect('login')
+			# return redirect('login')
+			return render(request, 'bidding/login.html')
 
 	context = {'form' : form}
 	return render(request, 'bidding/buyer_reg.html', context)
@@ -139,7 +162,9 @@ def seller_reg(request):
 			form.save()
 			unm = form.cleaned_data.get('name')
 			messages.success(request, 'Seller Profile Created Successfully for ' + unm)
-			return redirect('login')
+			# return redirect('login')
+			return render(request, 'bidding/login.html')
+
 			
 	context = {'form' : form}
 	return render(request, 'bidding/seller_reg.html', context)
@@ -169,5 +194,9 @@ def index(request):
 
 # Logout
 def logoutUser(request):
-	logout(request)
-	return redirect('loginPage')
+	for key in list(request.session.keys()):
+		del request.session[key]
+	messages.success(request, "User Logged Out Successfully")
+	return render(request, 'bidding/login.html')
+	# return redirect('login')
+	# return HttpResponseRedirect('login')
