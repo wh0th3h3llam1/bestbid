@@ -1,8 +1,12 @@
-# from django.core.files.storage import FileSystemStorage
+# from django.contrib.auth import authenticate, login, logout
+# from django.core.files.storage import FileSystemStorage		# for saving images
 # from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login, logout
+from django.template.context_processors import csrf
+from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponse
 from django.conf import settings
 from .models import *
@@ -11,7 +15,29 @@ from .forms import *
 # Create your views here.
 
 
+# Admin - Login
+def adminLogin(request):
+	print("In adminLogin")
+	if request.method == 'POST':
+		print("In POST")
+		req_email = request.POST.get('adminEmail')
+		req_password = request.POST.get('adminPassword')
+		admin_email = 'admin@gmail.com'
+		admin_pwd = 'adminpass'
+		if req_email == admin_email and req_password == admin_pwd:
+			c = {}	
+			c.update(csrf(request))
+			return redirect('home', c)#, context)
+			# return redirect('home', c, context)
+			# return redirect('home', context)
+			# return render(request, 'bidding/home.html', context)
+		else:
+			return render(request, 'bidding/adminLogin.html')	
+
+	return render(request, 'bidding/adminLogin.html')	
+
 # Admin - Home Page
+@login_required(login_url='adminLogin')
 def home(request):
 
 	assets = Asset.objects.all()
@@ -30,8 +56,8 @@ def home(request):
 	return render(request, 'bidding/home.html', context)
 
 
-# Login 
-def loginUser(request):
+# User Login 
+def login(request):
 
 	buyer_form = BuyerLoginForm()
 	seller_form = SellerLoginForm()
@@ -40,21 +66,20 @@ def loginUser(request):
 
 
 def buyer_login(request):
-	print("In buyer_login method")
 	if request.method == 'POST':
-		print("In POST method")
 		form = BuyerLoginForm(request.POST)
 		
-		email = request.POST.get('email')
-		password = request.POST.get('password')
-
-		user = authenticate(request, email=email, password=password)
-		if	user is not None:
-			login(request, email)
-			return redirect('buyer_dashboard', user)
+		req_email = request.POST.get('email')
+		req_password = request.POST.get('password')
+		user = Buyer.objects.filter(Q(email=req_email) & Q(password=req_password))
+		
+		if user:
+			c = {}
+			c.update(csrf(request))
+			return render(request, 'bidding/buyer_dashboard.html', c)
 		else:
-			return HttpResponse("User Not verified")
-	
+			return HttpResponse("Not")
+
 	form = BuyerLoginForm()
 	context = {'form' : form}
 	
@@ -63,20 +88,19 @@ def buyer_login(request):
 
 def seller_login(request):
 	if request.method == 'POST':
-		print("In seller POST method")
 		form = SellerLoginForm(request.POST)
 		
-		email = request.POST.get('email')
-		password = request.POST.get('password')
-		print(email)
-		print(password)
-		user = authenticate(request, email=email, password=password)
-		if	user is not None:
-			login(request, email)
-			return redirect('seller_dashboard', user)
+		req_email = request.POST.get('email')
+		req_password = request.POST.get('password')
+		user = Seller.objects.filter(Q(email=req_email) & Q(password=req_password))
+		
+		if user:
+			c = {}
+			c.update(csrf(request))
+			return render(request, 'bidding/seller_dashboard.html', c)
 		else:
-			return HttpResponse("User Not verified")
-	
+			return HttpResponse("Not")
+
 	form = SellerLoginForm()
 	context = {'form' : form}
 	return render(request, 'bidding/seller_login.html', context)
@@ -99,7 +123,7 @@ def buyer_reg(request):
 			form.save()
 			unm = form.cleaned_data.get('name')
 			messages.success(request, 'Buyer Profile Created Successfully for ' + unm)
-			return redirect('loginUser')
+			return redirect('login')
 
 	context = {'form' : form}
 	return render(request, 'bidding/buyer_reg.html', context)
@@ -115,19 +139,21 @@ def seller_reg(request):
 			form.save()
 			unm = form.cleaned_data.get('name')
 			messages.success(request, 'Seller Profile Created Successfully for ' + unm)
-			return redirect('loginUser')
+			return redirect('login')
 			
 	context = {'form' : form}
 	return render(request, 'bidding/seller_reg.html', context)
 
 
 # Dashboard
+@login_required(login_url='login')
 def buyer_dashboard(request, user):
 	print(user)
 	context = {}
 	return render(request, 'bidding/buyer_dashboard.html', context)
 
 
+@login_required(login_url='login')
 def seller_dashboard(request, user):
 	print(user)
 	context = {}

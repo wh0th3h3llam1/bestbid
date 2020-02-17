@@ -24,9 +24,13 @@
 			<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
 		</form> -->
 		&nbsp;&nbsp;&nbsp;
-		<form class="form-inline my-2 my-lg-0" action="{% url 'loginUser' %}">
+		<form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
 			<button class="btn btn-success my-2 my-sm-0">Login</button>
 		</form>
 		&nbsp;&nbsp;&nbsp;
 	</div>
   </nav>
+
+  {% block content %}
+	  
+  {% endblock %}
