@@ -1,55 +1,49 @@
 from django.contrib.auth.forms import UserCreationForm
-from django import forms
+from django.forms import ModelForm
 from .models import *
 
 
-class AssetForm(forms.ModelForm):
+class AssetForm(ModelForm):
 
 	class Meta:
 		model = Asset
 		fields = '__all__'
 
 
-class BuyerForm(forms.ModelForm):
+class BuyerForm(ModelForm):
 
 	class Meta:
 		model = Buyer
 		fields = '__all__'
-		widgets = {
-			'password': forms.PasswordInput()
-		}
 
 
-class SellerForm(forms.ModelForm):
+class SellerForm(ModelForm):
 
 	class Meta:
 		model = Seller
 		fields = '__all__'
 
 
-class BuyerRegistrationForm(forms.ModelForm):
+class BuyerRegistrationForm(ModelForm):
 	class Meta:
 		model = Buyer
 		fields = '__all__'
-		widgets = {
-			'password': forms.PasswordInput()
-		}
 
 
-class SellerRegistrationForm(forms.ModelForm):
+class SellerRegistrationForm(ModelForm):
 	class Meta:
 		model = Seller
 		fields = '__all__'
 
 
-class BuyerLoginForm(forms.ModelForm):
+class BuyerLoginForm(ModelForm):
 	
 	class Meta:
 		model = Buyer
 		fields = ['email', 'password']
 
 
-class SellerLoginForm(forms.ModelForm):
+class SellerLoginForm(ModelForm):
 	
 	class Meta:
 		model = Seller

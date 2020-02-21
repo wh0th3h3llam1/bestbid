@@ -5,7 +5,7 @@ from django.db import models
 
 class Buyer(models.Model):
 	name = models.CharField(max_length=50)
-	email = models.EmailField(primary_key=True)
+	email = models.EmailField(unique=True)
 	password = models.CharField(max_length=50)
 	contact = models.DecimalField(max_digits=10, decimal_places=0, default=0)
 
@@ -15,7 +15,7 @@ class Buyer(models.Model):
 
 class Seller(models.Model):
 	name = models.CharField(max_length=50)
-	email = models.EmailField(primary_key=True)
+	email = models.EmailField(unique=True)
 	password = models.CharField(max_length=50)
 	contact = models.DecimalField(max_digits=10, decimal_places=0, default=0)
 
@@ -48,6 +48,16 @@ class Auction(models.Model):
 	category = models.CharField(max_length=5, choices=CATEGORY)
 	date = models.DateTimeField(auto_now_add=True)
 	
+
+'''
+class LiveAuction(models.Model):
+	asset_id = 
+	buyer_id = 
+	price = 
+	date_time = 
+
+'''
+
 
 class AuctionedAsset(models.Model):
 	CATEGORY = (

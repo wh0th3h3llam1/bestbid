@@ -114,12 +114,13 @@ def seller_login(request):
 		user = Seller.objects.filter(Q(email=req_email) & Q(password=req_password))
 		
 		if user:
-			print(user.id)
+			# print(user.id)
 			c = {}
 			c.update(csrf(request))
 			context = {'c' : c, 'loggedIn' : 'loggedIn'}
-			messages.success(request, 'Seller Logged In Successfully')
-			return render(request, 'bidding/seller_dashboard.html', context)
+			# messages.success(request, 'Seller Logged In Successfully')
+			return redirect('seller_dashboard', permanent=True)
+			# return render(request, 'bidding/seller_dashboard.html', context)
 		else:
 			messages.error(request, 'Incorrect Credentials')
 

@@ -1,0 +1,4 @@
+Django
+django-bootstrap4
+wheel
+django-filter
