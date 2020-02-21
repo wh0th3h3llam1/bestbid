@@ -1,4 +1,4 @@
-Django
-django-bootstrap4
-wheel
-django-filter
+Django==3.0.2
+django-bootstrap4==1.1.1
+wheel==0.33.6
+django-filter==2.2.0
