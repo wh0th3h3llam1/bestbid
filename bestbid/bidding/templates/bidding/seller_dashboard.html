@@ -11,11 +11,10 @@
 	</head>
 
 	<body>
-
-		<main>
-			{% block body %}
-				<h1>Seller Dashboard</h1>
-				<div class="container">
+		{% block body %}
+			<div class="container">
+				<main>
+					<h1>Seller Dashboard</h1>
 					<table class="table table-hover w-50">
 						<thead>
 							<tr>
@@ -23,43 +22,59 @@
 								<th scope="col">Name</th>
 								<th scope="col">Email</th>
 								<th scope="col">Contact</th>
+							</tr>
 						</thead>
 						<tbody>
 							<tr>
-								<th scope="row">{{ seller.id }}</th>
-								<td>{{ seller.name }}</td>
-								<td>{{ seller.email }}</td>
-								<td>{{ seller.contact }}</td>
-								<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
-								<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
+								<th scope="row">{{ user.id }}</th>
+								<td>{{ user.name }}</td>
+								<td>{{ user.email }}</td>
+								<td>{{ user.contact }}</td>
 							</tr>
 						</tbody>
 					</table>
-					<table class="table table-hover w-50">
-						<thead>
-							<tr>
-								<th scope="col">Your Assets</th>
-								<th scope="col">Name</th>
-								<th scope="col">Baseprice</th>
-								<th scope="col">Category</th>
-								<th scope="col">Seller</th>
-						</thead>
-						<tbody>
-							{% for asset in assets %}
-								<tr>
-									<th scope="row">{{ asset.id }}</th>
-									<td>{{ asset.name }}</td>
-									<td>{{ asset.baseprice }}</td>
-									<td>{{ asset.category }}</td>
-									<td>{{ asset.seller.name }}</td>
-									<td><a class="btn btn-sm btn-info" href="">Update</a></td> 
-									<td><a class="btn btn-sm btn-danger" href="">Delete</a></td> 
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-				</div>
-			{% endblock %}
-		</main>
+
+					<h2>Recently Auctioned Assets</h2>
+					<!-- Card for each asset -->
+					{% for l in last_five %}
+						<div class="card" style="width:400px">
+							<h3 class="card-header">{{ l.asset }}</h3>
+							<div class="card-body">
+								<h5 class="card-title">{{ l.category }}</h5>
+							</div>
+							<img style="height: 100px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
+							<div class="card-body">
+								<p class="card-text">Sold at : ${{ l.price }}</p>
+							</div>
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">Seller : {{ l.seller.name }}</li>
+								<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
+							</ul>
+							<div class="card-footer text-muted">
+								Sold on : {{ l.auction_id.date }}
+							</div>
+						</div>
+					{% endfor %}
+					<br><br>
+					<!-- Upcoming Auctions -->
+					<h2>Upcoming Auctions</h2>
+					<br>
+					{% for upcoming in auctions %}
+						<div class="card" style="width:400px">
+							<h3 class="card-header">{{ upcoming.asset }}</h3>
+							<div class="card-body">
+								<h5 class="card-title">{{ upcoming.category }}</h5>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Sold at : ${{ upcoming.price }}</p>
+							</div>
+							<div class="card-footer text-muted">
+								Sold on : {{ upcoming.date }}
+							</div>
+						</div>
+					{% endfor %}
+				</main>
+			</div>
+		{% endblock %}
 	</body>
 </html>

@@ -188,21 +188,33 @@ def seller_dashboard(request):
 
 
 def profile(request):
-	return render(request, 'bidding/profile.html')
+	context = {
+		'loggedIn' : 'loggedIn'
+	}
+	return render(request, 'bidding/profile.html', context)
 
 
+# Search for Assets
 def search(request):
 	if request.method == 'POST':
 		query = request.POST.get('search_query')
 		if query:
+			# If search has query
 			results = Asset.objects.filter(Q(name__icontains=query) | Q(category__icontains=query))
-			context = {'search_results' : results, 'query' : query}
-			return render(request, 'bidding/search.html', context)
+			if results:
+				# If results are found
+				context = {'search_results' : results, 'query' : query}
+				return render(request, 'bidding/search.html', context)
+			else:
+				# If no results are found
+				context = {'no_results' : 'no_results'}
+				return render(request, 'bidding/search.html', context)
 		else:
-			context = {'no_results' : 'no_results'}
-			return render(request, 'bidding/search.html', context)
-	# results = Assets.objects.filter(Q(title__icontains=your_search_query) | Q(intro__icontains=your_search_query) | Q(content__icontains=your_search_query))
-	return render(request, 'bidding/search.html')
+			# If search query is empty
+			return render(request, 'bidding/search.html')
+	else:
+		return render(request, 'bidding/search.html')
+
 
 def index(request):
 	assets = Asset.objects.all()

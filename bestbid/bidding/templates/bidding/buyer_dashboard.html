@@ -6,7 +6,7 @@
 	<head>
 		<meta charset="UTF-8">
 		{% block head %}
-			<title>Home | BestBid.com</title>
+			<title>Buyer | BestBid.com</title>
 		{% endblock %}
 	</head>
 
@@ -42,8 +42,7 @@
 							<div class="card-body">
 								<h5 class="card-title">{{ l.category }}</h5>
 							</div>
-							
-							<!-- <img style="height: 100px; width: 100%; display: block;" src="{{ l.asset.image }}" alt="Asset Image"> -->
+							<img style="height: 100px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
 							<div class="card-body">
 								<p class="card-text">Sold at : ${{ l.price }}</p>
 							</div>

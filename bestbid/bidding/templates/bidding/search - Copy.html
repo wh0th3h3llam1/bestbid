@@ -27,7 +27,11 @@
 							{% csrf_token %}
 							<div class="form-group">
 								<label class="col-form-label col-form-label-lg" for="search_query">Search</label>
-									<input class="form-control form-control-lg" type="text" placeholder="Search Assets" id="search_query" name="search_query" {% if search_results %} value="{{ query }}" {% endif %} />
+								{% if search_results %}
+									<input class="form-control form-control-lg" type="text" placeholder="Search Assets" id="search_query" name="search_query" value="{{ query }}">
+								{% else %}
+									<input class="form-control form-control-lg" type="text" placeholder="Search Assets" id="search_query" name="search_query">
+								{% endif %}
 							</div>
 							<button type="submit" class="btn btn-primary btn-lg">Search</button>
 						</form>

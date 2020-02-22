@@ -19,27 +19,19 @@
 				<a class="nav-link" href="#">About</a>
 			</li>
 		</ul>
-		<!-- <form class="form-inline my-2 my-lg-0">
-			<input class="form-control mr-sm-2" type="text" placeholder="Search">
-			<button class="btn btn-success my-2 my-sm-0" type="submit">Search</button>
-		</form> -->
+		<form class="form-inline my-2 my-lg-0" action="{% url 'profile' %}">
+			<button class="btn btn-success my-2 my-sm-0">My Profile</button>
+		</form>
 		&nbsp;&nbsp;&nbsp;
-		{% if loggedIn %}
-
-			<form class="form-inline my-2 my-lg-0" action="{% url 'profile' %}">
-				<button class="btn btn-success my-2 my-sm-0">My Profile</button>
-			</form>
-			&nbsp;&nbsp;&nbsp;
-			<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
-				<button class="btn btn-success my-2 my-sm-0">Logout</button>
-			</form>
-			&nbsp;&nbsp;&nbsp;
-		{% else %}
-			<form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
-				<button class="btn btn-success my-2 my-sm-0">Login</button>
-			</form>
-			&nbsp;&nbsp;&nbsp;
-			
-		{% endif %}
+		<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
+			<button class="btn btn-success my-2 my-sm-0">
+				{% if loggedIn %}
+					Logout
+				{% else %}
+					Login
+				{% endif %}
+			</button>
+		</form>
+		&nbsp;&nbsp;&nbsp;
 	</div>
   </nav>

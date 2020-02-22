@@ -52,7 +52,8 @@ class BuyerLoginForm(forms.ModelForm):
 		model = Buyer
 		fields = ['email', 'password']
 		widgets = {
-			'password': forms.PasswordInput()
+			'password': forms.PasswordInput(),
+			# 'class' : 'form-group'
 		}
 
 class SellerLoginForm(forms.ModelForm):
