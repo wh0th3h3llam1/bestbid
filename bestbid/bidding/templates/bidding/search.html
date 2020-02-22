@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Home | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+		{% block body %}
+			<div class="container">
+				<main>
+					<center><h1>Search</h1></center>
+					<br>
+					<div>
+						<form action="{% url 'search' %}" method="POST">
+							{% csrf_token %}
+							<div class="form-group">
+								<label class="col-form-label col-form-label-lg" for="search_query">Search</label>
+								{% if search_results %}
+									<input class="form-control form-control-lg" type="text" placeholder="Search Assets" id="search_query" name="search_query" value="{{ query }}">
+								{% else %}
+									<input class="form-control form-control-lg" type="text" placeholder="Search Assets" id="search_query" name="search_query">
+								{% endif %}
+							</div>
+							<button type="submit" class="btn btn-primary btn-lg">Search</button>
+						</form>
+					</div>
+					<br>
+					{% if search_results %}
+						{% for item in search_results %}
+							<div class="card" style="width:400px">
+								<h3 class="card-header">{{ item.name }}</h3>
+								<div class="card-body">
+									<h5 class="card-title">{{ item.category }}</h5>
+								</div>
+								<img style="height: 100px; width: 100%; display: block;" src='{{ item.image.url }}' alt="Asset Image">
+								<div class="card-body">
+									<p class="card-text">Baseprice : ${{ item.baseprice }}</p>
+								</div>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">Seller : {{ item.seller.name }}</li>
+								</ul>
+								<div class="card-footer text-muted">
+									Sold on : {{ l.auction_id.date }}
+								</div>
+							</div>
+						{% endfor %}
+					{% endif %}
+					{% if no_results %}
+						<h4>No results</h4>
+					{% endif %}
+					
+				</main>
+			</div>
+		{% endblock %}
+	</body>
+</html>

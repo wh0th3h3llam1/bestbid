@@ -25,7 +25,9 @@ class SellerForm(forms.ModelForm):
 	class Meta:
 		model = Seller
 		fields = '__all__'
-
+		widgets = {
+			'password': forms.PasswordInput()
+		}
 
 class BuyerRegistrationForm(forms.ModelForm):
 	class Meta:
@@ -40,18 +42,24 @@ class SellerRegistrationForm(forms.ModelForm):
 	class Meta:
 		model = Seller
 		fields = '__all__'
-
+		widgets = {
+			'password': forms.PasswordInput()
+		}
 
 class BuyerLoginForm(forms.ModelForm):
 	
 	class Meta:
 		model = Buyer
 		fields = ['email', 'password']
-
+		widgets = {
+			'password': forms.PasswordInput()
+		}
 
 class SellerLoginForm(forms.ModelForm):
 	
 	class Meta:
 		model = Seller
 		fields = ['email', 'password']
-
+		widgets = {
+			'password': forms.PasswordInput()
+		}

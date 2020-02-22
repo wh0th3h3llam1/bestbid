@@ -1,15 +1,16 @@
 # from django.core.files.storage import FileSystemStorage		# for saving images
 # from django.contrib.auth.forms import UserCreationForm
-from django.shortcuts import render, redirect
+from django.contrib.admin.views.decorators import staff_member_required
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
-from django.contrib.admin.views.decorators import staff_member_required
-from django.contrib import messages
+from django.views.decorators.csrf import csrf_protect
+from django.shortcuts import render, redirect
 from django.db.models import Q
+from django.contrib import messages
+from urllib.parse import urlencode
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
 from django.urls import reverse
-from urllib.parse import urlencode
 from .models import *
 from .forms import *
 
@@ -84,43 +85,44 @@ def login(request):
 def buyer_login(request):
 	if request.method == 'POST':
 		form = BuyerLoginForm(request.POST)
-		
 		req_email = request.POST.get('email')
 		req_password = request.POST.get('password')
-		user = Buyer.objects.filter(Q(email=req_email) & Q(password=req_password))
-		
+		user = Buyer.objects.get(Q(email=req_email) & Q(password=req_password))
 		if user:
-			c = {}
-			c.update(csrf(request))
-			context = {'c' : c, 'loggedIn' : 'loggedIn'}
-			messages.success(request, 'Buyer Logged In Successfully')
-
+			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
+			auctions = Auction.objects.all()
+			context = {
+				'user' : user,
+				'last_five' : last_five,
+				'auctions' : auctions,
+				'loggedIn' : 'loggedIn'
+			}
+			context.update(csrf(request))
 			return render(request, 'bidding/buyer_dashboard.html', context)
 		else:
 			messages.error(request, 'Incorrect Credentials')
 
 	form = BuyerLoginForm()
 	context = {'form' : form}
-	
 	return render(request, 'bidding/buyer_login.html', context)
 
 
 def seller_login(request):
 	if request.method == 'POST':
 		form = SellerLoginForm(request.POST)
-		
 		req_email = request.POST.get('email')
 		req_password = request.POST.get('password')
-		user = Seller.objects.filter(Q(email=req_email) & Q(password=req_password))
-		
+		user = Seller.objects.get(Q(email=req_email) & Q(password=req_password))
 		if user:
-			# print(user.id)
-			c = {}
-			c.update(csrf(request))
-			context = {'c' : c, 'loggedIn' : 'loggedIn'}
-			# messages.success(request, 'Seller Logged In Successfully')
-			return redirect('seller_dashboard', permanent=True)
-			# return render(request, 'bidding/seller_dashboard.html', context)
+			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
+			auctions = Auction.objects.all()
+			context = {
+				'user' : user,
+				'last_five' : last_five,
+				'auctions' : auctions,
+				'loggedIn' : 'loggedIn'
+			}
+			return render(request, 'bidding/seller_dashboard.html', context)
 		else:
 			messages.error(request, 'Incorrect Credentials')
 
@@ -172,19 +174,35 @@ def seller_reg(request):
 
 
 # Dashboard
-@login_required(login_url='login')
-def buyer_dashboard(request, user):
-	print(user)
+@login_required(login_url='buyer_login')
+def buyer_dashboard(request):
 	context = {}
 	return render(request, 'bidding/buyer_dashboard.html', context)
 
 
-@login_required(login_url='login')
-def seller_dashboard(request, user):
-	print(user)
+@login_required(login_url='seller_login')
+def seller_dashboard(request):
 	context = {}
 	return render(request, 'bidding/seller_dashboard.html', context)
 
+
+
+def profile(request):
+	return render(request, 'bidding/profile.html')
+
+
+def search(request):
+	if request.method == 'POST':
+		query = request.POST.get('search_query')
+		if query:
+			results = Asset.objects.filter(Q(name__icontains=query) | Q(category__icontains=query))
+			context = {'search_results' : results, 'query' : query}
+			return render(request, 'bidding/search.html', context)
+		else:
+			context = {'no_results' : 'no_results'}
+			return render(request, 'bidding/search.html', context)
+	# results = Assets.objects.filter(Q(title__icontains=your_search_query) | Q(intro__icontains=your_search_query) | Q(content__icontains=your_search_query))
+	return render(request, 'bidding/search.html')
 
 def index(request):
 	assets = Asset.objects.all()

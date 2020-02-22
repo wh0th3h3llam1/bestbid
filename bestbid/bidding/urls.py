@@ -20,7 +20,11 @@ urlpatterns = [
 	url(r'^buyer_dashboard/$', views.buyer_dashboard, name='buyer_dashboard'),
 	url(r'^seller_dashboard/$', views.seller_dashboard, name='seller_dashboard'),
 
+	url(r'^profile/$', views.profile, name='profile'),
+
 	url(r'^logout/$', views.logoutUser, name='logout'),
+
+	url(r'^search/$', views.search, name='search'),
 
 	url(r'^index/$', views.index, name='index'),
 
