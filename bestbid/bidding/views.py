@@ -87,8 +87,8 @@ def buyer_login(request):
 		form = BuyerLoginForm(request.POST)
 		req_email = request.POST.get('email')
 		req_password = request.POST.get('password')
-		user = Buyer.objects.get(Q(email=req_email) & Q(password=req_password))
-		if user:
+		try:
+			user = Buyer.objects.get(Q(email=req_email) & Q(password=req_password))
 			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
 			auctions = Auction.objects.all()
 			context = {
@@ -99,7 +99,7 @@ def buyer_login(request):
 			}
 			context.update(csrf(request))
 			return render(request, 'bidding/buyer_dashboard.html', context)
-		else:
+		except Buyer.DoesNotExist:
 			messages.error(request, 'Incorrect Credentials')
 
 	form = BuyerLoginForm()
@@ -112,8 +112,8 @@ def seller_login(request):
 		form = SellerLoginForm(request.POST)
 		req_email = request.POST.get('email')
 		req_password = request.POST.get('password')
-		user = Seller.objects.get(Q(email=req_email) & Q(password=req_password))
-		if user:
+		try:
+			user = Seller.objects.get(Q(email=req_email) & Q(password=req_password))
 			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
 			auctions = Auction.objects.all()
 			context = {
@@ -123,7 +123,7 @@ def seller_login(request):
 				'loggedIn' : 'loggedIn'
 			}
 			return render(request, 'bidding/seller_dashboard.html', context)
-		else:
+		except Seller.DoesNotExist:
 			messages.error(request, 'Incorrect Credentials')
 
 	form = SellerLoginForm()
@@ -186,10 +186,12 @@ def seller_dashboard(request):
 	return render(request, 'bidding/seller_dashboard.html', context)
 
 
-
+# @login_required(login_url='login')
+# def profile(request, user):
 def profile(request):
 	context = {
-		'loggedIn' : 'loggedIn'
+		'loggedIn' : 'loggedIn',
+		# 'user' : user,
 	}
 	return render(request, 'bidding/profile.html', context)
 
@@ -214,6 +216,25 @@ def search(request):
 			return render(request, 'bidding/search.html')
 	else:
 		return render(request, 'bidding/search.html')
+
+
+def upload(request):
+	form = AssetForm()
+
+	if request.method == 'POST':
+		form = AssetForm(request.POST)
+		if	form.is_valid():
+			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
+			auctions = Auction.objects.all()
+			context = {
+				'user' : user,
+				'last_five' : last_five,
+				'auctions' : auctions,
+				'loggedIn' : 'loggedIn'
+			}
+			return render(request, 'bidding/seller_dashboard.html', context)
+	context = {'form' : form}
+	return render(request, 'bidding/upload.html', context)
 
 
 def index(request):

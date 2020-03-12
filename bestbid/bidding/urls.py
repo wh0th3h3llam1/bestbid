@@ -26,6 +26,8 @@ urlpatterns = [
 
 	url(r'^search/$', views.search, name='search'),
 
+	url(r'^upload/$', views.upload, name='upload'),
+
 	url(r'^index/$', views.index, name='index'),
 
 	# url(r'^login$', login, {'template_name' : 'bidding/login.html'}),

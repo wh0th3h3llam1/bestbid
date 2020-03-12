@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Upload | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+		{% block body %}
+			<div class="container">
+				<main>
+					<h1>Upload an Asset</h1>
+					<div class="w-50">
+                        <form action="{% url 'upload' %}" method="POST">
+							{% csrf_token %}
+							{{ form.as_p }}
+							<br>
+							<input type="submit" class="btn btn-primary" value="Upload">
+                        </form>
+                    </div>
+				</main>
+				<br><br>
+				<form>
+					<fieldset>
+						<div class="form-group">
+							<label class="col-form-label" for="inputDefault">Name</label>
+							<input type="text" class="form-control" placeholder="Name of the Asset" id="inputDefault">
+						  </div>
+						<div class="form-group">
+							<label class="control-label">Baseprice</label>
+							<div class="form-group">
+								<div class="input-group mb-3">
+									<div class="input-group-prepend">
+										<span class="input-group-text">$</span>
+									</div>
+									<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Baseprice of the Asset">
+									<div class="input-group-append">
+										<span class="input-group-text">.00</span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="exampleInputFile">Image</label>
+							<input type="file" class="form-control-file" id="exampleInputFile" aria-describedby="fileHelp">
+						</div>
+						<legend>Category</legend>
+						<div class="form-group">
+							<div class="custom-control custom-radio">
+								<input type="radio" id="customRadio1" name="customRadio" class="custom-control-input" checked="">
+								<label class="custom-control-label" for="customRadio1">Car</label>
+							</div>
+							<div class="custom-control custom-radio">
+								<input type="radio" id="customRadio2" name="customRadio" class="custom-control-input">
+								<label class="custom-control-label" for="customRadio2">House</label>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="exampleTextarea">Example textarea</label>
+							<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
+						</div>
+						<div class="form-group">
+							<div class="input-group mb-3">
+							  <div class="custom-file">
+								<input type="file" class="custom-file-input" id="inputGroupFile02">
+								<label class="custom-file-label" for="inputGroupFile02">Choose file</label>
+							  </div>
+							  <div class="input-group-append">
+								<span class="input-group-text" id="">Upload</span>
+							  </div>
+							</div>
+						  </div>
+					</fieldset>
+				</form>
+			</div>
+			
+		{% endblock %}
+	</body>
+</html>

@@ -52,8 +52,18 @@ class BuyerLoginForm(forms.ModelForm):
 		model = Buyer
 		fields = ['email', 'password']
 		widgets = {
-			'password': forms.PasswordInput(),
-			# 'class' : 'form-group'
+			'email': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'placeholder' : 'Enter Email',
+				}
+			),
+			'password': forms.PasswordInput(
+				attrs = {
+					'placeholder' : 'Enter Password',
+					'class' : 'form-control'
+				}
+			),
 		}
 
 class SellerLoginForm(forms.ModelForm):
@@ -62,5 +72,16 @@ class SellerLoginForm(forms.ModelForm):
 		model = Seller
 		fields = ['email', 'password']
 		widgets = {
-			'password': forms.PasswordInput()
+			'email': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'placeholder' : 'Enter Email',
+				}
+			),
+			'password': forms.PasswordInput(
+				attrs = {
+					'placeholder' : 'Enter Password',
+					'class' : 'form-control'
+				}
+			),
 		}

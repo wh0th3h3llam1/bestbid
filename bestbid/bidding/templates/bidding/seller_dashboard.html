@@ -33,7 +33,13 @@
 							</tr>
 						</tbody>
 					</table>
-
+					<br>
+					<div class="w-50">
+                        <form action="{% url 'upload' %}" method="GET">
+                            <input type="submit" class="btn btn-primary" value="Upload">
+                        </form>
+                    </div>
+					<br>
 					<h2>Recently Auctioned Assets</h2>
 					<!-- Card for each asset -->
 					{% for l in last_five %}

@@ -11,11 +11,13 @@
             <div class="container">
                 <main>
                     <h1>Seller Login</h1>
-                    <form action="{% url 'seller_login' %}" method="POST">
-                        {% csrf_token %}
-                        {{ form.as_p }}
-                        <input type="submit" class="btn btn-primary" value="Submit">
-                    </form>
+                    <div class="w-50">
+                        <form action="{% url 'seller_login' %}" method="POST">
+                            {% csrf_token %}
+                            {{ form.as_p }}
+                            <input type="submit" class="btn btn-primary" value="Submit">
+                        </form>
+                    </div>
                     <br>
                     <a href="{% url 'registration' %}"> New to Site ?</a>
                 </main>
