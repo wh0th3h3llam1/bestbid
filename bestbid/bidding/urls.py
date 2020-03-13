@@ -8,6 +8,8 @@ urlpatterns = [
 	
 	url(r'^adminLogin/$', views.adminLogin, name='adminLogin'),
 	url(r'^home/$', views.home, name='home'),
+	url(r'^bid/$', views.bid, name='bid'),
+	url(r'^search/$', views.search, name='search'),
 	
 	url(r'^login/$', views.login, name='login'),
 	url(r'^buyer_login/$', views.buyer_login, name='buyer_login'),
@@ -23,8 +25,6 @@ urlpatterns = [
 	url(r'^profile/$', views.profile, name='profile'),
 
 	url(r'^logout/$', views.logoutUser, name='logout'),
-
-	url(r'^search/$', views.search, name='search'),
 
 	url(r'^upload/$', views.upload, name='upload'),
 

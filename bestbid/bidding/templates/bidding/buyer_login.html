@@ -2,13 +2,13 @@
 
 <html>
 	<head>
-        {% block head %}
-        <title>Buyer Login</title>
-        {% endblock %}
+		{% block head %}
+		<title>Buyer Login</title>
+		{% endblock %}
 	</head>
 	<body>
-        {% block body %}
-            <div class="container">
+		{% block body %}
+			<div class="container">
 				<main>
 					<h1>Buyer Login</h1>
 					<div class="w-50">
@@ -22,13 +22,13 @@
 					<a href="{% url 'registration' %}"> New to Site ?</a>
 				</main>
 				{{ form.errors }}
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    	{% endfor %}
-                    </ul>
-                {% endif %}
+				{% if messages %}
+					<ul class="messages">
+						{% for message in messages %}
+						<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
 				<br><br>
 			</div>
 		{% endblock %}

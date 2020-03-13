@@ -10,7 +10,7 @@
 				<a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">Bid</a>
+				<a class="nav-link" href="{% url 'bid' %}">Bid</a>
 			</li>
 			<li class="nav-item">
 				<a class="nav-link" href="{% url 'search' %}">Search</a>
@@ -19,19 +19,29 @@
 				<a class="nav-link" href="#">About</a>
 			</li>
 		</ul>
-		<form class="form-inline my-2 my-lg-0" action="{% url 'profile' %}">
-			<button class="btn btn-success my-2 my-sm-0">My Profile</button>
-		</form>
+		<!-- For Profile Button -->
+		{% if loggedIn %}		
+			<form class="form-inline my-2 my-lg-0" action="{% url 'profile' %}">
+				<button class="btn btn-success my-2 my-sm-0">My Profile</button>
+			</form>
+		{% endif %}
+		
 		&nbsp;&nbsp;&nbsp;
-		<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
-			<button class="btn btn-success my-2 my-sm-0">
-				{% if loggedIn %}
+		
+		<!-- For Login/Logout Button -->
+		{% if loggedIn %}
+			<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
+				<button class="btn btn-success my-2 my-sm-0">
 					Logout
-				{% else %}
+				</button>
+			</form>
+		{% else %}
+			<form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
+				<button class="btn btn-success my-2 my-sm-0">
 					Login
-				{% endif %}
-			</button>
-		</form>
+				</button>
+			</form>
+		{% endif %}
 		&nbsp;&nbsp;&nbsp;
 	</div>
   </nav>

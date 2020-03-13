@@ -196,6 +196,12 @@ def profile(request):
 	return render(request, 'bidding/profile.html', context)
 
 
+# Bid
+def bid(request):
+	context = {}
+	return render(request, 'bidding/bid.html', context)
+
+
 # Search for Assets
 def search(request):
 	if request.method == 'POST':
