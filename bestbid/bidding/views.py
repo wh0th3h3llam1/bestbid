@@ -69,6 +69,7 @@ def home(request):
 		'buyers' : buyers,
 		'auctions' : auctions,
 		'auctionedAssets' : auctionedAssets,
+		'home' : 'home'
 	}
 	return render(request, 'bidding/home.html', context)
 
@@ -98,6 +99,8 @@ def buyer_login(request):
 				'loggedIn' : 'loggedIn'
 			}
 			context.update(csrf(request))
+			request.session['id'] = user.id
+			request.session['name'] = user.name
 			return render(request, 'bidding/buyer_dashboard.html', context)
 		except Buyer.DoesNotExist:
 			messages.error(request, 'Incorrect Credentials')
@@ -105,6 +108,7 @@ def buyer_login(request):
 	form = BuyerLoginForm()
 	context = {'form' : form}
 	return render(request, 'bidding/buyer_login.html', context)
+
 
 
 def seller_login(request):
@@ -122,6 +126,9 @@ def seller_login(request):
 				'auctions' : auctions,
 				'loggedIn' : 'loggedIn'
 			}
+			context.update(csrf(request))
+			request.session['id'] = user.id
+			request.session['name'] = user.name
 			return render(request, 'bidding/seller_dashboard.html', context)
 		except Seller.DoesNotExist:
 			messages.error(request, 'Incorrect Credentials')
@@ -198,7 +205,7 @@ def profile(request):
 
 # Bid
 def bid(request):
-	context = {}
+	context = { 'bid' : 'bid'}
 	return render(request, 'bidding/bid.html', context)
 
 
@@ -211,11 +218,11 @@ def search(request):
 			results = Asset.objects.filter(Q(name__icontains=query) | Q(category__icontains=query))
 			if results:
 				# If results are found
-				context = {'search_results' : results, 'query' : query}
+				context = {'search_results' : results, 'query' : query, 'search' : 'search'}
 				return render(request, 'bidding/search.html', context)
 			else:
 				# If no results are found
-				context = {'no_results' : 'no_results'}
+				context = {'no_results' : 'no_results', 'search' : 'search'}
 				return render(request, 'bidding/search.html', context)
 		else:
 			# If search query is empty
@@ -224,6 +231,7 @@ def search(request):
 		return render(request, 'bidding/search.html')
 
 
+@login_required(login_url='login')
 def upload(request):
 	form = AssetForm()
 

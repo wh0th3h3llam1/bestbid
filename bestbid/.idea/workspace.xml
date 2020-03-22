@@ -3,13 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="355380c7-7087-4a6b-b456-3513b01596aa" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bestbid/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/bestbid/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bidding/forms.py" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/forms.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bidding/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bidding/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/urls.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/profile.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bidding/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,6 +106,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="449" y="169" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1584518528398">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="449" y="169" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1536.864/1920.0.1280.720@0.0.1536.864" timestamp="1584518528398" />
     <state x="548" y="187" key="FileChooserDialogImpl" timestamp="1581149183877">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -151,9 +150,10 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="277" y="75" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1581149196687" />
-    <state x="465" y="257" key="com.intellij.ide.util.TipDialog" timestamp="1581790499125">
+    <state x="465" y="257" key="com.intellij.ide.util.TipDialog" timestamp="1584518735137">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
+    <state x="465" y="257" key="com.intellij.ide.util.TipDialog/0.0.1536.864/1920.0.1280.720@0.0.1536.864" timestamp="1584518735137" />
     <state x="465" y="257" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1581790499125" />
   </component>
 </project>
