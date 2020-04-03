@@ -48,6 +48,9 @@ class Auction(models.Model):
 	category = models.CharField(max_length=5, choices=CATEGORY)
 	date = models.DateTimeField(auto_now_add=True)
 	
+	def __str__(self):
+		return str(self.id)
+
 
 '''
 class LiveAuction(models.Model):

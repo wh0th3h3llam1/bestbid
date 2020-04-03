@@ -11,25 +11,25 @@
 	<body>
 		{% block body %}
 		<main class="container">
-
-			<h1>Login</h1>
-			
-			<div class="card border-primary mb-3" style="max-width: 20rem;">
-				<div class="card-header">Seller</div>
-				<div class="card-body">
-				  <h4 class="card-title">Login as Seller</h4>
-				  <p class="card-text"><a href="{% url 'seller_login' %}">Login as Seller</a></p>
+			<br>
+			<h1 style="text-align: center;">Login</h1>
+			<div class="row col-sm-6" style="width: 40%;">
+				<div class="card border-primary mb-3">
+					<div class="card-header">Seller</div>
+					<div class="card-body">
+					<h4 class="card-title">Login as Seller</h4>
+					<p class="card-text"><a href="{% url 'seller_login' %}">Login as Seller</a></p>
+					</div>
+				</div>
+				&nbsp;
+				<div class="card border-primary mb-3">
+					<div class="card-header">Buyer</div>
+					<div class="card-body">
+					<h4 class="card-title">Login as Buyer</h4>
+					<p class="card-text"><a href="{% url 'buyer_login' %}">Login as Buyer</a></p>
+					</div>
 				</div>
 			</div>
-			
-			<div class="card border-primary mb-3" style="max-width: 20rem;">
-				<div class="card-header">Buyer</div>
-				<div class="card-body">
-				  <h4 class="card-title">Login as Buyer</h4>
-				  <p class="card-text"><a href="{% url 'buyer_login' %}">Login as Buyer</a></p>
-				</div>
-			</div>
-			
 			<a href="{% url 'registration' %}">Register</a>
 			
 			{% for msg in messages %}

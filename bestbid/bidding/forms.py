@@ -1,4 +1,3 @@
-from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import *
 
@@ -8,7 +7,31 @@ class AssetForm(forms.ModelForm):
 	class Meta:
 		model = Asset
 		fields = '__all__'
-
+		widgets = {
+			'name': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'placeholder' : 'Enter Asset Name',
+				}
+			),
+			'baseprice': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'placeholder' : 'Enter Base Price',
+				}
+			),
+			'image': forms.FileInput(
+				attrs = {
+					'class' : 'form-control',
+				}
+			),
+			'details': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'placeholder' : 'Enter Description of the Asset',
+				}
+			),
+		}
 
 class BuyerForm(forms.ModelForm):
 

@@ -1,6 +1,7 @@
+# from django.contrib.admin.views.decorators import staff_member_required
 # from django.core.files.storage import FileSystemStorage		# for saving images
 # from django.contrib.auth.forms import UserCreationForm
-from django.contrib.admin.views.decorators import staff_member_required
+# from django.urls import reverse
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -10,7 +11,6 @@ from django.contrib import messages
 from urllib.parse import urlencode
 from django.http import HttpResponse, HttpResponseRedirect
 from django.conf import settings
-from django.urls import reverse
 from .models import *
 from .forms import *
 
@@ -27,7 +27,7 @@ def adminLogin(request):
 		admin_email = 'admin@gmail.com'
 		admin_pwd = 'adminpass'
 		if req_email == admin_email and req_password == admin_pwd:
-			# c = {}	
+			# c = {}
 			# c.update(csrf(request))
 			# return redirect('home', c)#, context)
 			# return redirect('home', c, context)
@@ -37,7 +37,7 @@ def adminLogin(request):
 			buyers = Buyer.objects.all()
 			auctions = Auction.objects.all()
 			auctionedAssets = AuctionedAsset.objects.all()
-			
+
 			context = {
 				'assets' : assets,
 				'sellers' : sellers,
@@ -49,9 +49,9 @@ def adminLogin(request):
 
 			return render(request, 'bidding/home.html', context)
 		else:
-			return render(request, 'bidding/adminLogin.html')	
+			return render(request, 'bidding/adminLogin.html')
 
-	return render(request, 'bidding/adminLogin.html')	
+	return render(request, 'bidding/adminLogin.html')
 
 # Admin - Home Page
 @login_required(login_url='adminLogin')
@@ -62,19 +62,18 @@ def home(request):
 	buyers = Buyer.objects.all()
 	auctions = Auction.objects.all()
 	auctionedAssets = AuctionedAsset.objects.all()
-	
+
 	context = {
 		'assets' : assets,
 		'sellers' : sellers,
 		'buyers' : buyers,
 		'auctions' : auctions,
 		'auctionedAssets' : auctionedAssets,
-		'home' : 'home'
 	}
 	return render(request, 'bidding/home.html', context)
 
 
-# User Login 
+# User Login
 def login(request):
 
 	buyer_form = BuyerLoginForm()
@@ -108,7 +107,6 @@ def buyer_login(request):
 	form = BuyerLoginForm()
 	context = {'form' : form}
 	return render(request, 'bidding/buyer_login.html', context)
-
 
 
 def seller_login(request):
@@ -193,12 +191,12 @@ def seller_dashboard(request):
 	return render(request, 'bidding/seller_dashboard.html', context)
 
 
-# @login_required(login_url='login')
-# def profile(request, user):
-def profile(request):
+@login_required(login_url='login')
+def profile(request, user):
+# def profile(request):
 	context = {
 		'loggedIn' : 'loggedIn',
-		# 'user' : user,
+		'user' : user,
 	}
 	return render(request, 'bidding/profile.html', context)
 
@@ -244,17 +242,24 @@ def upload(request):
 				'user' : user,
 				'last_five' : last_five,
 				'auctions' : auctions,
-				'loggedIn' : 'loggedIn'
+				'loggedIn' : 'loggedIn',
 			}
 			return render(request, 'bidding/seller_dashboard.html', context)
 	context = {'form' : form}
 	return render(request, 'bidding/upload.html', context)
 
 
+# Index
 def index(request):
 	assets = Asset.objects.all()
-
-	context = {'assets' : assets}
+	last_five = AuctionedAsset.objects.all().order_by('id')[:5]
+	auctions = Auction.objects.all()
+	context = {
+		'last_five' : last_five,
+		'auctions' : auctions,
+		'assets' : assets,
+		'home' : 'home',
+	}
 	return render(request, 'bidding/index.html', context)
 
 

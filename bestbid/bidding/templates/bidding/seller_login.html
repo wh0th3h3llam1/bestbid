@@ -2,35 +2,37 @@
 
 <html>
 	<head>
-        {% block head %}
-        <title>Seller Login</title>
-        {% endblock %}
+		{% block head %}
+		<title>Seller Login</title>
+		{% endblock %}
 	</head>
 	<body>
-        {% block body %}
-            <div class="container">
-                <main>
-                    <h1>Seller Login</h1>
-                    <div class="w-50">
-                        <form action="{% url 'seller_login' %}" method="POST">
-                            {% csrf_token %}
-                            {{ form.as_p }}
-                            <input type="submit" class="btn btn-primary" value="Submit">
-                        </form>
-                    </div>
-                    <br>
-                    <a href="{% url 'registration' %}"> New to Site ?</a>
-                </main>
-                {{ form.errors }}
-                {% if messages %}
-                    <ul class="messages">
-                        {% for message in messages %}
-                        <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                    	{% endfor %}
-                    </ul>
-                {% endif %}
-                <br><br>
-            </div>    
+		{% block body %}
+			<div class="container">
+				<main>
+					<br>
+					<h1 style="text-align: center;">Seller Login</h1>
+					<br>
+					<div class="w-50">
+						<form action="{% url 'seller_login' %}" method="POST">
+							{% csrf_token %}
+							{{ form.as_p }}
+							<input type="submit" class="btn btn-primary" value="Submit">
+						</form>
+					</div>
+					<br>
+					<a href="{% url 'registration' %}"> New to Site ?</a>
+				</main>
+				{{ form.errors }}
+				{% if messages %}
+					<ul class="messages">
+						{% for message in messages %}
+						<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+				<br><br>
+			</div>
 		{% endblock %}
 	</body>
 </html>

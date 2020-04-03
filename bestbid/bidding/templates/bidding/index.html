@@ -15,28 +15,50 @@
 		<main>
 			{% block body %}
 				<div class="container-fluid">
-					<div class="jumbotron">
-						<h1 class="display-3">Hello, world!</h1>
-						<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
-						<hr class="my-4">
-						<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
-						<p class="lead">
-						  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
-						</p>
-					  </div>
-				</div>
-
-				<div>
-					<ul>
-						{% if assets %}	
-						Assets : 
-							{% for a in assets %}
-								<li>{{ a }}</li>
-							{% endfor %}
-						{% else %}
-							No Assets Found
-						{% endif %}
-					</ul>
+					<br>
+					<h2 style="text-align: center;">Recently Auctioned Assets</h2>
+						
+					<!-- Card for each asset -->
+					{% for l in last_five %}
+						<div class="col-sm-6">
+							<div class="card" style="width:400px">
+								<h3 class="card-header">{{ l.asset }}</h3>
+								<div class="card-body">
+									<h5 class="card-title">{{ l.category }}</h5>
+								</div>
+								<img style="height: 150px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
+								<div class="card-body">
+									<p class="card-text">Sold at : ${{ l.price }}</p>
+								</div>
+								<ul class="list-group list-group-flush">
+									<li class="list-group-item">Seller : {{ l.seller.name }}</li>
+									<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
+								</ul>
+								<div class="card-footer text-muted">
+									Sold on : {{ l.auction_id.date }}
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+					<br><br>
+					
+					<!-- Upcoming Auctions -->
+					<h2>Upcoming Auctions</h2>
+					<br>
+					{% for upcoming in auctions %}
+						<div class="card" style="width:400px">
+							<h3 class="card-header">{{ upcoming.asset }}</h3>
+							<div class="card-body">
+								<h5 class="card-title">{{ upcoming.category }}</h5>
+							</div>
+							<div class="card-body">
+								<p class="card-text">Sold at : ${{ upcoming.price }}</p>
+							</div>
+							<div class="card-footer text-muted">
+								Sold on : {{ upcoming.date }}
+							</div>
+						</div>
+					{% endfor %}
 				</div>
 			{% endblock %}
 		</main>

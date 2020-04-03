@@ -36,32 +36,12 @@
 					<br>
 					<div class="w-50">
                         <form action="{% url 'upload' %}" method="GET">
-                            <input type="submit" class="btn btn-primary" value="Upload">
+							<input type="hidden" value="user">
+							<input type="submit" class="btn btn-primary" value="Upload Item">
                         </form>
                     </div>
-					<br>
-					<h2>Recently Auctioned Assets</h2>
-					<!-- Card for each asset -->
-					{% for l in last_five %}
-						<div class="card" style="width:400px">
-							<h3 class="card-header">{{ l.asset }}</h3>
-							<div class="card-body">
-								<h5 class="card-title">{{ l.category }}</h5>
-							</div>
-							<img style="height: 100px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
-							<div class="card-body">
-								<p class="card-text">Sold at : ${{ l.price }}</p>
-							</div>
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item">Seller : {{ l.seller.name }}</li>
-								<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
-							</ul>
-							<div class="card-footer text-muted">
-								Sold on : {{ l.auction_id.date }}
-							</div>
-						</div>
-					{% endfor %}
 					<br><br>
+
 					<!-- Upcoming Auctions -->
 					<h2>Upcoming Auctions</h2>
 					<br>

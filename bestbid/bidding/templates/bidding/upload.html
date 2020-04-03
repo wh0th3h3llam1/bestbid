@@ -14,7 +14,9 @@
 		{% block body %}
 			<div class="container">
 				<main>
-					<h1>Upload an Asset</h1>
+					<br>
+					<h1 style="text-align: center;">Upload an Asset</h1>
+					<br>
 					<div class="w-50">
                         <form action="{% url 'upload' %}" method="POST">
 							{% csrf_token %}
@@ -61,7 +63,7 @@
 							</div>
 						</div>
 						<div class="form-group">
-							<label for="exampleTextarea">Example textarea</label>
+							<label for="exampleTextarea">Description</label>
 							<textarea class="form-control" id="exampleTextarea" rows="3"></textarea>
 						</div>
 						<div class="form-group">
