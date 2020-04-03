@@ -39,7 +39,7 @@ INSTALLED_APPS = [
 	'django.contrib.staticfiles',
 	'bidding',
 	'bootstrap4',
-	'channels',
+	# 'channels',
 	'django_filters',
 
 ]
@@ -73,8 +73,17 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'bestbid.wsgi.application'
-ASGI_APPLICATION = 'bestbid.routing.application'
 
+# ASGI Support
+ASGI_APPLICATION = 'bestbid.routing.application'
+CHANNEL_LAYERS = {
+	'default': {
+		'BACKEND': 'channels_redis.core.RedisChannelLayer',
+		'CONFIG': {
+			"hosts": [('127.0.0.1', 6379)],
+		},
+	},
+}
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases

@@ -20,12 +20,9 @@
 						
 					<!-- Card for each asset -->
 					{% for l in last_five %}
-						{% if forloop.counter0|divisibleby:2 %}
-							<div class="row">
-						{% endif %}
 						<div class="col-sm-6">
 							<div class="card" style="width:400px">
-								<h3 class="card-header"><a href="{% url 'asset' l.asset.id %}">{{ l.asset }}</a></h3>
+								<h3 class="card-header">{{ l.asset }}</h3>
 								<div class="card-body">
 									<h5 class="card-title">{{ l.category }}</h5>
 								</div>
@@ -38,15 +35,10 @@
 									<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
 								</ul>
 								<div class="card-footer text-muted">
-									Sold On : {{ l.auction_id.date }}
+									Sold on : {{ l.auction_id.date }}
 								</div>
 							</div>
 						</div>
-						{% if forloop.counter0|divisibleby:2 %}
-							</div>
-						{% endif %}
-						
-						<br>
 					{% endfor %}
 					<br><br>
 					
@@ -67,13 +59,6 @@
 							</div>
 						</div>
 					{% endfor %}
-
-					{% for i in test %}
-						<div>{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}
-						{{i}} 
-						</div>
-					{% endfor %}
-
 				</div>
 			{% endblock %}
 		</main>

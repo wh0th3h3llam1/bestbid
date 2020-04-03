@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>{{ asset.name }} | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+
+		<main>
+			{% block body %}
+				<div class="container">
+					<br>
+					<h2 style="text-align: center;">{{ asset.name }}</h2>
+					
+					<!-- Card for each asset -->
+					<div class="col-sm-6">
+						<div class="card" style="width:700px">
+							<h3 class="card-header"><a href="#">{{ asset.name }}</a></h3>
+							<div class="card-body">
+								<h5 class="card-title">{{ asset.category }}</h5>
+							</div>
+							<img style="height: 400px; width: 100%; display: block;" src="{{ asset.image.url }}" alt="Asset Image">
+							<!-- 
+							<div class="card-body">
+								<p class="card-text">Sold at : ${{ asset.price }}</p>
+							</div>
+							-->
+							<ul class="list-group list-group-flush">
+								<li class="list-group-item">Seller : {{ asset.seller.name }}</li>
+							</ul>
+
+							<!-- 
+							<div class="card-footer text-muted">
+								Sold On : {{ asset.auction_id.date }}
+							</div>
+							 -->
+						</div>
+					</div>
+				</div>
+			{% endblock %}
+		</main>
+	</body>
+</html>

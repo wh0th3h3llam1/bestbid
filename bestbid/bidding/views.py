@@ -5,7 +5,7 @@
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
 from django.contrib import messages
 from urllib.parse import urlencode
@@ -173,7 +173,7 @@ def seller_reg(request):
 			# return redirect('login')
 			return render(request, 'bidding/login.html')
 
-			
+
 	context = {'form' : form}
 	return render(request, 'bidding/seller_reg.html', context)
 
@@ -261,6 +261,18 @@ def index(request):
 		'home' : 'home',
 	}
 	return render(request, 'bidding/index.html', context)
+
+
+# Asset Page
+def asset(request, id):
+	try:
+		asset = get_object_or_404(Asset, id=id)
+	except:
+		return HttpResponse('Page Not Found')
+	context = {
+		'asset' : asset,
+	}
+	return render(request, 'bidding/asset.html', context)
 
 
 # Logout
