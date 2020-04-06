@@ -1,3 +1,4 @@
+from django.urls import reverse
 from django.db import models
 
 # Create your models here.
@@ -12,6 +13,10 @@ class Buyer(models.Model):
 	def __str__(self):
 		return self.name
 
+	def get_abs_url(self):
+		return reverse("buyer", kwargs={"id" : self.id})
+		# return f"/buyer/{self.id}"
+
 
 class Seller(models.Model):
 	name = models.CharField(max_length=50, blank=False)
@@ -21,6 +26,10 @@ class Seller(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	def get_abs_url(self):
+		return reverse("seller", kwargs={"id" : self.id})
+		# return f"/seller/{self.id}"
 
 
 class Asset(models.Model):
@@ -38,6 +47,10 @@ class Asset(models.Model):
 
 	def __str__(self):
 		return self.name
+
+	def get_abs_url(self):
+		return reverse("asset", kwargs={"id" : self.id})
+		# return f"/asset/{self.id}"
 
 
 class Auction(models.Model):

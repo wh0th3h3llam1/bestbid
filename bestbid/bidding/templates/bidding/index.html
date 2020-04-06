@@ -25,7 +25,7 @@
 						{% endif %}
 						<div class="col-sm-6">
 							<div class="card" style="width:400px">
-								<h3 class="card-header"><a href="{% url 'asset' l.asset.id %}">{{ l.asset }}</a></h3>
+								<h3 class="card-header"><a href="{{ l.asset.get_abs_url}}">{{ l.asset }}</a></h3>
 								<div class="card-body">
 									<h5 class="card-title">{{ l.category }}</h5>
 								</div>

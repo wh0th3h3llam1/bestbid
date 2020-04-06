@@ -11,13 +11,12 @@
 	</head>
 
 	<body>
-
 		<main>
 			{% block body %}
 				<div class="container">
 					<br>
 					<h2 style="text-align: center;">{{ asset.name }}</h2>
-					
+					<br>
 					<!-- Card for each asset -->
 					<div class="col-sm-6">
 						<div class="card" style="width:700px">
@@ -26,20 +25,19 @@
 								<h5 class="card-title">{{ asset.category }}</h5>
 							</div>
 							<img style="height: 400px; width: 100%; display: block;" src="{{ asset.image.url }}" alt="Asset Image">
-							<!-- 
+							
 							<div class="card-body">
-								<p class="card-text">Sold at : ${{ asset.price }}</p>
+								<p class="card-text">{{ asset.details }}</p>
 							</div>
-							-->
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item">Seller : {{ asset.seller.name }}</li>
-							</ul>
+							<!-- <ul class="list-group list-group-flush">
+								<li class="list-group-item">Sold at : ${{ asset.price }}</li>
+							</ul> -->
 
-							<!-- 
+							
 							<div class="card-footer text-muted">
-								Sold On : {{ asset.auction_id.date }}
+								Seller : {{ asset.seller.name }}
 							</div>
-							 -->
+							
 						</div>
 					</div>
 				</div>

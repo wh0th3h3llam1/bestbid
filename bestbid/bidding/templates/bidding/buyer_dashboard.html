@@ -14,7 +14,9 @@
 		{% block body %}
 			<div class="container">
 				<main>
-					<center><h1>Buyer Dashboard</h1></center>
+					<br>
+					<h1 style="text-align: center;">Buyer Dashboard</h1>
+					<br>
 					<table class="table table-hover w-50">
 						<thead>
 							<tr>
@@ -33,8 +35,10 @@
 							</tr>
 						</tbody>
 					</table>
+					<br>
+					<h2 style="text-align: center;">Recently Auctioned Assets</h2>
+					<br>
 
-					<h2>Recently Auctioned Assets</h2>
 					<!-- Card for each asset -->
 					{% for l in last_five %}
 						<div class="card" style="width:400px">
@@ -42,7 +46,7 @@
 							<div class="card-body">
 								<h5 class="card-title">{{ l.category }}</h5>
 							</div>
-							<img style="height: 100px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
+							<img style="height: 150px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
 							<div class="card-body">
 								<p class="card-text">Sold at : ${{ l.price }}</p>
 							</div>
@@ -54,14 +58,16 @@
 								Sold on : {{ l.auction_id.date }}
 							</div>
 						</div>
+						<br>
 					{% endfor %}
+					
 					<br><br>
 					<!-- Upcoming Auctions -->
 					<h2>Upcoming Auctions</h2>
 					<br>
 					{% for upcoming in auctions %}
 						<div class="card" style="width:400px">
-							<h3 class="card-header">{{ upcoming.asset }}</h3>
+							<!-- <h3 class="card-header">{{ upcoming.asset }}</h3> -->
 							<div class="card-body">
 								<h5 class="card-title">{{ upcoming.category }}</h5>
 							</div>
@@ -72,6 +78,7 @@
 								Sold on : {{ upcoming.date }}
 							</div>
 						</div>
+						<br>
 					{% endfor %}
 				</main>
 			</div>

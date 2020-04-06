@@ -38,19 +38,24 @@
 					<a class="nav-link" href="#">About</a>
 				</li>
 		</ul>
+		
 		<!-- For Profile Button -->
-		{% if loggedIn %}
-			<input type="hidden" name="user_id" value="{{ request.session.id }}">		
-			<input type="hidden" name="user_name" value="{{ request.session.name }}">		
-			<form class="form-inline my-2 my-lg-0" action="{% url 'profile' %}">
+		{% if request.session.id %}
+				{% comment %}
+					<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}">
+					{% url 'profile' request.session.get_abs_url %}
+					{% endcomment %}
+
+			<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}" method="POST">
+				{% csrf_token %}
+				<input type="hidden" name="user_id" value="{{ request.session.id }}">		
+				<input type="hidden" name="user_type" value="{{ request.session.user_type }}">		
 				<button class="btn btn-success my-2 my-sm-0">{{ request.session.name }}</button>
 			</form>
 		{% endif %}
-		
 		&nbsp;&nbsp;&nbsp;
-		
 		<!-- For Login/Logout Button -->
-		{% if loggedIn %}
+		{% if request.session.id %}
 			<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
 				<button class="btn btn-success my-2 my-sm-0">
 					Logout

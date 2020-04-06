@@ -2,9 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="355380c7-7087-4a6b-b456-3513b01596aa" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/asset.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/asset.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/footer.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/footer.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/login.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/login.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/navbar.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/navbar.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/profile.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/profile.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/search.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/search.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/seller_dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/seller_dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/templates/bidding/upload.html" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/templates/bidding/upload.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bidding/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bidding/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/bidding/views.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -30,6 +37,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="settings.editor.selected.configurable" value="reference.settings.ide.settings.spelling" />
   </component>
@@ -106,6 +114,10 @@
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
   <component name="WindowStateProjectService">
+    <state x="361" y="90" key="#Inspections" timestamp="1586098724105">
+      <screen x="0" y="0" width="1536" height="864" />
+    </state>
+    <state x="361" y="90" key="#Inspections/0.0.1536.864/1920.0.1360.768@0.0.1536.864" timestamp="1586098724105" />
     <state x="449" y="169" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1584518528398">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
@@ -150,10 +162,11 @@
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="277" y="75" key="SettingsEditor/0.0.1536.864@0.0.1536.864" timestamp="1581149196687" />
-    <state x="465" y="257" key="com.intellij.ide.util.TipDialog" timestamp="1584518735137">
+    <state x="465" y="257" key="com.intellij.ide.util.TipDialog" timestamp="1586098335840">
       <screen x="0" y="0" width="1536" height="864" />
     </state>
     <state x="465" y="257" key="com.intellij.ide.util.TipDialog/0.0.1536.864/1920.0.1280.720@0.0.1536.864" timestamp="1584518735137" />
+    <state x="465" y="257" key="com.intellij.ide.util.TipDialog/0.0.1536.864/1920.0.1360.768@0.0.1536.864" timestamp="1586098335840" />
     <state x="465" y="257" key="com.intellij.ide.util.TipDialog/0.0.1536.864@0.0.1536.864" timestamp="1581790499125" />
   </component>
 </project>

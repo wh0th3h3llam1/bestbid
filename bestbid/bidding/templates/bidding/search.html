@@ -36,22 +36,25 @@
 					<br>
 					{% if search_results %}
 						{% for item in search_results %}
-							<div class="card" style="width:400px">
-								<h3 class="card-header"><a href="{% url 'asset' item.id %}">{{ item.name }}</a></h3>
-								<div class="card-body">
-									<h5 class="card-title">{{ item.category }}</h5>
-								</div>
-								<img style="height: 150px; width: 100%; display: block;" src='{{ item.image.url }}' alt="Asset Image">
-								<div class="card-body">
-									<p class="card-text">Baseprice : ${{ item.baseprice }}</p>
-								</div>
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item">Seller : {{ item.seller.name }}</li>
-								</ul>
-								<div class="card-footer text-muted">
-									Sold on : {{ l.auction_id.date }}
+							<div class="col-md-6" style="width: 400px;">	
+								<div class="card">
+									<h3 class="card-header"><a href="{{ item.get_abs_url }}">{{ item.name }}</a></h3>
+									<div class="card-body">
+										<h5 class="card-title">{{ item.category }}</h5>
+									</div>
+									<img style="height: 150px; width: 100%; display: block;" src='{{ item.image.url }}' alt="Asset Image">
+									<div class="card-body">
+										<p class="card-text">Baseprice : ${{ item.baseprice }}</p>
+									</div>
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item">Seller : {{ item.seller.name }}</li>
+									</ul>
+									<div class="card-footer text-muted">
+										Sold on : {{ l.auction_id.date }}
+									</div>
 								</div>
 							</div>
+							<br>
 						{% endfor %}
 					{% endif %}
 
