@@ -15,7 +15,7 @@
 			<div class="container w-50">
 				<main>
 					<br>
-					<h1 style="text-align: center;">Profile</h1>
+					<h1 style="text-align: center;">Edit Profile</h1>
 					<br>
 					
 					<div class="form-group row">
@@ -36,10 +36,6 @@
 							<input type="text" readonly="" class="form-control-plaintext" id="staticEmail" value="{{ user.password }}">
 						</div>
 					</div>
-					{% comment %}
-					<a href="{% url 'profile' request.session.user_type request.session.id edit %}">Edit</a>
-						<a href="{% url '' %}">DashBoard</a>
-					{% endcomment %}
 					<br><br><br>
 					<div class="card mb-3">
 						<h3 class="card-header">{{ user.name|title }}</h3>

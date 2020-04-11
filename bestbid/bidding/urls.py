@@ -29,6 +29,7 @@ urlpatterns = [
 
 	url(r'^index/$', views.index, name='index'),
 
+	# path('profile/<str:user_type>/<int:user_id>/edit', views.profile, name='profile'),
 	path('profile/<str:user_type>/<int:user_id>/', views.profile, name='profile'),
 	url(r'^profile/$', views.profile, name='profile'),
 
@@ -41,23 +42,25 @@ if settings.DEBUG:
 
 
 '''
-	# Using URL
-	# 	url(r'^profile/$', views.profile, name='profile'),
+	NOTES : 
+	
+		# Using URL
+		# 	url(r'^profile/$', views.profile, name='profile'),
 
-	# Using PATH
+		# Using PATH
 
-	# 	path('profile/<int:user_id>[0-9]+/', views.profile, name='profile'),
-	# 	path('profile/<int:user_id>[0-9]+/edit/', views.profile, name='profile'),
+		# 	path('profile/<int:user_id>[0-9]+/', views.profile, name='profile'),
+		# 	path('profile/<int:user_id>[0-9]+/edit/', views.profile, name='profile'),
 
-	# 	path('profile/buyer/<int:user_id>[0-9]+/', views.profile, name='buyer-profile'),
-	# 	path('profile/seller/<int:user_id>[0-9]+/', views.profile, name='seller-profile'),
+		# 	path('profile/buyer/<int:user_id>[0-9]+/', views.profile, name='buyer-profile'),
+		# 	path('profile/seller/<int:user_id>[0-9]+/', views.profile, name='seller-profile'),
 
-	# 	path('profile/buyer/<int:user_id>[0-9]+/edit/', views.profile, name='edit-buyer-profile'),
-	# 	path('profile/seller/<int:user_id>[0-9]+/edit/', views.profile, name='edit-seller-profile'),
+		# 	path('profile/buyer/<int:user_id>[0-9]+/edit/', views.profile, name='edit-buyer-profile'),
+		# 	path('profile/seller/<int:user_id>[0-9]+/edit/', views.profile, name='edit-seller-profile'),
 
-	# 	# Generic User Type
-	# 	path('profile/<str:user_type>/<int:user_id>/edit/', views.profile, name='profile'),
-	# 	path('profile/<str:user_type>/<int:user_id>/', views.profile, name='profile'),
+		# 	# Generic User Type
+		# 	path('profile/<str:user_type>/<int:user_id>/edit/', views.profile, name='profile'),
+		# 	path('profile/<str:user_type>/<int:user_id>/', views.profile, name='profile'),
 
 '''
 

@@ -20,7 +20,6 @@
 					<table class="table table-hover w-50">
 						<thead>
 							<tr>
-								<th scope="col">Seller ID</th>
 								<th scope="col">Name</th>
 								<th scope="col">Email</th>
 								<th scope="col">Contact</th>
@@ -28,7 +27,6 @@
 						</thead>
 						<tbody>
 							<tr>
-								<th scope="row">{{ user.id }}</th>
 								<td>{{ user.name|title }}</td>
 								<td>{{ user.email }}</td>
 								<td>{{ user.contact }}</td>
@@ -37,27 +35,23 @@
 					</table>
 					<br>
 					<div class="w-50">
-                        <form action="{% url 'upload' %}" method="GET">
-							<input type="hidden" value="user">
-							<input type="submit" class="btn btn-primary" value="Upload Item">
-                        </form>
-                    </div>
+						<form action="{% url 'upload' %}" method="GET">
+							<input type="hidden" name="user_id" value="{{ user.id }}">
+							<input type="submit" class="btn btn-primary" value="Upload Asset">
+						</form>
+					</div>
 					<br><br>
 
 					<!-- Upcoming Auctions -->
-					<h2>Upcoming Auctions</h2>
+					<h2 style="text-align: center;">Upcoming Auctions</h2>
 					<br>
 					{% for upcoming in auctions %}
 						<div class="card" style="width:400px">
-							<!-- <h3 class="card-header">{{ upcoming.asset }}</h3> -->
 							<div class="card-body">
 								<h5 class="card-title">{{ upcoming.category }}</h5>
 							</div>
 							<div class="card-body">
-								<p class="card-text">Sold at : ${{ upcoming.price }}</p>
-							</div>
-							<div class="card-footer text-muted">
-								Sold on : {{ upcoming.date }}
+								<p class="card-text">BasePrice  : ${{ upcoming.price }}</p>
 							</div>
 						</div>
 						<br>

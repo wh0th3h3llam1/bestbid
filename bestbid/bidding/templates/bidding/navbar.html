@@ -1,59 +1,36 @@
-<nav class="navbar navbar-expand-xl navbar-dark bg-primary">
+<nav class="navbar navbar-expand-sm navbar-dark bg-primary" style="font-size:large !important;">
 	<a class="navbar-brand" href="#">BestBid<small>.com</small></a>
+	
 	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
-	  <span class="navbar-toggler-icon"></span>
+		<span class="navbar-toggler-icon"></span>
 	</button>
-  
+
 	<div class="collapse navbar-collapse" id="navbarColor01">
 		<ul class="navbar-nav mr-auto">
-			{% if home %}
-				<li class="nav-item">
-					<a class="nav-link active" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
-				</li>
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'index' %}">Home <span class="sr-only">(current)</span></a>
-				</li>
-			{% endif %}
-			{% if bid %}
-				<li class="nav-item">
-					<a class="nav-link active" href="{% url 'bid' %}">Bid</a>
-				</li>
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'bid' %}">Bid</a>
-				</li>
-			{% endif %}
-			{% if search %}
-				<li class="nav-item">
-					<a class="nav-link active" href="{% url 'search' %}">Search</a>
-				</li>
-			{% else %}
-				<li class="nav-item">
-					<a class="nav-link" href="{% url 'search' %}">Search</a>
-				</li>
-			{% endif %}
-
-				<li class="nav-item">
-					<a class="nav-link" href="#">About</a>
-				</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'index' %}">Home</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'bid' %}">Bid</a>
+			<li class="nav-item">
+				<a class="nav-link" href="{% url 'search' %}">Search</a>
+			</li>
+			<li class="nav-item">
+				<a class="nav-link" href="#">About</a>
+			</li>
 		</ul>
-		
+
 		<!-- For Profile Button -->
 		{% if request.session.id %}
-				{% comment %}
-					<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}">
-					{% url 'profile' request.session.get_abs_url %}
-					{% endcomment %}
-
 			<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}" method="POST">
 				{% csrf_token %}
 				<input type="hidden" name="user_id" value="{{ request.session.id }}">		
 				<input type="hidden" name="user_type" value="{{ request.session.user_type }}">		
-				<button class="btn btn-success my-2 my-sm-0">{{ request.session.name }}</button>
+				<button class="btn btn-success my-2 my-sm-0">{{ request.session.name|title }}</button>
 			</form>
 		{% endif %}
 		&nbsp;&nbsp;&nbsp;
+
 		<!-- For Login/Logout Button -->
 		{% if request.session.id %}
 			<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
@@ -68,35 +45,5 @@
 				</button>
 			</form>
 		{% endif %}
-		&nbsp;&nbsp;&nbsp;
-		
-		{% comment %}
-
-		<!-- Button + Dropdown -->
-		<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-			{% if loggedIn %}
-				<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
-					<button type="button" class="btn btn-success">
-						Logout
-					</button>
-				</form>
-			{% else %}
-				<form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
-					<button type="button" class="btn btn-success">
-						Login
-					</button>
-				</form>
-			{% endif %}
-			
-			<div class="btn-group" role="group">
-				<button id="btnGroupDrop2" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-				<div class="dropdown-menu" aria-labelledby="btnGroupDrop2" style="">
-					<a class="dropdown-item" href="#">Link 1</a>
-					<a class="dropdown-item" href="#">Link 2</a>
-				</div>
-			</div>
-		</div>
-		{% endcomment %}
-		
 	</div>
-  </nav>
+</nav>

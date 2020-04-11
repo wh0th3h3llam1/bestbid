@@ -1,7 +1,6 @@
 # from django.contrib.admin.views.decorators import staff_member_required
 # from django.core.files.storage import FileSystemStorage		# for saving images
 # from django.contrib.auth.forms import UserCreationForm
-# from django.urls import reverse
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -30,7 +29,6 @@ def adminLogin(request):
 		if req_email == admin_email and req_password == admin_pwd:
 			# c = {}
 			# c.update(csrf(request))
-			# return redirect('home', c)#, context)
 			# return redirect('home', c, context)
 
 			assets = Asset.objects.all()
@@ -189,8 +187,9 @@ def buyer_dashboard(request):
 	return render(request, 'bidding/buyer_dashboard.html', context)
 
 
-@login_required(login_url='seller_login')
+# @login_required(login_url='seller_login')
 def seller_dashboard(request):
+	print("IN Seller Dashboard")
 	context = {}
 	return render(request, 'bidding/seller_dashboard.html', context)
 
@@ -241,23 +240,23 @@ def search(request):
 		return render(request, 'bidding/search.html')
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def upload(request):
-	form = AssetForm()
-
 	if request.method == 'POST':
 		form = AssetForm(request.POST)
-		if	form.is_valid():
-			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
-			auctions = Auction.objects.all()
+		if	form.is_valid():	
+			user_id = request.POST.get('user_id')
+			user = get_object_or_404(Seller, id=user_id)
 			context = {
-				# 'user' : user,
-				'last_five' : last_five,
-				'auctions' : auctions,
+				'user' : user,
 				'loggedIn' : 'loggedIn',
 			}
 			return render(request, 'bidding/seller_dashboard.html', context)
-	context = {'form' : form}
+			
+	form = AssetForm()
+	user_id = request.GET.get('user_id')
+	user = get_object_or_404(Seller, id=user_id)
+	context = {'form' : form, 'user' : user}
 	return render(request, 'bidding/upload.html', context)
 
 
