@@ -36,24 +36,31 @@
 							<input type="text" readonly="" class="form-control-plaintext" id="staticEmail" value="{{ user.password }}">
 						</div>
 					</div>
+
+					<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id 'edit' %}" method="POST">
+						{% csrf_token %}
+						<input type="hidden" name="user_id" value="{{ request.session.id }}">
+						<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+						<button class="btn btn-success my-2 my-sm-0">Edit Profile</button>
+					</form>
+					
 					{% comment %}
-					<a href="{% url 'profile' request.session.user_type request.session.id edit %}">Edit</a>
 						<a href="{% url '' %}">DashBoard</a>
 					{% endcomment %}
 					<br><br><br>
 					<div class="card mb-3">
 						<h3 class="card-header">{{ user.name|title }}</h3>
 						<div class="card-body">
-						  <h5 class="card-title">Special title treatment</h5>
-						  <h6 class="card-subtitle text-muted">Support card subtitle</h6>
+							<h5 class="card-title">Special title treatment</h5>
+							<h6 class="card-subtitle text-muted">Support card subtitle</h6>
 						</div>
 						<div class="card-body">
-						  <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+							<p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 						</div>
 						<ul class="list-group list-group-flush">
-						  <li class="list-group-item">Cras justo odio</li>
-						  <li class="list-group-item">Dapibus ac facilisis in</li>
-						  <li class="list-group-item">Vestibulum at eros</li>
+							<li class="list-group-item">Cras justo odio</li>
+							<li class="list-group-item">Dapibus ac facilisis in</li>
+							<li class="list-group-item">Vestibulum at eros</li>
 						</ul>
 						{% comment %}
 						{% url 'profile' user_type %}

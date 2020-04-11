@@ -83,12 +83,56 @@ def login(request):
 
 
 def buyer_login(request):
+	if request.method == 'POST':
+		form = BuyerLoginForm(request.POST)
+		req_email = request.POST.get('email')
+		req_password = request.POST.get('password')
+		try:
+			user = Buyer.objects.get(Q(email=req_email) & Q(password=req_password))
+			last_five = AuctionedAsset.objects.all().order_by('id')[:5]
+			auctions = Auction.objects.all()
+			context = {
+				'user' : user,
+				'last_five' : last_five,
+				'auctions' : auctions,
+				'loggedIn' : 'loggedIn',
+				'user_type' : 'buyer',
+			}
+			context.update(csrf(request))
+			request.session['id'] = user.id
+			request.session['name'] = user.name
+			request.session['user_type'] = 'buyer'
+			return render(request, 'bidding/buyer_dashboard.html', context)
+		except Buyer.DoesNotExist:
+			messages.error(request, 'Incorrect Credentials')
+
 	form = BuyerLoginForm()
 	context = {'form' : form}
 	return render(request, 'bidding/buyer_login.html', context)
 
 
 def seller_login(request):
+	if request.method == 'POST':
+		form = SellerLoginForm(request.POST)
+		req_email = request.POST.get('email')
+		req_password = request.POST.get('password')
+		try:
+			user = Seller.objects.get(Q(email=req_email) & Q(password=req_password))
+			auctions = Auction.objects.all()
+			context = {
+				'user' : user,
+				'auctions' : auctions,
+				'loggedIn' : 'loggedIn',
+				'user_type' : 'seller',
+			}
+			context.update(csrf(request))
+			request.session['id'] = user.id
+			request.session['name'] = user.name
+			request.session['user_type'] = 'seller'
+			return render(request, 'bidding/seller_dashboard.html', context)
+		except Seller.DoesNotExist:
+			messages.error(request, 'Incorrect Credentials')
+
 	form = SellerLoginForm()
 	context = {'form' : form}
 	return render(request, 'bidding/seller_login.html', context)
@@ -137,88 +181,16 @@ def seller_reg(request):
 
 
 # Dashboard
+# @login_required(login_url='buyer_login')
 def buyer_dashboard(request):
-	if request.method == 'POST':
-		form = BuyerLoginForm(request.POST)
-		req_email = request.POST.get('email')
-		req_password = request.POST.get('password')
-		try:
-			user = Buyer.objects.get(Q(email=req_email) & Q(password=req_password))
-			auctions = Auction.objects.all()
-			context = {
-				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
-				'user_type' : 'buyer',
-			}
-			context.update(csrf(request))
-			request.session['id'] = user.id
-			request.session['name'] = user.name
-			request.session['user_type'] = 'buyer'
-			return render(request, 'bidding/buyer_dashboard.html', context)
-		except Buyer.DoesNotExist:
-			messages.error(request, 'Incorrect Credentials')
-			return render(request, 'bidding/login.html')
-
-	elif request.session.get('id'):
-			user_id = request.session.get('id')
-			user = Buyer.objects.get(id=user_id)
-			auctions = Auction.objects.all()
-			context = {
-				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
-				'user_type' : 'buyer',
-			}
-			context.update(csrf(request))
-			request.session['id'] = user.id
-			request.session['name'] = user.name
-			request.session['user_type'] = 'buyer'
-			return render(request, 'bidding/buyer_dashboard.html', context)
-	else:
-		return render(request, 'bidding/login.html')
+	context = {}
+	return render(request, 'bidding/buyer_dashboard.html', context)
 
 
+# @login_required(login_url='seller_login')
 def seller_dashboard(request):
-	if request.method == 'POST':
-		form = SellerLoginForm(request.POST)
-		req_email = request.POST.get('email')
-		req_password = request.POST.get('password')
-		try:
-			user = Seller.objects.get(Q(email=req_email) & Q(password=req_password))
-			auctions = Auction.objects.all()
-			context = {
-				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
-				'user_type' : 'seller',
-			}
-			context.update(csrf(request))
-			request.session['id'] = user.id
-			request.session['name'] = user.name
-			request.session['user_type'] = 'seller'
-			return render(request, 'bidding/seller_dashboard.html', context)
-		except Seller.DoesNotExist:
-			messages.error(request, 'Incorrect Credentials')
-			return render(request, 'bidding/login.html')
-
-	elif request.session.get('id'):
-			user_id = request.session.get('id')
-			user = Seller.objects.get(id=user_id)
-			auctions = Auction.objects.all()
-			context = {
-				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
-				'user_type' : 'seller',
-			}
-			context.update(csrf(request))
-			request.session['id'] = user.id
-			request.session['name'] = user.name
-			request.session['user_type'] = 'seller'
-			return render(request, 'bidding/seller_dashboard.html', context)
-	else:
-		return render(request, 'bidding/login.html')
+	context = {}
+	return render(request, 'bidding/seller_dashboard.html', context)
 
 
 # @login_required(login_url='login')

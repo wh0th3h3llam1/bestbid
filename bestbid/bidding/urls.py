@@ -29,12 +29,11 @@ urlpatterns = [
 
 	url(r'^index/$', views.index, name='index'),
 
-	# path('profile/<str:user_type>/<int:user_id>/edit', views.profile, name='profile'),
 	path('profile/<str:user_type>/<int:user_id>/', views.profile, name='profile'),
+	path('profile/<str:user_type>/<int:user_id>/<edit>/', views.profile, name='profile'),
 	url(r'^profile/$', views.profile, name='profile'),
 
 	path('asset/<int:id>/', views.asset, name='asset'),
-	# url(r'^asset/(?P<id>)\d+/$', views.asset, name='asset'),
 ]
 
 if settings.DEBUG:
@@ -103,7 +102,6 @@ if settings.DEBUG:
 
 	# re_path('profile/buyer/<int:user_id>[0-9]+/edit/', views.profile, name='edit-buyer-profile'),
 	# re_path('profile/seller/<int:user_id>[0-9]+/edit/', views.profile, name='edit-seller-profile'),
-
 
 
 '''

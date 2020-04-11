@@ -22,30 +22,25 @@
 
 		<!-- For Profile Button -->
 		{% if request.session.id %}
-			<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
-				<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}" method="POST">
-					{% csrf_token %}
-					<input type="hidden" name="user_id" value="{{ request.session.id }}">		
-					<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
-					<button class="btn btn-success my-2 my-sm-0">{{ request.session.name|title }}</button>
-				</form>
-				<div class="btn-group dropLeft" role="group">
-					<button id="btnGroupDrop" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
-					<div class="dropdown-menu" aria-labelledby="btnGroupDrop">
-						{% if user_type == "seller" %}
-							<a class="dropdown-item" href="{% url 'seller_dashboard' %}">Dashboard</a>
-						{% else %}
-							<a class="dropdown-item" href="{% url 'buyer_dashboard' %}">Dashboard</a>
-						{% endif %}
-						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-					</div>
-				</div>
-			</div>
+			<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}" method="POST">
+				{% csrf_token %}
+				<input type="hidden" name="user_id" value="{{ request.session.id }}">		
+				<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+				<button class="btn btn-success my-2 my-sm-0">{{ request.session.name|title }}</button>
+			</form>
 			&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;
-			&nbsp;&nbsp;&nbsp;
+
+		{% endif %}
 			
+		<!-- For Login/Logout Button -->
+		{% if request.session.id %}
+			<form class="form-inline my-2 my-lg-0" action="{% url 'logout' %}">
+				<button class="btn btn-success my-2 my-sm-0">
+					Logout
+				</button>
+			</form>
+		
 		{% else %}
 			<form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
 				<button class="btn btn-success my-2 my-sm-0">
