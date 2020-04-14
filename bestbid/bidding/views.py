@@ -27,10 +27,6 @@ def adminLogin(request):
 		admin_email = 'admin@gmail.com'
 		admin_pwd = 'adminpass'
 		if req_email == admin_email and req_password == admin_pwd:
-			# c = {}
-			# c.update(csrf(request))
-			# return redirect('home', c, context)
-
 			assets = Asset.objects.all()
 			sellers = Seller.objects.all()
 			buyers = Buyer.objects.all()
@@ -51,6 +47,7 @@ def adminLogin(request):
 			return render(request, 'bidding/adminLogin.html')
 
 	return render(request, 'bidding/adminLogin.html')
+
 
 # Admin - Home Page
 @login_required(login_url='adminLogin')
@@ -270,7 +267,7 @@ def search(request):
 		return render(request, 'bidding/search.html')
 
 
-# @login_required(login_url='login')
+@login_required(login_url='login')
 def upload(request):
 	if request.method == 'POST':
 		form = AssetForm(request.POST)
