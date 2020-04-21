@@ -8,12 +8,12 @@
 	</head>
 	<body>
 		{% block body %}
-			<div class="container">
+			<div class="container w-50">
 				<main>
 					<br>
 					<h1 style="text-align: center;">Buyer Login</h1>
 					<br>
-					<div class="w-50">
+					<div class="">
 						<form action="{% url 'buyer_dashboard' %}" method="POST">
 							{% csrf_token %}
 							{{ form.as_p }}
@@ -23,6 +23,39 @@
 					<br>
 					<a href="{% url 'registration' %}"> New to Site ?</a>
 				</main>
+				<br>
+				<button type="submit" class="btn btn-info" data-toggle="modal" data-target="#forgot_password">Forgot Password</button>
+
+				<!-- Forgot Password Modal -->
+				<div class="modal fade" id="forgot_password">
+					<div class="modal-dialog " role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+							<h5 class="modal-title">Forgot Password</h5>
+							<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							</div>
+							<div class="modal-body">
+								<div class="form-group">
+									<label for="forgot_email">Email</label>
+									<input type="email" class="form-control" id="forgot_email" name="forgot_email" placeholder="Email" required>
+									<small id="emailHelp" class="form-text text-muted">We'll send you an One-Time-Password (OTP) on your provided email address.</small>
+								</div>
+								<div class="form-group">
+									<fieldset>
+										<label class="control-label" for="buyer">User Type</label>
+										<input class="form-control" value="buyer" id="buyer" type="text" placeholder="Buyer" readonly="">
+									</fieldset>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary">Send OTP</button>
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				<br><br>
 				{{ form.errors }}
 				{% if messages %}

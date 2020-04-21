@@ -5,7 +5,7 @@ import asyncio
 import json
 
 
-class LiveBiddingConsumer(AsyncConsumer):
+class LiveAuctioningConsumer(AsyncConsumer):
 
     async def websocket_connect(self, event):
         print("connected", event)
@@ -49,7 +49,7 @@ class LiveBiddingConsumer(AsyncConsumer):
 
     @database_sync_to_async
     def update_bid(self, p_id, bid, user_obj):
-        product = Product.objects.get(id=p_id)
+        product = Asset.objects.get(id=p_id)
         if product.seller_id == user_obj:
             return None
         else:

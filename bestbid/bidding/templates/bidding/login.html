@@ -31,15 +31,19 @@
 					</div>
 				</div>
 			</div>
-			<a href="{% url 'registration' %}">Register</a>
+
+			<form action="{% url 'registration' %}">
+				<button type="submit"class="btn btn-primary my-2 my-sm-0">Registration</button>
+			</form>
+			
 			<br><br>
 			{% if messages %}
-					<ul class="messages">
-						{% for message in messages %}
-							<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-						{% endfor %}
-					</ul>
-				{% endif %}
+				<ul class="messages">
+					{% for message in messages %}
+						<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+				</ul>
+			{% endif %}
 
 		</main>
 		<br><br>

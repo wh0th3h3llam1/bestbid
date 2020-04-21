@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		{% block head %}
+			<title>Delete Asset | BestBid.com</title>
+		{% endblock %}
+	</head>
+
+	<body>
+		{% block body %}
+			<div class="container">
+				<main>
+					<br>
+						{% if success %}
+							<h3 style="text-align: center;">Asset Deleted Successfully</h3>
+						{% else %}
+							<h3 style="text-align: center;">Can't Delete. Please Try Again</h3>
+						{% endif %}
+					<br>
+				</main>
+			</div>
+		{% endblock %}
+	</body>
+</html>

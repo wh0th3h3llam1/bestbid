@@ -1,6 +1,6 @@
 # from django.contrib.admin.views.decorators import staff_member_required
-# from django.core.files.storage import FileSystemStorage		# for saving images
 # from django.contrib.auth.forms import UserCreationForm
+from django.core.files.storage import FileSystemStorage		# for saving images
 from django.template.context_processors import csrf
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
@@ -70,13 +70,15 @@ def home(request):
 
 
 # User Login
+# @redirect_authenticated_user(redirect_field_name=REDIRECT_FIELD_NAME, redirect_url=settings.LOGIN_REDIRECT_URL)
 def login(request):
-
-	buyer_form = BuyerLoginForm()
-	seller_form = SellerLoginForm()
-	# context = {'seller_form' : seller_form, 'buyer_form' : buyer_form}
-	context = {}
-	return render(request, 'bidding/login.html', context)
+	'''
+	if request.session.user_type == 'seller':
+		return render(request, 'bidding/.html')
+	if request.session.user_type == 'buyer':
+		return render(request, 'bidding/login.html')
+	'''
+	return render(request, 'bidding/login.html')
 
 
 def buyer_login(request):
@@ -99,16 +101,14 @@ def registration(request):
 
 
 def buyer_reg(request):
-
-	form = BuyerRegistrationForm()
+	form = BuyerForm()
 
 	if request.method == 'POST':
-		form = BuyerRegistrationForm(request.POST)
+		form = BuyerForm(request.POST)
 		if	form.is_valid():
 			form.save()
 			unm = form.cleaned_data.get('name')
 			messages.success(request, 'Buyer Profile Created Successfully for ' + unm)
-			# return redirect('login')
 			return render(request, 'bidding/login.html')
 
 	context = {'form' : form}
@@ -117,15 +117,14 @@ def buyer_reg(request):
 
 def seller_reg(request):
 
-	form = SellerRegistrationForm()
+	form = SellerForm()
 
 	if request.method == 'POST':
-		form = SellerRegistrationForm(request.POST)
+		form = SellerForm(request.POST)
 		if	form.is_valid():
 			form.save()
 			unm = form.cleaned_data.get('name')
 			messages.success(request, 'Seller Profile Created Successfully for ' + unm)
-			# return redirect('login')
 			return render(request, 'bidding/login.html')
 
 
@@ -159,7 +158,7 @@ def buyer_dashboard(request):
 
 	elif request.session.get('id'):
 			user_id = request.session.get('id')
-			user = Buyer.objects.get(id=user_id)
+			user = get_object_or_404(Buyer, id=user_id)
 			auctions = Auction.objects.all()
 			context = {
 				'user' : user,
@@ -201,7 +200,7 @@ def seller_dashboard(request):
 
 	elif request.session.get('id'):
 			user_id = request.session.get('id')
-			user = Seller.objects.get(id=user_id)
+			user = get_object_or_404(Seller, id=user_id)
 			auctions = Auction.objects.all()
 			context = {
 				'user' : user,
@@ -219,7 +218,51 @@ def seller_dashboard(request):
 
 
 # @login_required(login_url='login')
-def profile(request, user_type, user_id, edit=None):
+def profile(request, user_type, user_id, edit=None, change_password=None):
+	user_id = request.POST.get('user_id')
+	user_type = request.POST.get('user_type')
+
+	if user_type == 'seller':
+		user = get_object_or_404(Seller, id=user_id)
+		user_assets = Asset.objects.filter(Q(seller=user.id))
+		assets_sold = AuctionedAsset.objects.filter(Q(seller=user.id))
+		context = {
+			'user' : user,
+			'user_assets' : user_assets,
+			'assets_sold' : assets_sold,
+		}
+	elif user_type == 'buyer':
+		user = get_object_or_404(Buyer, id=user_id)
+		assets_bought = AuctionedAsset.objects.filter(Q(buyer=user.id))
+		context = {
+			'user' : user,
+			'assets_bought' : assets_bought,
+		}
+	else:
+		return HttpResponse('Profile Not Found for user type')
+
+	if change_password == 'change_password':
+		context = {
+			'user' : user,
+		}
+		return render(request, 'bidding/change_password.html', context)
+	if edit == 'edit':
+		form = EditProfileForm(instance=user)
+		context = {
+			'user' : user,
+			'form' : form
+		}
+		return render(request, 'bidding/edit_profile.html', context)
+	else:
+		return render(request, 'bidding/show_profile.html', context)
+
+
+def edit_profile(request):
+	name = request.POST.get('name')
+	email = request.POST.get('email')
+	oldpwd = request.POST.get('oldpwd')
+	newpwd1 = request.POST.get('newpwd1')
+	newpwd2 = request.POST.get('newpwd2')
 	user_id = request.POST.get('user_id')
 	user_type = request.POST.get('user_type')
 
@@ -229,19 +272,37 @@ def profile(request, user_type, user_id, edit=None):
 		user = get_object_or_404(Buyer, id=user_id)
 	else:
 		return HttpResponse('Not Found')
-	context = {
-		'user' : user,
-	}
-	if edit == 'edit':
-		return render(request, 'bidding/edit_profile.html', context)
-	else:
-		return render(request, 'bidding/show_profile.html', context)
+	# user.name = 
 
+
+
+	messages.success(request, "Profile Updated Successfully")
+	return render(request, 'bidding/show_profile.html', context)
+	
 
 # Bid
 def bid(request):
-	context = { 'bid' : 'bid'}
-	return render(request, 'bidding/bid.html')#, context)
+	'''
+	try:
+		if request.session.user_type == 'buyer':
+			auctioned = AuctionedAsset.objects.all()
+			assets = Asset.objects.exclude(sold__in=auctioned)
+			# assets = Asset.objects.get(sold=False)
+			print(assets)
+			context = { 'assets' : assets}
+			return render(request, 'bidding/bid.html', context)
+		else:
+			messages.error(request, "Please Login as using a Buyer account.")
+			return render(request, 'bidding/buyer_login.html', context)
+	except:
+		messages.error(request, "Please Login to Continue.")
+		return render(request, 'bidding/login.html')
+	'''
+	auctioned = AuctionedAsset.objects.all()
+	assets = Asset.objects.exclude(sold__in=auctioned)
+	# assets = Asset.objects.get(sold=False)
+	context = { 'assets' : assets }
+	return render(request, 'bidding/bid.html', context)
 
 
 # Search for Assets
@@ -267,19 +328,54 @@ def search(request):
 		return render(request, 'bidding/search.html')
 
 
-@login_required(login_url='login')
+# @login_required(login_url='login')
 def upload(request):
 	if request.method == 'POST':
-		form = AssetForm(request.POST)
-		if	form.is_valid():	
-			user_id = request.POST.get('user_id')
-			user = get_object_or_404(Seller, id=user_id)
-			context = {
-				'user' : user,
-				'loggedIn' : 'loggedIn',
-			}
-			return render(request, 'bidding/seller_dashboard.html', context)
-			
+		user_id = request.POST.get('id')
+		user_type = request.POST.get('user_type')
+	
+		name = request.POST.get('name')
+		baseprice = request.POST.get('baseprice')
+		category = request.POST.get('selectedOption')
+		'''
+		l = []
+		for f in request.FILES.get('image'):
+			myImagename = f.name
+			l.append(myImagename)
+			print(myImagename)
+		print(l)
+		print()
+		print()
+		'''
+		image = request.FILES['image']
+		description = request.POST.get('description')
+		user_name = request.POST.get('user_name')
+		
+		seller_instance = get_object_or_404(Seller, name=user_name)
+		# print(name)
+		# print(baseprice)
+		# print(category)
+		# print(image)
+		# print(description)
+		# print(user_name)
+
+		fs = FileSystemStorage()
+		image_name = fs.save(image.name, image)
+		print(image_name)
+		asset = Asset.objects.create(
+			name=name,
+			baseprice=baseprice,
+			category=category,
+			image=image_name,
+			details=description,seller=seller_instance,
+			sold=False)
+		asset.save()
+		user = get_object_or_404(Seller, id=id)
+		context = {
+			'user' : user,
+		}
+		return render(request, 'bidding/seller_dashboard.html', context)
+
 	form = AssetForm()
 	user_id = request.GET.get('user_id')
 	user = get_object_or_404(Seller, id=user_id)
@@ -296,22 +392,82 @@ def index(request):
 		'last_five' : last_five,
 		'auctions' : auctions,
 		'assets' : assets,
-		'home' : 'home',
 	}
 	return render(request, 'bidding/index.html', context)
 
 
+def edit_asset(request):
+	if request.method == 'POST':
+		user_id = request.POST.get('id')
+		user_type = request.POST.get('user_type')
+	
+		name = request.POST.get('name')
+		baseprice = request.POST.get('baseprice')
+		category = request.POST.get('selectedOption')
+		image = request.FILES['image']
+		description = request.POST.get('description')
+
+		seller_instance = get_object_or_404(Seller, id=user_id)
+		
+		fs = FileSystemStorage()
+		image_name = fs.save(image.name, image)
+
+		asset = Asset.objects.create(
+			name=name,
+			baseprice=baseprice,
+			category=category,
+			image=image_name,
+			details=description,seller=seller_instance,
+			sold=False)
+		asset.save()
+		user = get_object_or_404(Seller, id=id)
+		context = {
+			'user' : user,
+		}
+		return render(request, 'bidding/seller_dashboard.html', context)
+
 # Asset Page
-def asset(request, id):
+def asset(request, id, edit=None):
+	if request.method == 'POST':
+		if request.POST.get('delete'):
+			try:
+				Asset.objects.filter(id=id).delete()
+				context = { 'success' : 'success'}
+				return render(request, 'bidding/delete.html', context)
+			except:
+				context = { 'failed' : 'failed'}
+				return render(request, 'bidding/delete.html', context)
+		if request.POST.get('edit'):
+			asset = get_object_or_404(Asset, id=id)
+			context = {
+				'asset' : asset,
+				}
+			return render(request, 'bidding/edit_asset.html', context)
 	try:
 		asset = get_object_or_404(Asset, id=id)
+		context = {
+			'asset' : asset,
+		}
+		return render(request, 'bidding/asset.html', context)
 	except:
-		return HttpResponse('Asset Not Found')
-	context = {
-		'asset' : asset,
-	}
-	return render(request, 'bidding/asset.html', context)
+		return HttpResponse('<h1 style="text-align:center;">Asset Not Found</h1>')
 
+
+def reset_password(request):
+	if request.method == 'POST':
+		pass
+		# user_type = request.POST.get('user_type')
+		# user_id = request.POST.get('id')
+		# pwd1 = request.POST.get('pwd1')
+		# if user_type == 'seller':
+		# 	user = get_object_or_404(Seller, id=user_id)
+		# else user_type == 'buyer':
+		# 	user = get_object_or_404(Buyer, id=user_id)
+		# user.password = pwd1
+		# user.save()
+		# context = {
+		# 	'user' : user,
+		# }
 
 # Logout
 def logout(request):

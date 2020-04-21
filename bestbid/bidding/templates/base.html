@@ -6,24 +6,30 @@
 	<head>
 		<meta charset="utf-8">
 
-		<!-- Flatly theme Bootstrap CDN -->
-		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" crossorigin="anonymous" /> -->
-		
-		<!-- Bootstrap CDN -->
-		<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
+		{% comment %}
+				
+			<!-- Flatly theme Bootstrap CDN -->
+			<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" crossorigin="anonymous" /> -->
+			
+			<!-- Bootstrap CDN -->
+			<!-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous"> -->
 
+		{% endcomment %}
 		<!-- Flatly theme Bootstrap Files -->
-		<link rel="stylesheet" href="{% static 'themes/flatly/bootstrap.css' %}">
+		<link rel="stylesheet" href="{% static 'themes/flatly/bootstrap.min.css' %}">
 		<link rel="stylesheet" href="{% static 'themes/flatly/_bootswatch.scss' %}">
 		<link rel="stylesheet" href="{% static 'themes/flatly/_variables.scss' %}">
 		
+		<!-- Custom CSS File -->
+		<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
 		{% block head %}
 			<title>Error</title>
 		{% endblock %}
 
 	</head>
 
-	<body>
+	<body style="overflow-x: hidden;">
 
 		<header>
 			{% include 'bidding/navbar.html' %}
@@ -32,7 +38,7 @@
 		<main>
 			{% block body %}
 					<h1 style="text-align: center;">
-						Some Error Occurred
+						Some Error Occurred, Contact Administrator
 					</h1>
 				
 			{% endblock %}

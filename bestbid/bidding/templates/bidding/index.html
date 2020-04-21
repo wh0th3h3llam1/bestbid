@@ -14,16 +14,16 @@
 
 		<main>
 			{% block body %}
-				<div class="container-fluid">
+				<div class="container">
 					<br>
 					<h2 style="text-align: center;">Recently Auctioned Assets</h2>
-						
+					<br>
 					<!-- Card for each asset -->
 					{% for l in last_five %}
 						{% if forloop.counter0|divisibleby:2 %}
 							<div class="row">
 						{% endif %}
-						<div class="col-sm-6">
+						<div class="col-sm-">
 							<div class="card" style="width:400px">
 								<h3 class="card-header"><a href="{{ l.asset.get_abs_url}}">{{ l.asset }}</a></h3>
 								<div class="card-body">
@@ -67,13 +67,6 @@
 							</div>
 						</div>
 					{% endfor %}
-
-					{% for i in test %}
-						<div>{% if forloop.counter|divisibleby:2 %}even{% else %}odd{% endif %}
-						{{i}} 
-						</div>
-					{% endfor %}
-
 				</div>
 			{% endblock %}
 		</main>

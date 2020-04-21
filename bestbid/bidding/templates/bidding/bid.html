@@ -13,29 +13,81 @@
 	<body>
 		<main>
 			{% block body %}
-				<div class="container-fluid">
+				<div class="container">
+
+					<!-- Warning Alert is user is not Buyer -->
+					{% if request.session.user_type != 'buyer' %}
+						<div class="alert alert-dismissible alert-warning">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<h4 class="alert-heading">Bid Disabled</h4>
+							<p class="mb-0">Please Login with a <a href="{% url 'buyer_login' %}" class="alert-link">Buyer Account</a> to Bid.</p>
+						</div>
+					{% endif %}
+					  
 					<div class="jumbotron">
 						<h1 class="display-3">BID</h1>
 						<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
 						<hr class="my-4">
 						<p>It uses utility classes for typography and spacing to space content out within the larger container.</p>
 						<p class="lead">
-						  <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+							<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 						</p>
-					  </div>
-				</div>
-
-				<div>
-					<ul>
-						{% if assets %}	
-						Assets : 
-							{% for a in assets %}
-								<li>{{ a }}</li>
+					</div>
+					{% if assets %}
+						<table class="table table-hover center">
+							<thead>
+								<tr>
+									<th scope="col">Asset Name</th>
+									<th scope="col">Category</th>
+									<th scope="col">Base Price ($)</th>
+									<th scope="col">Seller</th>
+									<th scope="col">Bid</th>
+								</tr>
+							</thead>
+							{% for asset in assets %}
+								<tbody>
+									<tr class="table">
+										<td><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></td>
+										<td>{{ asset.category }}</td>
+										<td>{{ asset.baseprice }}</td>
+										<td>{{ asset.seller.name|title }}</td>
+										<td>
+											<button class="btn btn-info" href="#"
+												{% if request.session.user_type != 'buyer'%}
+													disabled ="true" aria-disabled="true"
+												{% endif %}>
+												Bid
+											</button>
+										</td>
+									</tr>
+								</tbody>
 							{% endfor %}
-						{% else %}
-							No Assets Found
+						</table>
+					{% endif %}
+					{% comment %}
+						
+						{% if assets %}
+							{% for asset in assets %}
+								<div class="col-md-8" style="width: 400px;">	
+									<div class="card">
+										<h3 class="card-header"><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></h3>
+										<div class="card-body">
+											<h5 class="card-title">{{ asset.category }}</h5>
+										</div>
+										<img style="height: 150px; width: 100%; display: block;" src='{{ asset.image.url }}' alt="Asset Image">
+										<div class="card-body">
+											<p class="card-text">Baseprice : ${{ asset.baseprice }}</p>
+										</div>
+										<ul class="list-group list-group-flush">
+											<li class="list-group-asset">Seller : {{ asset.seller.name }}</li>
+										</ul>
+									</div>
+								</div>
+								<br>
+							{% endfor %}
 						{% endif %}
-					</ul>
+
+					{% endcomment %}
 				</div>
 			{% endblock %}
 		</main>

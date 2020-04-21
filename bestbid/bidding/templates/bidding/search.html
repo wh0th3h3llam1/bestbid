@@ -27,30 +27,32 @@
 						<form action="{% url 'search' %}" method="POST">
 							{% csrf_token %}
 							<div class="form-group">
-								<label class="col-form-label col-form-label-lg" for="search_query">Search</label>
+								<label class="col-form-label col-form-label-lg" for="search_query">Search for Assets</label>
 									<input class="form-control form-control-lg" type="text" placeholder="Search Assets" id="search_query" name="search_query" {% if search_results %} value="{{ query }}" {% endif %} />
 							</div>
+							<br>
 							<button type="submit" class="btn btn-primary btn-lg">Search</button>
 						</form>
 					</div>
 					<br>
 					{% if search_results %}
 						{% for item in search_results %}
-							<div class="col-md-6" style="width: 400px;">	
-								<div class="card">
-									<h3 class="card-header"><a href="{{ item.get_abs_url }}">{{ item.name }}</a></h3>
-									<div class="card-body">
-										<h5 class="card-title">{{ item.category }}</h5>
-									</div>
-									<img style="height: 150px; width: 100%; display: block;" src='{{ item.image.url }}' alt="Asset Image">
-									<div class="card-body">
-										<p class="card-text">Baseprice : ${{ item.baseprice }}</p>
-									</div>
-									<ul class="list-group list-group-flush">
-										<li class="list-group-item">Seller : {{ item.seller.name }}</li>
-									</ul>
-									<div class="card-footer text-muted">
-										Sold on : {{ l.auction_id.date }}
+							<div class="row">
+								<div class="col-md-4" style="width: auto;">	
+									<div class="card">
+										<h3 class="card-header"><a href="{{ item.get_abs_url }}">{{ item.name }}</a></h3>
+										<div class="card-body">
+											<h5 class="card-title">{{ item.category }}</h5>
+										</div>
+										<a href="{{ item.get_abs_url }}">
+											<img style="height: auto; width: 100%; display: block;" src='{{ item.image.url }}' alt="Asset Image">
+										</a>
+										<div class="card-body">
+											<p class="card-text">Baseprice : ${{ item.baseprice }}</p>
+										</div>
+										<ul class="list-group list-group-flush">
+											<li class="list-group-item">Seller : {{ item.seller.name }}</li>
+										</ul>
 									</div>
 								</div>
 							</div>

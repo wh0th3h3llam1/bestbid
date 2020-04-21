@@ -5,8 +5,12 @@ from .models import *
 class AssetForm(forms.ModelForm):
 
 	class Meta:
+		CATEGORY = (
+				('CAR', 'CAR'),
+				('HOUSE', 'HOUSE')
+				)
 		model = Asset
-		fields = '__all__'
+		fields = ['name', 'baseprice', 'image', 'category', 'details']
 		widgets = {
 			'name': forms.TextInput(
 				attrs = {
@@ -14,7 +18,7 @@ class AssetForm(forms.ModelForm):
 					'placeholder' : 'Enter Asset Name',
 				}
 			),
-			'baseprice': forms.TextInput(
+			'baseprice': forms.NumberInput(
 				attrs = {
 					'class' : 'form-control',
 					'placeholder' : 'Enter Base Price',
@@ -25,49 +29,89 @@ class AssetForm(forms.ModelForm):
 					'class' : 'form-control',
 				}
 			),
-			'details': forms.TextInput(
+			'details' : forms.TextInput(
 				attrs = {
+					'cols': 80,
+					'rows': 20,
 					'class' : 'form-control',
 					'placeholder' : 'Enter Description of the Asset',
+				},
+				
+			),
+		}
+
+
+class BuyerForm(forms.ModelForm):
+	class Meta:
+		model = Buyer
+		fields = '__all__'
+		widgets = {
+			'name': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'name',
+					'placeholder' : 'Enter Name',
+				}
+			),
+			'email': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'email',
+					'placeholder' : 'Enter Email',
+				}
+			),
+			'password': forms.PasswordInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'email',
+					'placeholder' : 'Enter Password',
+				}
+			),
+			'contact': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'contact',
+					'placeholder' : 'Enter Contact Number',
 				}
 			),
 		}
 
-class BuyerForm(forms.ModelForm):
-
-	class Meta:
-		model = Buyer
-		fields = '__all__'
-		widgets = {
-			'password': forms.PasswordInput()
-		}
-
 
 class SellerForm(forms.ModelForm):
-
 	class Meta:
 		model = Seller
 		fields = '__all__'
 		widgets = {
-			'password': forms.PasswordInput()
+			'name': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'name',
+					'placeholder' : 'Enter Name',
+				}
+			),
+			'email': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'email',
+					'placeholder' : 'Enter Email',
+				}
+			),
+			'password': forms.PasswordInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'email',
+					'placeholder' : 'Enter Password',
+				}
+			),
+			'contact': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'contact',
+					'placeholder' : 'Enter Contact Number',
+				}
+			),
 		}
 
-class BuyerRegistrationForm(forms.ModelForm):
-	class Meta:
-		model = Buyer
-		fields = '__all__'
-		widgets = {
-			'password': forms.PasswordInput()
-		}
-
-
-class SellerRegistrationForm(forms.ModelForm):
-	class Meta:
-		model = Seller
-		fields = '__all__'
-		widgets = {
-			'password': forms.PasswordInput()
-		}
 
 class BuyerLoginForm(forms.ModelForm):
 	
@@ -89,6 +133,7 @@ class BuyerLoginForm(forms.ModelForm):
 			),
 		}
 
+
 class SellerLoginForm(forms.ModelForm):
 	
 	class Meta:
@@ -105,6 +150,36 @@ class SellerLoginForm(forms.ModelForm):
 				attrs = {
 					'placeholder' : 'Enter Password',
 					'class' : 'form-control'
+				}
+			),
+		}
+
+
+class EditProfileForm(forms.ModelForm):
+	
+	class Meta:
+		model = Seller
+		fields = ['name', 'email', 'contact']
+		widgets = {
+			'name': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'name',
+					'value' : "{{ user.name }}",
+				}
+			),
+			'email': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'email',
+					'value' : "{{ user.email }}",
+				}
+			),
+			'contact': forms.TextInput(
+				attrs = {
+					'class' : 'form-control',
+					'name' : 'contact',
+					'value' : "{{ user.contact }}",
 				}
 			),
 		}

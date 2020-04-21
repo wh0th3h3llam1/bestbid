@@ -13,36 +13,41 @@
 		{% block body %}
 
 		<main class="container">
+			<br>
+			<h1 style="text-align: center;">Registration</h1>
+			<br>
 
-			<h1>Registration</h1>
-			
 			<div class="card border-primary mb-3" style="max-width: 20rem;">
 				<div class="card-header">Seller</div>
 				<div class="card-body">
-				  <h4 class="card-title">Register as Seller</h4>
-				  <p class="card-text"><a href="{% url 'seller_reg' %}">Register as Seller</a></p>
+				<h4 class="card-title">Register as Seller</h4>
+				<p class="card-text"><a href="{% url 'seller_reg' %}">Register as Seller</a></p>
 				</div>
 			</div>
 			
 			<div class="card border-primary mb-3" style="max-width: 20rem;">
 				<div class="card-header">Buyer</div>
 				<div class="card-body">
-				  <h4 class="card-title">Register as Buyer</h4>
-				  <p class="card-text"><a href="{% url 'buyer_reg' %}">Register as Buyer</a></p>
+				<h4 class="card-title">Register as Buyer</h4>
+				<p class="card-text"><a href="{% url 'buyer_reg' %}">Register as Buyer</a></p>
 				</div>
 			</div>
-			<a href="{% url 'login' %}">Login</a>
-		</main>
-
-		{{ form.errors }}
-		{% if messages %}
+			
+			<form action="{% url 'login' %}">
+				<button type="submit"class="btn btn-primary my-2 my-sm-0">Login</button>
+			</form>
+			
+			{{ form.errors }}
+			{% if messages %}
 			<ul class="messages">
 				{% for message in messages %}
 				<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
 				{% endfor %}
 			</ul>
-		{% endif %}
-		<br><br>
-		{% endblock %}
+			{% endif %}
+			<br><br>
+			{% endblock %}
+
+		</main>
 	</body>
 </html>

@@ -1,11 +1,11 @@
-<nav class="navbar navbar-expand-sm navbar-dark bg-primary" style="font-size:larger !important;">
-	<a class="navbar-brand" href="#" style="font-size: x-large !important;">BestBid<small>.com</small></a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary" style="font-size:larger !important;">
+	<a class="navbar-brand" href="{% url 'index' %}" style="font-size: x-large !important;">BestBid<small>.com</small></a>
 	
-	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
 		<span class="navbar-toggler-icon"></span>
 	</button>
 
-	<div class="collapse navbar-collapse" id="navbarColor01">
+	<div class="collapse navbar-collapse" id="navbarCollapse">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item">
 				<a class="nav-link" href="{% url 'index' %}">Home</a>
@@ -38,10 +38,12 @@
 							<a class="dropdown-item" href="{% url 'buyer_dashboard' %}">Dashboard</a>
 						{% endif %}
 						<div class="dropdown-divider"></div>
-						<a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+						<a class="dropdown-item" data-toggle="modal" data-target="#logout">Logout</a>
 					</div>
 				</div>
 			</div>
+			&nbsp;&nbsp;&nbsp;
+			&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;
 			&nbsp;&nbsp;&nbsp;
@@ -54,5 +56,32 @@
 			</form>
 		{% endif %}
 		
+		<!-- Confirm Logout Modal -->
+		<div class="modal fade" id="logout">
+			<div class="modal-dialog " role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Confirm Logout</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<p>Are you sure to Logout ?</p>
+					</div>
+					<div class="modal-footer">
+						<form action="{% url 'logout'%}" method="POST">
+							{% csrf_token %}
+								<input type="hidden" name="user_id" value="{{ request.session.id }}">
+								<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+								<input type="hidden" name="logout" value="logout">
+								<button class="btn btn-primary ">Logout</button>
+						</form>
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </nav>

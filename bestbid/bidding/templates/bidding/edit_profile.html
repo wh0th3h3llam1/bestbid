@@ -17,31 +17,24 @@
 					<br>
 					<h1 style="text-align: center;">Edit Profile</h1>
 					<br>
-					<form>
-						<fieldset>
-							<div class="form-group">
-								<label for="name">Name</label>
-								<input type="text" class="form-control" id="name" name="name" value="{{ user.name }}">
-							</div>
-							<div class="form-group">
-								<label for="email">Email address</label>
-								<input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
-							</div>
-							<div class="form-group">
-								<label for="password">Password</label>
-								<input type="text" class="form-control" id="password" name="pwd" value="{{ user.password }}">
-							</div>
-							<div class="form-group">
-								<label for="contact">Contact</label>
-								<input type="text" class="form-control" id="contact" name="contact" value="{{ user.contact }}">
-							</div>
-						</fieldset>
-					  </form>
-					<form class="form-inline my-2 my-lg-0" action="#" method="POST">
+					<form action="{% url 'edit_profile' %}" method="POST">
 						{% csrf_token %}
-						<input type="hidden" name="user_id" value="{{ request.session.id }}">
-						<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
-						<button class="btn btn-primary my-2 my-sm-0">Update Profile</button>
+						<fieldset>
+							{{ form.as_p }}					
+							<input type="hidden" name="user_id" value="{{ request.session.id }}">
+							<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+							<button class="btn btn-primary my-2 my-sm-0">Update Profile</button>
+						</fieldset>
+					</form>
+					<br>
+					
+					<form action="change_password/" method="POST">
+						{% csrf_token %}
+						<fieldset>
+							<input type="hidden" name="user_id" value="{{ request.session.id }}">
+							<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+							<button class="btn btn-primary my-2 my-sm-0">Change Password</button>
+						</fieldset>
 					</form>
 				</main>
 			</div>

@@ -44,7 +44,8 @@ class Asset(models.Model):
 	category = models.CharField(max_length=5, choices=CATEGORY, blank=False)
 	details = models.CharField(max_length=100, blank=False)
 	seller = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL, blank=False)
-
+	sold = models.BooleanField(default=False)
+	
 	def __str__(self):
 		return self.name
 
@@ -80,10 +81,10 @@ class AuctionedAsset(models.Model):
 				('HOUSE', 'HOUSE')
 				)
 	
-	auction_id = models.ForeignKey(Auction, null=True, on_delete=models.SET_NULL)
-	asset = models.ForeignKey(Asset, null=True, on_delete=models.SET_NULL)
-	seller = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL)
-	buyer = models.ForeignKey(Buyer, null=True, on_delete=models.SET_NULL)
+	auction_id = models.ForeignKey(Auction, null=True, on_delete=models.CASCADE)
+	asset = models.ForeignKey(Asset, null=True, on_delete=models.CASCADE)
+	seller = models.ForeignKey(Seller, null=True, on_delete=models.CASCADE)
+	buyer = models.ForeignKey(Buyer, null=True, on_delete=models.CASCADE)
 	category = models.CharField(max_length=5, null=True, choices=CATEGORY, default=None)
 	price = models.DecimalField(max_digits=9, decimal_places=0, blank=False)
 

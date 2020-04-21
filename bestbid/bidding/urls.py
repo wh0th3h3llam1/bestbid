@@ -29,11 +29,19 @@ urlpatterns = [
 
 	url(r'^index/$', views.index, name='index'),
 
-	path('profile/<str:user_type>/<int:user_id>/', views.profile, name='profile'),
+	path('profile/<str:user_type>/<int:user_id>/<edit>/<change_password>/', views.profile, name='profile'),
 	path('profile/<str:user_type>/<int:user_id>/<edit>/', views.profile, name='profile'),
-	url(r'^profile/$', views.profile, name='profile'),
+	path('profile/<str:user_type>/<int:user_id>/', views.profile, name='profile'),
+	# url(r'^profile/$', views.profile, name='profile'),
 
+	url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
+
+	url(r'^reset_password/$', views.reset_password, name='reset_password'),
+
+	path('asset/<int:id>/<edit>/', views.asset, name='asset'),
 	path('asset/<int:id>/', views.asset, name='asset'),
+
+	url(r'^edit_asset/$', views.edit_asset, name='edit_asset'),
 ]
 
 if settings.DEBUG:
@@ -79,7 +87,7 @@ if settings.DEBUG:
 			# 1. DO NOT USE path(r'^...$')
 			# 2. for Parameters
 				# path('xyz/<data_type:variable>/')
-			
+
 
 
 '''
