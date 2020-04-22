@@ -14,19 +14,38 @@
 		<main>
 			{% block body %}
 				<div class="container" style="justify-content: center;">
-					<!-- Allow bid only if time is between 10 and 12 -->
-					{% if request.session.user_type == 'buyer' and not allow_bid %}
-						<div class="alert alert-dismissible alert-info">
-							<button type="button" class="close" data-dismiss="alert">&times;</button>
-							<h4 class="alert-heading">Bid Currently Disabled</h4>
-							<p class="mb-0">Bid can only be performed between 10:00 and 12:00</p>
-						</div>
-					{% endif %}
-
 					<br>
 					<h2 style="text-align: center;">{{ asset.name }}</h2>
 					<br>
+					<!-- Card for each asset -->
+					{% comment %}
+						
+					<div class="col-sm-6">
+						<div class="card" style="width:700px">
+							<h3 class="card-header">{{ asset.name }}</h3>
+							<div class="card-body">
+								<h5 class="card-title">{{ asset.category }}</h5>
+							</div>
+							<img style="height: 400px; width: 100%; display: block;" src="{{ asset.image.url }}" alt="Asset Image">
+							
+							<div class="card-body">
+								<p class="card-text">{{ asset.details }}</p>
+							</div>
+							
+							<!-- <ul class="list-group list-group-flush">
+								<li class="list-group-item">Sold at : ${{ asset.price }}</li>
+							</ul> -->
+
+							
+							<div class="card-footer text-muted">
+								Seller : {{ asset.seller.name|title }}
+							</div>
+						</div>
+					</div>
 					
+					{% endcomment %}
+					<br>
+
 					<div class="row asset-details" style="display: inline-flex;">
 						<div class="img-box col-sm-12 col-md-6" style="float: left;">
 							<img src="{{ asset.image.url }}" alt="{{ asset.name }}" style="display: block" width="100%;">
@@ -50,11 +69,7 @@
 											<form action="{#{% url 'place_bid' %}#}" method="post">
 												{% csrf_token %}
 												<input type="hidden" name="user_id" value="{{ request.session.id }}">
-												<button class="btn btn-primary" type="submit" id="bid_btn"
-													{% if not allow_bid %}
-														disabled ="true" aria-disabled="true"
-													{% endif %}
-												>Place Bid</button>
+												<button class="btn btn-primary" type="submit" id="bid_btn">Place Bid</button>
 											</form>
 										</div>
 									</div>

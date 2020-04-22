@@ -13,7 +13,7 @@ from django.conf import settings
 from django.urls import reverse
 from .models import *
 from .forms import *
-
+import datetime
 # Create your views here.
 
 
@@ -301,7 +301,11 @@ def bid(request):
 	auctioned = AuctionedAsset.objects.all()
 	assets = Asset.objects.exclude(sold__in=auctioned)
 	# assets = Asset.objects.get(sold=False)
-	context = { 'assets' : assets }
+	now = datetime.datetime.now()
+	allow_bid = False
+	if now.hour > 10 and now.hour < 12:
+		allow_bid = True
+	context = { 'assets' : assets, 'allow_bid' : allow_bid }
 	return render(request, 'bidding/bid.html', context)
 
 
@@ -426,6 +430,7 @@ def edit_asset(request):
 		}
 		return render(request, 'bidding/seller_dashboard.html', context)
 
+
 # Asset Page
 def asset(request, id, edit=None):
 	if request.method == 'POST':
@@ -443,14 +448,20 @@ def asset(request, id, edit=None):
 				'asset' : asset,
 				}
 			return render(request, 'bidding/edit_asset.html', context)
-	try:
-		asset = get_object_or_404(Asset, id=id)
-		context = {
-			'asset' : asset,
-		}
-		return render(request, 'bidding/asset.html', context)
-	except:
-		return HttpResponse('<h1 style="text-align:center;">Asset Not Found</h1>')
+	# try:
+	asset = get_object_or_404(Asset, id=id)
+	now = datetime.datetime.now()
+	allow_bid = False
+	if now.hour > 10 and now.hour < 12:
+		allow_bid = True
+	context = {
+		'asset' : asset,
+		'now' : now,
+		'allow_bid' : allow_bid
+	}
+	return render(request, 'bidding/asset.html', context)
+	# except:
+	# 	return HttpResponse('<h1 style="text-align:center;">Asset Not Found</h1>')
 
 
 def reset_password(request):

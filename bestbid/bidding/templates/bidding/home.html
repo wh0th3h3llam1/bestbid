@@ -17,7 +17,7 @@
 					<br>
 					<h1 style="text-align: center;">Welcome Admin</h1>
 					<br>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Buyers</th>
@@ -41,7 +41,7 @@
 							{% endfor %}
 						</tbody>
 					</table>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Sellers</th>
@@ -64,7 +64,7 @@
 							{% endfor %}
 						</tbody>
 					</table>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">All Assets</th>
@@ -79,17 +79,17 @@
 							{% for asset in assets %}
 								<tr>
 									<th scope="row">{{ asset.id }}</th>
-									<td>{{ asset.name }}</td>
-									<td>{{ asset.baseprice }}</td>
+									<td><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></td>
+									<td>${{ asset.baseprice }}</td>
 									<td>{{ asset.category }}</td>
 									<td>{{ asset.seller.name }}</td>
-									<td><a class="btn btn-sm btn-info" href="#">Update</a></td> 
-									<td><a class="btn btn-sm btn-danger" href="#">Delete</a></td> 
+									<td><button class="btn btn-info">Update</button></td>
+									<td><button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button></td>
 								</tr>
 							{% endfor %}
 						</tbody>
 					</table>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Auctioned Assets</th>
@@ -117,7 +117,7 @@
 							{% endfor %}
 						</tbody>
 					</table>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Auctions</th>
@@ -141,6 +141,33 @@
 							{% endfor %}
 						</tbody>
 					</table>
+
+					<!-- Confirm Delete Modal -->
+				<div class="modal modal-danger fade" id="delete">
+					<div class="modal-dialog " role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Confirm Delete</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">&times;</span>
+								</button>
+							</div>
+							<div class="modal-body">
+								<p>Are you sure to delete the asset : {{ asset.id }} ?</p>
+							</div>
+							<div class="modal-footer">
+								<form action="" method="POST">
+									{% csrf_token %}
+										<input type="hidden" name="user_id" value="{{ request.session.id }}">
+										<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+										<input type="hidden" name="delete" value="delete">
+										<button class="btn btn-danger ">Delete</button>
+								</form>
+								<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+							</div>
+						</div>
+					</div>
+				</div>
 				</div>
 			{% endblock %}
 		</main>

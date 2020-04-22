@@ -22,6 +22,7 @@ function checkPassword()
 			$("#pwd1").removeClass("is-valid");
 			$("#pwd2").removeClass("is-valid");
 
+			$("#update_btn").attr("disabled", true);
 		}
 		else
 		{
@@ -29,13 +30,14 @@ function checkPassword()
 			$("#pwdcheck2").removeClass("has-danger");
 			$("#pwdcheck1").addClass("has-success");
 			$("#pwdcheck2").addClass("has-success");
-
+			
 			$("#pwd1").removeClass("is-invalid");
 			$("#pwd2").removeClass("is-invalid");
-
+			
 			$("#pwd1").addClass("is-valid");
 			$("#pwd2").addClass("is-valid");
-
+			
+			$("#update_btn").attr("disabled", false);
 		}
 	}
 }

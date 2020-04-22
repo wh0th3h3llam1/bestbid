@@ -6,12 +6,12 @@
 	<head>
 		<meta charset="UTF-8">
 		{% block head %}
-			<title>Search | BestBid.com</title>
 			{% if search_results %}
 				<title>{{ query }} | BestBid.com</title>
-			{% endif %}
-			{% if no_results %}
+			{% elif no_results %}
 				<title>No Results | BestBid.com</title>
+			{% else %}
+				<title>Search | BestBid.com</title>
 			{% endif %}
 		{% endblock %}
 	</head>

@@ -14,16 +14,27 @@
 		<main>
 			{% block body %}
 				<div class="container">
+					<div>
+						<!-- Warning Alert is user is not Buyer -->
+						{% if request.session.user_type != 'buyer' %}
+							<div class="alert alert-dismissible alert-warning">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<h4 class="alert-heading">Bid Disabled</h4>
+								<p class="mb-0">Please Login with a <a href="{% url 'buyer_login' %}" class="alert-link">Buyer Account</a> to Place Bid.</p>
+							</div>
+						{% endif %}
+						<!-- Info if time is not between 10 and 12 -->
+						{% if allow_bid %}
+							Allow Bidding
+						{% else %}
+							<div class="alert alert-dismissible alert-info">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<h4 class="alert-heading">Bid Currently Disabled</h4>
+								<p class="mb-0">Bid can only be performed between 10:00 and 12:00</p>
+							</div>
+						{% endif %}
+					</div>
 
-					<!-- Warning Alert is user is not Buyer -->
-					{% if request.session.user_type != 'buyer' %}
-						<div class="alert alert-dismissible alert-warning">
-							<button type="button" class="close" data-dismiss="alert">&times;</button>
-							<h4 class="alert-heading">Bid Disabled</h4>
-							<p class="mb-0">Please Login with a <a href="{% url 'buyer_login' %}" class="alert-link">Buyer Account</a> to Bid.</p>
-						</div>
-					{% endif %}
-					  
 					<div class="jumbotron">
 						<h1 class="display-3">BID</h1>
 						<p class="lead">This is a simple hero unit, a simple jumbotron-style component for calling extra attention to featured content or information.</p>
@@ -33,6 +44,7 @@
 							<a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
 						</p>
 					</div>
+					<br>
 					{% if assets %}
 						<table class="table table-hover center">
 							<thead>
@@ -52,10 +64,14 @@
 										<td>{{ asset.baseprice }}</td>
 										<td>{{ asset.seller.name|title }}</td>
 										<td>
-											<button class="btn btn-info" href="#"
+											<button class="btn btn-info" href="#" value="Bid"
 												{% if request.session.user_type != 'buyer'%}
 													disabled ="true" aria-disabled="true"
-												{% endif %}>
+												{% endif %}
+												{% if not allow_bid %}
+													disabled ="true" aria-disabled="true"
+												{% endif %}
+												>
 												Bid
 											</button>
 										</td>
@@ -64,6 +80,7 @@
 							{% endfor %}
 						</table>
 					{% endif %}
+					
 					{% comment %}
 						
 						{% if assets %}
