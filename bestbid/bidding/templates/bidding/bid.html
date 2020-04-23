@@ -5,7 +5,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		{% block head %}
+		{% block title %}
 			<title>Bid | BestBid.com</title>
 		{% endblock %}
 	</head>
@@ -23,14 +23,13 @@
 								<p class="mb-0">Please Login with a <a href="{% url 'buyer_login' %}" class="alert-link">Buyer Account</a> to Place Bid.</p>
 							</div>
 						{% endif %}
+
 						<!-- Info if time is not between 10 and 12 -->
 						{% if allow_bid %}
-							Allow Bidding
-						{% else %}
 							<div class="alert alert-dismissible alert-info">
 								<button type="button" class="close" data-dismiss="alert">&times;</button>
 								<h4 class="alert-heading">Bid Currently Disabled</h4>
-								<p class="mb-0">Bid can only be performed between 10:00 and 12:00</p>
+								<p class="mb-0">Bid can only be performed between 10:00 and 14:00</p>
 							</div>
 						{% endif %}
 					</div>
@@ -50,6 +49,7 @@
 							<thead>
 								<tr>
 									<th scope="col">Asset Name</th>
+									<th scope="col">Details</th>
 									<th scope="col">Category</th>
 									<th scope="col">Base Price ($)</th>
 									<th scope="col">Seller</th>
@@ -60,15 +60,16 @@
 								<tbody>
 									<tr class="table">
 										<td><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></td>
+										<td>{{ asset.details|truncatechars:20 }}</td>
 										<td>{{ asset.category }}</td>
 										<td>{{ asset.baseprice }}</td>
 										<td>{{ asset.seller.name|title }}</td>
 										<td>
-											<button class="btn btn-info" href="#" value="Bid"
+											<button class="btn btn-info" href="{{ asset.get_abs_url }}" value="Bid"
 												{% if request.session.user_type != 'buyer'%}
 													disabled ="true" aria-disabled="true"
 												{% endif %}
-												{% if not allow_bid %}
+												{% if allow_bid %}
 													disabled ="true" aria-disabled="true"
 												{% endif %}
 												>

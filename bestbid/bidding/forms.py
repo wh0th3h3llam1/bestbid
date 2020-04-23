@@ -1,9 +1,10 @@
+# from django.forms import Textarea
 from django import forms
 from .models import *
 
 
 class AssetForm(forms.ModelForm):
-
+	# details = models.CharField(widget=forms.Textarea)
 	class Meta:
 		CATEGORY = (
 				('CAR', 'CAR'),
@@ -30,13 +31,13 @@ class AssetForm(forms.ModelForm):
 				}
 			),
 			'details' : forms.TextInput(
+				
 				attrs = {
 					'cols': 80,
 					'rows': 20,
 					'class' : 'form-control',
 					'placeholder' : 'Enter Description of the Asset',
 				},
-				
 			),
 		}
 

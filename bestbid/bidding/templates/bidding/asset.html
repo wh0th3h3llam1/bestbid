@@ -5,7 +5,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		{% block head %}
+		{% block title %}
 			<title>{{ asset.name }} | BestBid.com</title>
 		{% endblock %}
 	</head>
@@ -14,19 +14,38 @@
 		<main>
 			{% block body %}
 				<div class="container" style="justify-content: center;">
+					
 					<!-- Allow bid only if time is between 10 and 12 -->
 					{% if request.session.user_type == 'buyer' and not allow_bid %}
 						<div class="alert alert-dismissible alert-info">
 							<button type="button" class="close" data-dismiss="alert">&times;</button>
 							<h4 class="alert-heading">Bid Currently Disabled</h4>
-							<p class="mb-0">Bid can only be performed between 10:00 and 12:00</p>
+							<p class="mb-0">Bid can only be performed between 10:00 and 14:00</p>
+						</div>
+					{% endif %}
+					
+					<!-- If Bid Placed is less than previous bid -->
+					{% if min_value_error %}
+						<div class="alert alert-dismissible alert-info">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<h4 class="alert-heading">Bid Cannot Be Placed</h4>
+							<p class="mb-0">New Bid Value must be greater than Previous bid vlaue.</p>
+						</div>
+					{% endif %}
+
+					<!-- If Bid is Placed Successfully -->
+					{% if placed %}
+						<div class="alert alert-dismissible alert-success">
+							<button type="button" class="close" data-dismiss="alert">&times;</button>
+							<h4 class="alert-heading">Bid Placed</h4>
+							<p class="mb-0"></p>
 						</div>
 					{% endif %}
 
 					<br>
 					<h2 style="text-align: center;">{{ asset.name }}</h2>
 					<br>
-					
+					<!-- Display Asset -->
 					<div class="row asset-details" style="display: inline-flex;">
 						<div class="img-box col-sm-12 col-md-6" style="float: left;">
 							<img src="{{ asset.image.url }}" alt="{{ asset.name }}" style="display: block" width="100%;">
@@ -38,61 +57,72 @@
 							<br>
 							<h5>Seller : {{ asset.seller|title }}</h5>
 							<br>
-							<!-- For Bidding -->
+
+							<!-- For Bidding Button and TextInput-->
 							{% if request.session.user_type == "buyer" %}
 								<div class="form-group ml-10" style="float: inline-end;">
-									<div class="input-group">
-										<div class="input-group-prepend">
-											<span class="input-group-text">$</span>
-										</div>
-										<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Bid Value" name="bid_value" id="bid_value" min="{{ asset.baseprice|add:'1' }}" required>
-										<div class="input-group-append">
-											<form action="{#{% url 'place_bid' %}#}" method="post">
-												{% csrf_token %}
+									<form action="{% url 'asset' asset.id %}" method="post">
+										{% csrf_token %}
+										<div class="input-group">
+											<div class="input-group-prepend">
+												<span class="input-group-text">$</span>
+											</div>
+											<input type="number" class="form-control" aria-label="Amount (to the nearest dollar)" placeholder="Bid Value" name="bid_value" id="bid_value" min="{{ asset.baseprice|add:'1' }}" autofocus required>
+											<div class="input-group-append">
 												<input type="hidden" name="user_id" value="{{ request.session.id }}">
+												<input type="hidden" name="asset_id" value="{{ asset.id }}">
+												<input type="hidden" name="place_bid" value="place_bid">
 												<button class="btn btn-primary" type="submit" id="bid_btn"
 													{% if not allow_bid %}
 														disabled ="true" aria-disabled="true"
 													{% endif %}
 												>Place Bid</button>
-											</form>
+											</div>
 										</div>
-									</div>
+									</form>
 								</div>
 							{% endif %}
 						</div>
 						<br>
 					</div>
-					<br><br>
+					<br>
+
+					<!-- Asset Description -->
 					<div class="card">
 						<h3 class="card-header">Asset Description</h3>
-						<div class="card-body">{{ asset.details }}</div>
+						<div class="card-body"><h4>{{ asset.details }}</h4></div>
 					</div>
 					<br>
-					<button type="button" class="btn btn-lg btn-info" onclick="location.reload(true);">Reload page</button>
+					<button type="button" class="btn btn-info" onclick="location.reload(true);">Reload page</button>
 					<br><br>
-					<div class="bid" style="justify-content: center;">
-						<table class="table table-hover w-50">
-							<thead>
-								<tr>
-									<th scope="col">Type</th>
-									<th scope="col">Column heading</th>
-									<th scope="col">Column heading</th>
-									<th scope="col">Column heading</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr class="table">
-									<th scope="row">Active</th>
-									<td>Column content</td>
-									<td>Column content</td>
-									<td>Column content</td>
-								</tr>
-							</tbody>
-						</table>
 
-					</div>
+					<!-- Live Auction Status -->
+					{% if live_auction_status %}
+							
+						<div class="bid" style="justify-content: center;" id="live_bid">
+							<table class="table table-hover">
+								<thead>
+									<tr>
+										<th scope="col">Sr No.</th>
+										<th scope="col">Asset Name</th>
+										<th scope="col">Buyer</th>
+										<th scope="col">Placed Bid for Price</th>
+									</tr>
+								</thead>
+								{% for item in live_auction_status %}
+									<tbody>
+										<tr class="table">
+											<th scope="row">{{ forloop.counter }}</th>
+											<td>{{ item.asset.name }}</td>
+											<td>{{ item.buyer }}</td>
+											<td>{{ item.price }}</td>
+										</tr>
+									</tbody>
+								{% endfor %}
+							</table>
+						</div>
 					
+					{% endif %}	
 					<!-- Delete and Edit Buttons -->
 					{% if request.session.id == asset.seller.id %}
 						{% if request.session.user_type == "seller" %}

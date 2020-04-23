@@ -5,7 +5,7 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		{% block head %}
+		{% block title %}
 			<title>Index | BestBid.com</title>
 		{% endblock %}
 	</head>
@@ -20,32 +20,11 @@
 					<br>
 					<!-- Card for each asset -->
 					{% for l in last_five %}
-						{% if forloop.counter0|divisibleby:2 %}
-							<div class="row">
-						{% endif %}
-						<div class="col-sm-">
-							<div class="card" style="width:400px">
-								<h3 class="card-header"><a href="{{ l.asset.get_abs_url}}">{{ l.asset }}</a></h3>
-								<div class="card-body">
-									<h5 class="card-title">{{ l.category }}</h5>
-								</div>
-								<img style="height: 150px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
-								<div class="card-body">
-									<p class="card-text">Sold at : ${{ l.price }}</p>
-								</div>
-								<ul class="list-group list-group-flush">
-									<li class="list-group-item">Seller : {{ l.seller.name }}</li>
-									<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
-								</ul>
-								<div class="card-footer text-muted">
-									Sold On : {{ l.auction_id.date }}
-								</div>
+						<div class="row asset-details" style="display: inline-flex;">
+							<div class="img-box col-sm-12 col-md-6" style="float: left;">
+								<img src="{{ l.asset.image.url }}" alt="{{ l.asset.name }}" style="display: block" width="100%;">
 							</div>
 						</div>
-						{% if forloop.counter0|divisibleby:2 %}
-							</div>
-						{% endif %}
-						
 						<br>
 					{% endfor %}
 					<br><br>
@@ -61,9 +40,6 @@
 							</div>
 							<div class="card-body">
 								<p class="card-text">Sold at : ${{ upcoming.price }}</p>
-							</div>
-							<div class="card-footer text-muted">
-								Sold on : {{ upcoming.date }}
 							</div>
 						</div>
 					{% endfor %}

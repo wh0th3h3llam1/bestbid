@@ -282,32 +282,53 @@ def edit_profile(request):
 
 # Bid
 def bid(request):
-	'''
-	try:
-		if request.session.user_type == 'buyer':
-			auctioned = AuctionedAsset.objects.all()
-			assets = Asset.objects.exclude(sold__in=auctioned)
-			# assets = Asset.objects.get(sold=False)
-			print(assets)
-			context = { 'assets' : assets}
-			return render(request, 'bidding/bid.html', context)
-		else:
-			messages.error(request, "Please Login as using a Buyer account.")
-			return render(request, 'bidding/buyer_login.html', context)
-	except:
-		messages.error(request, "Please Login to Continue.")
-		return render(request, 'bidding/login.html')
-	'''
 	auctioned = AuctionedAsset.objects.all()
 	assets = Asset.objects.exclude(sold__in=auctioned)
-	# assets = Asset.objects.get(sold=False)
+
 	now = datetime.datetime.now()
+	
 	allow_bid = False
-	if now.hour > 10 and now.hour < 12:
+	if now.hour > 10 and now.hour < 14:
 		allow_bid = True
-	context = { 'assets' : assets, 'allow_bid' : allow_bid }
+
+	allow_bid = True # Temporary
+	context = {
+		'assets' : assets,
+		'allow_bid' : allow_bid
+	}
 	return render(request, 'bidding/bid.html', context)
 
+'''
+def place_bid(request):
+	user_type = 'buyer'
+	user_id = request.POST.get('user_id')
+	bid_value = request.POST.get('bid_value')
+	asset_id = request.POST.get('asset_id')
+	try:
+		# If buyer has already placed bid, update value	
+		live_auction = get_object_or_404(LiveAuction, asset=asset_id, buyer=user_id)
+		if int(live_auction.price) < int(bid_value):
+
+			# If bid value is greater than before 
+			live_auction.price = bid_value
+			live_auction.save()
+			print("Value Updated")
+			print("Bid Placed")
+		else:
+			# If bid value is less than before 
+			print('Bid value must be greater than previous bid')
+	except LiveAuction.DoesNotExist as e:
+		asset_instance = get_object_or_404(Asset, id=asset_id)
+		buyer_instance = get_object_or_404(Buyer, id=user_id)
+		live_auction = LiveAuction.objects.create(
+			asset=asset_instance,
+			buyer=buyer_instance,
+			price=bid_value,
+		)
+		live_auction.save()
+		print('New Bid Value Placed')
+	return HttpResponse(bid_value)
+'''
 
 # Search for Assets
 def search(request):
@@ -337,7 +358,6 @@ def upload(request):
 	if request.method == 'POST':
 		user_id = request.POST.get('id')
 		user_type = request.POST.get('user_type')
-	
 		name = request.POST.get('name')
 		baseprice = request.POST.get('baseprice')
 		category = request.POST.get('selectedOption')
@@ -371,7 +391,8 @@ def upload(request):
 			baseprice=baseprice,
 			category=category,
 			image=image_name,
-			details=description,seller=seller_instance,
+			details=description,
+			seller=seller_instance,
 			sold=False)
 		asset.save()
 		user = get_object_or_404(Seller, id=id)
@@ -433,8 +454,21 @@ def edit_asset(request):
 
 # Asset Page
 def asset(request, id, edit=None):
+	# Current Time
+	now = datetime.datetime.now()
+	
+	# Allow Bid only Between 10 AM and 2 PM
+	allow_bid = False
+	if now.hour > 10 and now.hour < 14:
+		allow_bid = True
+
+	# About to End
+	if	now.hour == 14 and now.minute > 50:
+		about_to_end = True
+
 	if request.method == 'POST':
 		if request.POST.get('delete'):
+			# To Delete Asset
 			try:
 				Asset.objects.filter(id=id).delete()
 				context = { 'success' : 'success'}
@@ -443,25 +477,83 @@ def asset(request, id, edit=None):
 				context = { 'failed' : 'failed'}
 				return render(request, 'bidding/delete.html', context)
 		if request.POST.get('edit'):
+			# To Edit Asset
 			asset = get_object_or_404(Asset, id=id)
 			context = {
 				'asset' : asset,
 				}
 			return render(request, 'bidding/edit_asset.html', context)
-	# try:
-	asset = get_object_or_404(Asset, id=id)
-	now = datetime.datetime.now()
-	allow_bid = False
-	if now.hour > 10 and now.hour < 12:
-		allow_bid = True
-	context = {
-		'asset' : asset,
-		'now' : now,
-		'allow_bid' : allow_bid
-	}
-	return render(request, 'bidding/asset.html', context)
-	# except:
-	# 	return HttpResponse('<h1 style="text-align:center;">Asset Not Found</h1>')
+		if request.POST.get('place_bid'):
+			# To Place bid
+			user_type = 'buyer'
+			user_id = request.POST.get('user_id')
+			bid_value = request.POST.get('bid_value')
+			asset_id = request.POST.get('asset_id')
+			try:
+				# If buyer has already placed bid, update value	
+				live_auction = get_object_or_404(LiveAuction, asset=asset_id, buyer=user_id)
+				asset = get_object_or_404(Asset, id=id)
+				live_auction_status = LiveAuction.objects.filter(Q(asset=asset_id)).order_by('price')
+				if int(live_auction.price) < int(bid_value):
+					# If bid value is greater than before 
+					live_auction.price = bid_value
+					live_auction.save()
+					print("Value Updated")
+					print("Bid Placed")
+					context = {
+						'asset' : asset,
+						'now' : now,
+						'allow_bid' : allow_bid,
+						'placed' : 'placed',
+						'live_auction_status' : live_auction_status
+					}
+					return render(request, 'bidding/asset.html', context)				
+				else:
+					# If bid value is less than before 
+					print('Bid value must be greater than previous bid')
+					context = {
+						'asset' : asset,
+						'now' : now,
+						'allow_bid' : allow_bid,
+						'min_value_error' : 'min_value_error',
+						'live_auction_status' : live_auction_status
+					}
+					return render(request, 'bidding/asset.html', context)				
+
+			except LiveAuction.DoesNotExist as e:
+				asset_instance = get_object_or_404(Asset, id=asset_id)
+				buyer_instance = get_object_or_404(Buyer, id=user_id)
+				live_auction = LiveAuction.objects.create(
+					asset=asset_instance,
+					buyer=buyer_instance,
+					price=bid_value,
+				)
+				live_auction.save()
+				print('New Bid Value Placed')
+				live_auction_status = LiveAuction.objects.filter(Q(asset=asset_id)).order_by('price')
+				context = {
+					'asset' : asset,
+					'now' : now,
+					'allow_bid' : allow_bid,
+					'live_auction_status' : live_auction_status
+				}
+				return render(request, 'bidding/asset.html', context)
+	try:
+		asset = get_object_or_404(Asset, id=id)
+		live_auction_status = LiveAuction.objects.filter(Q(asset=id)).order_by('price')
+		
+		allow_bid = True # Temporary
+		context = {
+			'asset' : asset,
+			'now' : now,
+			'allow_bid' : allow_bid,
+			'live_auction_status' : live_auction_status
+		}
+		return render(request, 'bidding/asset.html', context)
+	except Exception as error:
+		print(error)
+		return HttpResponse(error)
+		# return HttpResponse('<h1 style="text-align:center;">Asset Not Found</h1>')
 
 
 def reset_password(request):

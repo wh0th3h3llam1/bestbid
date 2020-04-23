@@ -14,15 +14,18 @@
 
 		<main>
 			{% block body %}
-				<div class="container-fluid">
+				<div class="container">
 					<br>
 					<h2 style="text-align: center;">Recently Auctioned Assets</h2>
-						
+					<br>
 					<!-- Card for each asset -->
 					{% for l in last_five %}
+						{% if forloop.counter0|divisibleby:2 %}
+							<div class="row">
+						{% endif %}
 						<div class="col-sm-6">
 							<div class="card" style="width:400px">
-								<h3 class="card-header">{{ l.asset }}</h3>
+								<h3 class="card-header"><a href="{{ l.asset.get_abs_url}}">{{ l.asset }}</a></h3>
 								<div class="card-body">
 									<h5 class="card-title">{{ l.category }}</h5>
 								</div>
@@ -35,10 +38,15 @@
 									<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
 								</ul>
 								<div class="card-footer text-muted">
-									Sold on : {{ l.auction_id.date }}
+									Sold On : {{ l.auction_id.date }}
 								</div>
 							</div>
 						</div>
+						{% if forloop.counter0|divisibleby:2 %}
+							</div>
+						{% endif %}
+						
+						<br>
 					{% endfor %}
 					<br><br>
 					

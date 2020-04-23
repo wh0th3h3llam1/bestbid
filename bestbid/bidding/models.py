@@ -1,3 +1,4 @@
+# from django import forms
 from django.urls import reverse
 from django.db import models
 
@@ -42,7 +43,7 @@ class Asset(models.Model):
 	baseprice = models.DecimalField(max_digits=9, decimal_places=0, blank=False)
 	image = models.ImageField(upload_to='uploads/', blank=False)
 	category = models.CharField(max_length=5, choices=CATEGORY, blank=False)
-	details = models.CharField(max_length=100, blank=False)
+	details = models.CharField(max_length=500, blank=False)# , widget=forms.Textarea)
 	seller = models.ForeignKey(Seller, null=True, on_delete=models.SET_NULL, blank=False)
 	sold = models.BooleanField(default=False)
 	
@@ -66,13 +67,14 @@ class Auction(models.Model):
 		return str(self.id)
 
 
-'''
 class LiveAuction(models.Model):
-	asset_id = 
-	buyer_id = 
-	price = 
-	date_time = 
-'''
+	asset = models.ForeignKey(Asset, null=True, on_delete=models.CASCADE)
+	buyer = models.ForeignKey(Buyer, null=True, on_delete=models.CASCADE)
+	price = models.DecimalField(max_digits=9, decimal_places=0, blank=False)
+	date_time = models.DateTimeField(auto_now_add=True, blank=False)
+
+	def __str__(self):
+		return self.asset.name
 
 
 class AuctionedAsset(models.Model):
@@ -80,7 +82,7 @@ class AuctionedAsset(models.Model):
 				('CAR', 'CAR'),
 				('HOUSE', 'HOUSE')
 				)
-	
+
 	auction_id = models.ForeignKey(Auction, null=True, on_delete=models.CASCADE)
 	asset = models.ForeignKey(Asset, null=True, on_delete=models.CASCADE)
 	seller = models.ForeignKey(Seller, null=True, on_delete=models.CASCADE)
