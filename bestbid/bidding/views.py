@@ -6,7 +6,6 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
-from bestbid.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 from django.contrib import messages
 from urllib.parse import urlencode
@@ -17,7 +16,7 @@ from .models import *
 from .forms import *
 import datetime, random
 
-from .tasks import send_email_task
+from credentials import *
 
 
 # Create your views here.
@@ -450,9 +449,10 @@ def asset(request, id, edit=None):
 		asset_instance = get_object_or_404(Asset, id=asset.id)
 		seller_instance = get_object_or_404(Seller, id=asset.seller.id)
 		buyer_instance = get_object_or_404(Buyer, id=sold_to.buyer.id)
-		auction = Auction.objects.create()
+		auction = Auction.objects.create() # Make Entry in Auction Model
 		auction.save()
 
+		# Make Entry in AuctionedAsset Model
 		auctioned = AuctionedAsset.objects.create(
 			auction_id=auction,
 			asset=asset_instance,
