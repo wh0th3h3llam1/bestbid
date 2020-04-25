@@ -16,12 +16,13 @@
 				<a class="nav-link" href="{% url 'search' %}">Search</a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">About</a>
+				<a class="nav-link" href="{% url 'about' %}">About</a>
 			</li>
 		</ul>
 
 		<!-- For Profile Button -->
 		{% if request.session.id %}
+			<!-- If Logged In -->
 			<div class="btn-group" role="group" aria-label="Button group with nested dropdown">
 				<form class="form-inline my-2 my-lg-0" action="{% url 'profile' request.session.user_type request.session.id %}" method="POST">
 					{% csrf_token %}
@@ -32,9 +33,10 @@
 				<div class="btn-group dropLeft" role="group">
 					<button id="btnGroupDrop" type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></button>
 					<div class="dropdown-menu" aria-labelledby="btnGroupDrop">
-						{% if user_type == "seller" %}
+						{% if request.session.user_type == 'seller' %}
 							<a class="dropdown-item" href="{% url 'seller_dashboard' %}">Dashboard</a>
-						{% else %}
+						{% endif %}
+						{% if request.session.user_type == 'buyer' %}
 							<a class="dropdown-item" href="{% url 'buyer_dashboard' %}">Dashboard</a>
 						{% endif %}
 						<div class="dropdown-divider"></div>
@@ -49,6 +51,7 @@
 			&nbsp;&nbsp;&nbsp;
 			
 		{% else %}
+			<!-- If not logged in -->
 			<form class="form-inline my-2 my-lg-0" action="{% url 'login' %}">
 				<button class="btn btn-success my-2 my-sm-0">
 					Login

@@ -1,10 +1,8 @@
+from django.urls import path
 from django.conf.urls import url, re_path
 from . import consumers
 
 websocket_urlpatterns = [
-    url(r'^app/buyer/(?P<p_id>[0-9]+)/$', consumers.LiveBiddingConsumer),
-
-
-    # url(r'^app/buyer/(?P<p_id>[0-9]+)/$', consumers.LiveBiddingConsumer),
+    # path(r'asset/<int:id>/', consumers.LiveAuctioningConsumer),
+    url(r'^asset/(?P<id>[0-9]+)/$', consumers.LiveAuctioningConsumer),
 ]
-

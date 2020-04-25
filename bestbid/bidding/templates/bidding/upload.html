@@ -40,25 +40,12 @@
 										</div>
 									</div>
 								</div>
-								{% comment %}
-									
-									<div class="form-group">
-										<div class="custom-control custom-radio">
-											<input type="radio" class="custom-control-input" checked="">
-											<label class="custom-control-label" for="radioCar">Car</label>
-										</div>
-										<div class="custom-control custom-radio">
-											<input type="radio" class="custom-control-input">
-											<label class="custom-control-label" for="radioHouse">House</label>
-										</div>
-									</div>
-
-								{% endcomment %}
 
 								<div class="form-group">
 									<label for="selectOption">Category</label>
-									<select class="custom-select" id="selectedOption" name="selectedOption">
-									  <option selected value="car">Car</option>
+									<select class="custom-select" id="selectedOption" name="selectedOption" required>
+									  <option selected value="none">Select</option>
+									  <option value="car">Car</option>
 									  <option value="house">House</option>
 									</select>
 								  </div>

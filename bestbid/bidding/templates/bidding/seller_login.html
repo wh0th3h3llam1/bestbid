@@ -50,7 +50,12 @@
 								</div>
 							</div>
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary">Send OTP</button>
+								<form action="{% url 'reset_password' %}" method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="user_type" value="seller">
+									<input type="hidden" name="otp" value="otp">
+									<button type="button" class="btn btn-primary">Send OTP</button>
+								</form>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							</div>
 						</div>

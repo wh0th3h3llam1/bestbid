@@ -15,9 +15,9 @@
 			<div class="container">
 				<main>
 					<br>
-					<h1 style="text-align: center;">Buyer Dashboard</h1>
+					<h1 style="text-align: center;">Dashboard</h1>
 					<br>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Name</th>
@@ -34,46 +34,53 @@
 						</tbody>
 					</table>
 					<br>
-					<h2 style="text-align: center;">Recently Auctioned Assets</h2>
+					<h2 style="text-align: center;">Assets Bought</h2>
 					<br>
 
-					<!-- Card for each asset -->
-					{% for l in last_five %}
-						<div class="card" style="width:400px">
-							<h3 class="card-header">{{ l.asset }}</h3>
-							<div class="card-body">
-								<h5 class="card-title">{{ l.category }}</h5>
-							</div>
-							<img style="height: 150px; width: 100%; display: block;" src="{{ l.asset.image.url }}" alt="Asset Image">
-							<div class="card-body">
-								<p class="card-text">Sold at : ${{ l.price }}</p>
-							</div>
-							<ul class="list-group list-group-flush">
-								<li class="list-group-item">Seller : {{ l.seller.name }}</li>
-								<li class="list-group-item">Buyer : {{ l.buyer.name }}</li>
-							</ul>
-							<div class="card-footer text-muted">
-								Sold on : {{ l.auction_id.date }}
+					{% for item in assets_bought %}
+						<div class="card " style="border-radius: 7px;">
+							<div class="row align-items-center">
+								<div class="col asset-img" style="display: inline-flex;">
+									<a href="{{ item.asset.get_abs_url }}">
+										<img src="{{ item.asset.image.url }}" alt="{{ item.asset.name|title }}" style="display: block; border-radius: 7px;" width="100%;">
+									</a>
+								</div>
+								<div class="col">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item"><h5>Name : {{ item.asset.name|title }}</h5></li>
+										<li class="list-group-item"><h5>Category : {{ item.category|title }}</h5></li>
+										<li class="list-group-item"><h5>Bought For : {{ item.price }}</h5></li>
+										<li class="list-group-item"><h5>Seller : {{ item.asset.seller }}</h5></li>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<br>
+					{% empty %}
+						<h5 style="text-align: center;">No Assets Bought. <a href="{% url 'bid' %}">Bid Now</a></h5>
 					{% endfor %}
 					
 					<br><br>
-					<!-- Upcoming Auctions -->
-					<h2>Upcoming Auctions</h2>
+					<!-- Featured Assets -->
+					<h2 style="text-align: center;">Featured Assets</h2>
 					<br>
-					{% for upcoming in auctions %}
-						<div class="card" style="width:400px">
-							<!-- <h3 class="card-header">{{ upcoming.asset }}</h3> -->
-							<div class="card-body">
-								<h5 class="card-title">{{ upcoming.category }}</h5>
-							</div>
-							<div class="card-body">
-								<p class="card-text">Sold at : ${{ upcoming.price }}</p>
-							</div>
-							<div class="card-footer text-muted">
-								Sold on : {{ upcoming.date }}
+					{% for asset in assets %}
+						<div class="card " style="border-radius: 7px;">
+							<h3 class="card-header" style="text-align: center;"><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></h3>
+							<div class="row align-items-center">
+								<div class="col asset-img" style="display: inline-flex;">
+									<a href="{{ asset.get_abs_url }}">
+										<img src="{{ asset.image.url }}" alt="{{ asset.name|title }}" style="display: block; border-radius: 7px;" width="100%;">
+									</a>
+								</div>
+								<div class="col">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item">Name : {{ asset.name|title }}</li>
+										<li class="list-group-item">Category : {{ asset.category|title }}</li>
+										<li class="list-group-item">Baseprice : {{ asset.baseprice }}</li>
+										<li class="list-group-item">Seller : {{ asset.seller }}</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<br>

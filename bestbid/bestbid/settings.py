@@ -25,8 +25,7 @@ SECRET_KEY = '327x&j6_+a(m3sbyt*n8z00$e5aty(1g@hjl#-lx_8i_rla*h$'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -38,9 +37,8 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 	'bidding',
-	'bootstrap4',
 	# 'channels',
-	'django_filters',
+	# 'django_filters',
 
 ]
 
@@ -138,3 +136,19 @@ STATIC_URL = '/static/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = "/media/"
+
+# EMAIL CONFIGURATION
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = False
+EMAIL_USE_SSL = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'aihub.machinelearning@gmail.com'
+EMAIL_HOST_PASSWORD = 'Qwerty@123'
+
+
+# Celery
+CELERY_BROKER_URL = 'amqp://admin:admin@localhost:5672/myvhost'
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'

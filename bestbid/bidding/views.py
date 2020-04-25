@@ -6,6 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_protect
 from django.shortcuts import render, redirect, get_object_or_404
 from django.db.models import Q
+from bestbid.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
 from django.contrib import messages
 from urllib.parse import urlencode
 from django.http import HttpResponse, HttpResponseRedirect
@@ -13,20 +15,22 @@ from django.conf import settings
 from django.urls import reverse
 from .models import *
 from .forms import *
-import datetime
+import datetime, random
+
+from .tasks import send_email_task
+
+
 # Create your views here.
 
 
 # Admin - Login
-def adminLogin(request):
-	print("In adminLogin")
+def manager(request):
 	if request.method == 'POST':
-		print("In POST")
-		req_email = request.POST.get('adminEmail')
-		req_password = request.POST.get('adminPassword')
-		admin_email = 'admin@gmail.com'
-		admin_pwd = 'adminpass'
-		if req_email == admin_email and req_password == admin_pwd:
+		req_email = request.POST.get('managerEmail')
+		req_password = request.POST.get('managerPassword')
+		manager_email = 'manager@bestbid.com'
+		manager_pwd = 'managerpass'
+		if req_email == manager_email and req_password == manager_pwd:
 			assets = Asset.objects.all()
 			sellers = Seller.objects.all()
 			buyers = Buyer.objects.all()
@@ -44,9 +48,9 @@ def adminLogin(request):
 
 			return render(request, 'bidding/home.html', context)
 		else:
-			return render(request, 'bidding/adminLogin.html')
+			return render(request, 'bidding/manager.html')
 
-	return render(request, 'bidding/adminLogin.html')
+	return render(request, 'bidding/manager.html')
 
 
 # Admin - Home Page
@@ -140,11 +144,14 @@ def buyer_dashboard(request):
 		req_password = request.POST.get('password')
 		try:
 			user = Buyer.objects.get(Q(email=req_email) & Q(password=req_password))
-			auctions = Auction.objects.all()
+			
+			assets_bought = AuctionedAsset.objects.filter(Q(buyer=user.id))
+			auctioned = AuctionedAsset.objects.all()
+			assets = Asset.objects.exclude(sold__in=auctioned)[:3]
 			context = {
 				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
+				'assets_bought' : assets_bought,
+				'assets' : assets,
 				'user_type' : 'buyer',
 			}
 			context.update(csrf(request))
@@ -159,11 +166,14 @@ def buyer_dashboard(request):
 	elif request.session.get('id'):
 			user_id = request.session.get('id')
 			user = get_object_or_404(Buyer, id=user_id)
-			auctions = Auction.objects.all()
+
+			assets_bought = AuctionedAsset.objects.filter(Q(buyer=user.id))
+			auctioned = AuctionedAsset.objects.all()
+			assets = Asset.objects.exclude(sold__in=auctioned)[:3]
 			context = {
 				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
+				'assets_bought' : assets_bought,
+				'assets' : assets,
 				'user_type' : 'buyer',
 			}
 			context.update(csrf(request))
@@ -176,17 +186,18 @@ def buyer_dashboard(request):
 
 
 def seller_dashboard(request):
+	
 	if request.method == 'POST':
 		form = SellerLoginForm(request.POST)
 		req_email = request.POST.get('email')
 		req_password = request.POST.get('password')
 		try:
 			user = Seller.objects.get(Q(email=req_email) & Q(password=req_password))
-			auctions = Auction.objects.all()
+			assets = Asset.objects.filter(Q(seller=user.id))
+			assets_sold = AuctionedAsset.objects.filter(Q(seller=user.id))
 			context = {
 				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
+				'assets' : assets,
 				'user_type' : 'seller',
 			}
 			context.update(csrf(request))
@@ -201,11 +212,10 @@ def seller_dashboard(request):
 	elif request.session.get('id'):
 			user_id = request.session.get('id')
 			user = get_object_or_404(Seller, id=user_id)
-			auctions = Auction.objects.all()
+			assets = Asset.objects.filter(Q(seller=user.id))
 			context = {
 				'user' : user,
-				'auctions' : auctions,
-				'loggedIn' : 'loggedIn',
+				'assets' : assets,
 				'user_type' : 'seller',
 			}
 			context.update(csrf(request))
@@ -236,12 +246,15 @@ def profile(request, user_type, user_id, edit=None, change_password=None):
 		assets_bought = AuctionedAsset.objects.filter(Q(buyer=user.id))
 		context = {
 			'user' : user,
-			'assets_bought' : assets_bought,
+			'assets_bought' : assets_bought
 		}
 	else:
 		return HttpResponse('Profile Not Found for user type')
 
 	if change_password == 'change_password':
+		if request.POST.get('check_pwd'):
+			print('password changed')
+			pass
 		context = {
 			'user' : user,
 		}
@@ -286,49 +299,25 @@ def bid(request):
 	assets = Asset.objects.exclude(sold__in=auctioned)
 
 	now = datetime.datetime.now()
-	
+	print(now.hour)
+	# Allow bid only Between 10 AM and 1 PM
 	allow_bid = False
-	if now.hour > 10 and now.hour < 14:
+	if now.hour in range(10, 14):
 		allow_bid = True
 
-	allow_bid = True # Temporary
+	about_to_end = False
+	# About to End
+	if	now.hour == 12 and now.minute > 50:
+		about_to_end = True
+
+	# allow_bid = True # Temporary
 	context = {
 		'assets' : assets,
-		'allow_bid' : allow_bid
+		'allow_bid' : allow_bid,
+		'about_to_end' : about_to_end
 	}
 	return render(request, 'bidding/bid.html', context)
 
-'''
-def place_bid(request):
-	user_type = 'buyer'
-	user_id = request.POST.get('user_id')
-	bid_value = request.POST.get('bid_value')
-	asset_id = request.POST.get('asset_id')
-	try:
-		# If buyer has already placed bid, update value	
-		live_auction = get_object_or_404(LiveAuction, asset=asset_id, buyer=user_id)
-		if int(live_auction.price) < int(bid_value):
-
-			# If bid value is greater than before 
-			live_auction.price = bid_value
-			live_auction.save()
-			print("Value Updated")
-			print("Bid Placed")
-		else:
-			# If bid value is less than before 
-			print('Bid value must be greater than previous bid')
-	except LiveAuction.DoesNotExist as e:
-		asset_instance = get_object_or_404(Asset, id=asset_id)
-		buyer_instance = get_object_or_404(Buyer, id=user_id)
-		live_auction = LiveAuction.objects.create(
-			asset=asset_instance,
-			buyer=buyer_instance,
-			price=bid_value,
-		)
-		live_auction.save()
-		print('New Bid Value Placed')
-	return HttpResponse(bid_value)
-'''
 
 # Search for Assets
 def search(request):
@@ -356,32 +345,16 @@ def search(request):
 # @login_required(login_url='login')
 def upload(request):
 	if request.method == 'POST':
-		user_id = request.POST.get('id')
+		user_id = request.POST.get('user_id')
 		user_type = request.POST.get('user_type')
 		name = request.POST.get('name')
 		baseprice = request.POST.get('baseprice')
 		category = request.POST.get('selectedOption')
-		'''
-		l = []
-		for f in request.FILES.get('image'):
-			myImagename = f.name
-			l.append(myImagename)
-			print(myImagename)
-		print(l)
-		print()
-		print()
-		'''
 		image = request.FILES['image']
 		description = request.POST.get('description')
 		user_name = request.POST.get('user_name')
 		
 		seller_instance = get_object_or_404(Seller, name=user_name)
-		# print(name)
-		# print(baseprice)
-		# print(category)
-		# print(image)
-		# print(description)
-		# print(user_name)
 
 		fs = FileSystemStorage()
 		image_name = fs.save(image.name, image)
@@ -395,7 +368,7 @@ def upload(request):
 			seller=seller_instance,
 			sold=False)
 		asset.save()
-		user = get_object_or_404(Seller, id=id)
+		user = get_object_or_404(Seller, id=user_id)
 		context = {
 			'user' : user,
 		}
@@ -410,44 +383,41 @@ def upload(request):
 
 # Index
 def index(request):
-	assets = Asset.objects.all()
 	last_five = AuctionedAsset.objects.all().order_by('id')[:5]
-	auctions = Auction.objects.all()
+	auctioned = AuctionedAsset.objects.all()
+	assets = Asset.objects.exclude(sold__in=auctioned)
+
 	context = {
 		'last_five' : last_five,
-		'auctions' : auctions,
 		'assets' : assets,
 	}
 	return render(request, 'bidding/index.html', context)
 
 
+# Edit Asset
 def edit_asset(request):
 	if request.method == 'POST':
-		user_id = request.POST.get('id')
-		user_type = request.POST.get('user_type')
-	
+		user_id = request.session.get('id')
+		asset_id = request.POST.get('asset_id')
+
 		name = request.POST.get('name')
 		baseprice = request.POST.get('baseprice')
 		category = request.POST.get('selectedOption')
-		image = request.FILES['image']
 		description = request.POST.get('description')
 
 		seller_instance = get_object_or_404(Seller, id=user_id)
 		
-		fs = FileSystemStorage()
-		image_name = fs.save(image.name, image)
+		asset = Asset.objects.get(Q(id=asset_id))
+		
+		asset.name=name
+		asset.baseprice=baseprice
+		asset.category=category
+		asset.details=description
 
-		asset = Asset.objects.create(
-			name=name,
-			baseprice=baseprice,
-			category=category,
-			image=image_name,
-			details=description,seller=seller_instance,
-			sold=False)
 		asset.save()
-		user = get_object_or_404(Seller, id=id)
+		user = get_object_or_404(Seller, id=user_id)
 		context = {
-			'user' : user,
+			'user' : seller_instance,
 		}
 		return render(request, 'bidding/seller_dashboard.html', context)
 
@@ -457,14 +427,52 @@ def asset(request, id, edit=None):
 	# Current Time
 	now = datetime.datetime.now()
 	
-	# Allow Bid only Between 10 AM and 2 PM
+	# Allow Bid only Between 10 AM and 1 PM
 	allow_bid = False
-	if now.hour > 10 and now.hour < 14:
+	if now.hour > 10 and now.hour < 13:
 		allow_bid = True
 
 	# About to End
-	if	now.hour == 14 and now.minute > 50:
+	about_to_end = False
+	if	now.hour == 12 and now.minute > 50:
 		about_to_end = True
+
+	# End Bid
+	if now.hour == 12 and now.minute >= 59:
+		end = True
+		live_auction_status = LiveAuction.objects.filter(Q(asset=id)).order_by('-price')
+		sold_to = live_auction_status[0]
+		print("sold for : ", sold_to.price)
+		print("sold to : ", sold_to.buyer)
+		asset = get_object_or_404(Asset, id=id)
+		asset.sold = True # Mark as sold
+		asset.save()
+		asset_instance = get_object_or_404(Asset, id=asset.id)
+		seller_instance = get_object_or_404(Seller, id=asset.seller.id)
+		buyer_instance = get_object_or_404(Buyer, id=sold_to.buyer.id)
+		auction = Auction.objects.create()
+		auction.save()
+
+		auctioned = AuctionedAsset.objects.create(
+			auction_id=auction,
+			asset=asset_instance,
+			seller=seller_instance,
+			buyer=buyer_instance,
+			category=asset_instance.category,
+			price=sold_to.price
+		)
+		auctioned.save()
+
+		# LiveAuction.objects.all().delete()
+
+		allow_bid = False
+		context = {
+			'asset' : asset,
+			'now' : now,
+			'allow_bid' : allow_bid,
+			'end' : end,
+		}
+		return render(request, 'bidding/asset.html', context)
 
 	if request.method == 'POST':
 		if request.POST.get('delete'):
@@ -505,6 +513,7 @@ def asset(request, id, edit=None):
 						'now' : now,
 						'allow_bid' : allow_bid,
 						'placed' : 'placed',
+						'about_to_end' : about_to_end,
 						'live_auction_status' : live_auction_status
 					}
 					return render(request, 'bidding/asset.html', context)				
@@ -516,6 +525,7 @@ def asset(request, id, edit=None):
 						'now' : now,
 						'allow_bid' : allow_bid,
 						'min_value_error' : 'min_value_error',
+						'about_to_end' : about_to_end,
 						'live_auction_status' : live_auction_status
 					}
 					return render(request, 'bidding/asset.html', context)				
@@ -535,6 +545,7 @@ def asset(request, id, edit=None):
 					'asset' : asset,
 					'now' : now,
 					'allow_bid' : allow_bid,
+					'about_to_end' : about_to_end,
 					'live_auction_status' : live_auction_status
 				}
 				return render(request, 'bidding/asset.html', context)
@@ -542,11 +553,12 @@ def asset(request, id, edit=None):
 		asset = get_object_or_404(Asset, id=id)
 		live_auction_status = LiveAuction.objects.filter(Q(asset=id)).order_by('price')
 		
-		allow_bid = True # Temporary
+		# allow_bid = True # Temporary
 		context = {
 			'asset' : asset,
 			'now' : now,
 			'allow_bid' : allow_bid,
+			'about_to_end' : about_to_end,
 			'live_auction_status' : live_auction_status
 		}
 		return render(request, 'bidding/asset.html', context)
@@ -556,21 +568,91 @@ def asset(request, id, edit=None):
 		# return HttpResponse('<h1 style="text-align:center;">Asset Not Found</h1>')
 
 
+def change_password(request):
+	if request.method == 'POST':
+		user_type = request.POST.get('user_type')
+		user_id = request.POST.get('user_id')
+		pwd1 = request.POST.get('pwd1')
+		if user_type == 'seller':
+			user = get_object_or_404(Seller, id=user_id)
+		elif user_type == 'buyer':
+			user = get_object_or_404(Buyer, id=user_id)
+		else:
+			return HttpResponse('Not Found')
+		
+		old_password = request.POST.get('old')
+
+		if old_password == user.password:
+			user.password = pwd1
+			user.save()
+			context = {
+				'user' : user,
+			}
+			messages.success(request, 'Password Updated')
+			return render(request, 'bidding/change_password.html', context)
+		else:
+			messages.error(request, 'Old Password is incorrect')
+			context = {
+				'user' : user,
+			}
+			return render(request, 'bidding/change_password.html', context)
+
+		return render(request, 'bidding/{user_type}_dashboard.html', context)
+
+
 def reset_password(request):
 	if request.method == 'POST':
-		pass
-		# user_type = request.POST.get('user_type')
-		# user_id = request.POST.get('id')
-		# pwd1 = request.POST.get('pwd1')
-		# if user_type == 'seller':
-		# 	user = get_object_or_404(Seller, id=user_id)
-		# else user_type == 'buyer':
-		# 	user = get_object_or_404(Buyer, id=user_id)
-		# user.password = pwd1
-		# user.save()
-		# context = {
-		# 	'user' : user,
-		# }
+		global otp
+		if request.POST.get('verify_otp'):
+			# If otp matches, allow to reset password
+			provided_otp = request.POST.get('otp')
+			otp = 951
+			if otp == provided_otp:
+				return render(request, 'bidding/reset_password.html')
+			else:
+				context = {
+					'verification_failed' : 'verification_failed'
+				}
+				return render(request, 'bidding/forgot_password.html', context)
+
+		if request.POST.get('otp'):
+
+			otp = random.randrange(10000000, 99999999)
+			
+			recepient = request.POST.get('forgot_email')
+			print(recepient)
+			subject = "One Time Password to reset your Password"
+			message = "<h2>Your OTP to reset the password is </h2><h1>{0}</h1>".format(otp)
+			send_mail(subject, message, EMAIL_HOST_USER, recepient, fail_silently = False)
+
+			context = {
+				'check_otp' : 'check_otp',
+				'user_type' : request.POST.get('user_type')
+			}
+			return render(request, 'bidding/forgot_password.html', context)
+		
+
+		if request.POST.get('reset'):
+			user_type = request.POST.get('user_type')
+			user_id = request.POST.get('id')
+			pwd1 = request.POST.get('pwd1')
+			if user_type == 'seller':
+				user = get_object_or_404(Seller, id=user_id)
+			elif user_type == 'buyer':
+				user = get_object_or_404(Buyer, id=user_id)
+			else:
+				return HttpResponse('Not Found')
+			user.password = pwd1
+			user.save()
+			context = {
+				'user' : user,
+			}
+			return render(request, 'bidding/{user_type}_dashboard.html', context)
+
+
+# About
+def about(request):
+	return render(request, 'bidding/about.html')
 
 # Logout
 def logout(request):

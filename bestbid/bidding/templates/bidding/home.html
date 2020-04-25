@@ -15,159 +15,170 @@
 			{% block body %}
 				<div class="container">
 					<br>
-					<h1 style="text-align: center;">Welcome Admin</h1>
+					<h1 style="text-align: center;">Welcome Manager</h1>
 					<br>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">Buyers</th>
-								<th scope="col">Name</th>
-								<th scope="col">Email</th>
-								<th scope="col">Contact</th>
-								<th scope="col">Update</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for buyer in buyers %}
+					<div>
+						<!-- Table for Buyers -->
+						<table class="table table-hover">
+							<thead>
 								<tr>
-									<th scope="row">{{ buyer.id }}</th>
-									<td>{{ buyer.name }}</td>
-									<td>{{ buyer.email }}</td>
-									<td>{{ buyer.contact }}</td>
-									<td><a class="btn btn-sm btn-info" href="#">Update</a></td> 
-									<td><a class="btn btn-sm btn-danger" href="#">Delete</a></td> 
+									<th scope="col">Buyers</th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col">Contact</th>
+									<th scope="col">Update</th>
+									<th scope="col">Delete</th>
 								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">Sellers</th>
-								<th scope="col">Name</th>
-								<th scope="col">Email</th>
-								<th scope="col">Contact</th>
-								<th scope="col">Update</th>
-								<th scope="col">Delete</th>
-						</thead>
-						<tbody>
-							{% for seller in sellers %}
+							</thead>
+							<tbody>
+								{% for buyer in buyers %}
+									<tr>
+										<th scope="row">{{ buyer.id }}</th>
+										<td>{{ buyer.name }}</td>
+										<td>{{ buyer.email }}</td>
+										<td>{{ buyer.contact }}</td>
+										<td><a class="btn btn-info" href="#">Update</a></td> 
+										<td><a class="btn btn-danger" href="#">Delete</a></td> 
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+						
+						<!-- Table for Sellers -->
+						<table class="table table-hover">
+							<thead>
 								<tr>
-									<th scope="row">{{ seller.id }}</th>
-									<td>{{ seller.name }}</td>
-									<td>{{ seller.email }}</td>
-									<td>{{ seller.contact }}</td>
-									<td><a class="btn btn-sm btn-info" href="#">Update</a></td> 
-									<td><a class="btn btn-sm btn-danger" href="#">Delete</a></td> 
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">All Assets</th>
-								<th scope="col">Name</th>
-								<th scope="col">Baseprice</th>
-								<th scope="col">Category</th>
-								<th scope="col">Seller</th>
-								<th scope="col">Update</th>
-								<th scope="col">Delete</th>
-						</thead>
-						<tbody>
-							{% for asset in assets %}
-								<tr>
-									<th scope="row">{{ asset.id }}</th>
-									<td><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></td>
-									<td>${{ asset.baseprice }}</td>
-									<td>{{ asset.category }}</td>
-									<td>{{ asset.seller.name }}</td>
-									<td><button class="btn btn-info">Update</button></td>
-									<td><button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button></td>
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">Auctioned Assets</th>
-								<th scope="col">Name</th>
-								<th scope="col">Price</th>
-								<th scope="col">Category</th>
-								<th scope="col">Seller</th>
-								<th scope="col">Buyer</th>
-								<th scope="col">Update</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for auctionedAsset in auctionedAssets %}
-								<tr>
-									<th scope="row">{{ auctionedAsset.id }}</th>
-									<td>{{ auctionedAsset.asset }}</td>
-									<td>{{ auctionedAsset.price }}</td>
-									<td>{{ auctionedAsset.category }}</td>
-									<td>{{ auctionedAsset.seller.name }}</td>
-									<td>{{ auctionedAsset.buyer.name }}</td>
-									<td><a class="btn btn-sm btn-info" href="#">Update</a></td> 
-									<td><a class="btn btn-sm btn-danger" href="#">Delete</a></td> 
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
-					<table class="table table-hover">
-						<thead>
-							<tr>
-								<th scope="col">Auctions</th>
-								<th scope="col">Name</th>
-								<th scope="col">Category</th>
-								<th scope="col">Date</th>
-								<th scope="col">Update</th>
-								<th scope="col">Delete</th>
-							</tr>
-						</thead>
-						<tbody>
-							{% for auction in auctions %}
-								<tr>
-									<th scope="row">{{ auction.id }}</th>
-									<td>{{ auction.asset }}</td>
-									<td>{{ auction.category }}</td>
-									<td>{{ auction.date }}</td>
-									<td><a class="btn btn-sm btn-info" href="#">Update</a></td> 
-									<td><a class="btn btn-sm btn-danger" href="#">Delete</a></td> 
-								</tr>
-							{% endfor %}
-						</tbody>
-					</table>
+									<th scope="col">Sellers</th>
+									<th scope="col">Name</th>
+									<th scope="col">Email</th>
+									<th scope="col">Contact</th>
+									<th scope="col">Update</th>
+									<th scope="col">Delete</th>
+							</thead>
+							<tbody>
+								{% for seller in sellers %}
+									<tr>
+										<th scope="row">{{ seller.id }}</th>
+										<td>{{ seller.name }}</td>
+										<td>{{ seller.email }}</td>
+										<td>{{ seller.contact }}</td>
+										<td><a class="btn btn-info" href="#">Update</a></td> 
+										<td><a class="btn btn-danger" href="#">Delete</a></td> 
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
 
-					<!-- Confirm Delete Modal -->
-				<div class="modal modal-danger fade" id="delete">
-					<div class="modal-dialog " role="document">
-						<div class="modal-content">
-							<div class="modal-header">
-								<h5 class="modal-title">Confirm Delete</h5>
-								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-									<span aria-hidden="true">&times;</span>
-								</button>
-							</div>
-							<div class="modal-body">
-								<p>Are you sure to delete the asset : {{ asset.id }} ?</p>
-							</div>
-							<div class="modal-footer">
-								<form action="" method="POST">
-									{% csrf_token %}
-										<input type="hidden" name="user_id" value="{{ request.session.id }}">
-										<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
-										<input type="hidden" name="delete" value="delete">
-										<button class="btn btn-danger ">Delete</button>
-								</form>
-								<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+						<!-- Table for Assets -->
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">All Assets</th>
+									<th scope="col">Name</th>
+									<th scope="col">Baseprice</th>
+									<th scope="col">Category</th>
+									<th scope="col">Seller</th>
+									<th scope="col">Update</th>
+									<th scope="col">Delete</th>
+							</thead>
+							<tbody>
+								{% for asset in assets %}
+									<tr>
+										<th scope="row">{{ asset.id }}</th>
+										<td><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></td>
+										<td>${{ asset.baseprice }}</td>
+										<td>{{ asset.category }}</td>
+										<td>{{ asset.seller.name }}</td>
+										<td><button class="btn btn-info">Update</button></td>
+										<td><button type="submit" class="btn btn-danger" data-toggle="modal" data-target="#delete">Delete</button></td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+						<!-- Table for Auctioned Assets -->
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Auctioned Assets</th>
+									<th scope="col">Name</th>
+									<th scope="col">Price</th>
+									<th scope="col">Category</th>
+									<th scope="col">Seller</th>
+									<th scope="col">Buyer</th>
+									<th scope="col">Update</th>
+									<th scope="col">Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for auctionedAsset in auctionedAssets %}
+									<tr>
+										<th scope="row">{{ auctionedAsset.id }}</th>
+										<td>{{ auctionedAsset.asset }}</td>
+										<td>{{ auctionedAsset.price }}</td>
+										<td>{{ auctionedAsset.category }}</td>
+										<td>{{ auctionedAsset.seller.name }}</td>
+										<td>{{ auctionedAsset.buyer.name }}</td>
+										<td><a class="btn btn-info" href="#">Update</a></td> 
+										<td><a class="btn btn-danger" href="#">Delete</a></td> 
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+						<!-- Table for Auctions -->
+						<table class="table table-hover">
+							<thead>
+								<tr>
+									<th scope="col">Auctions</th>
+									<th scope="col">Name</th>
+									<th scope="col">Category</th>
+									<th scope="col">Date</th>
+									<th scope="col">Update</th>
+									<th scope="col">Delete</th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for auction in auctions %}
+									<tr>
+										<th scope="row">{{ auction.id }}</th>
+										<td>{{ auction.asset }}</td>
+										<td>{{ auction.category }}</td>
+										<td>{{ auction.date }}</td>
+										<td><a class="btn btn-info" href="#">Update</a></td> 
+										<td><a class="btn btn-danger" href="#">Delete</a></td> 
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+
+						<!-- Confirm Delete Modal -->
+						<div class="modal modal-danger fade" id="delete">
+							<div class="modal-dialog " role="document">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h5 class="modal-title">Confirm Delete</h5>
+										<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+											<span aria-hidden="true">&times;</span>
+										</button>
+									</div>
+									<div class="modal-body">
+										<p>Are you sure to delete the asset : {{ asset.id }} ?</p>
+									</div>
+									<div class="modal-footer">
+										<form action="" method="POST">
+											{% csrf_token %}
+												<input type="hidden" name="user_id" value="{{ request.session.id }}">
+												<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
+												<input type="hidden" name="delete" value="delete">
+												<button class="btn btn-danger ">Delete</button>
+										</form>
+										<button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 				</div>
 			{% endblock %}
 		</main>

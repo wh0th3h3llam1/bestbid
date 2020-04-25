@@ -11,12 +11,12 @@
 	
 	<body>
 		{% block body %}
-			<div class="container">
+			<div class="container w-50">
 				<main>
 					<br>
 					<h1 style="text-align: center;">Buyer Registration</h1>
 					<br>
-					<div class="w-50">
+					<div class="">
 						<form action="{% url 'buyer_reg' %}" method="POST">
 							{% csrf_token %}
 							{{ form.as_p }}

@@ -12,38 +12,39 @@
 	<body>
 		{% block body %}
 
-		<main class="container">
+		<main class="container w-50">
 			<br>
 			<h1 style="text-align: center;">Registration</h1>
 			<br>
-
-			<div class="card border-primary mb-3" style="max-width: 20rem;">
-				<div class="card-header">Seller</div>
-				<div class="card-body">
-				<h4 class="card-title">Register as Seller</h4>
-				<p class="card-text"><a href="{% url 'seller_reg' %}">Register as Seller</a></p>
+			<div class="row">
+				<div class="card col border-primary">
+					<div class="card-header">Seller</div>
+					<div class="card-body">
+					<h4 class="card-title">Register as Seller</h4>
+					<p class="card-text"><a href="{% url 'seller_reg' %}">Register as Seller</a></p>
+					</div>
+				</div>
+				&nbsp;&nbsp;&nbsp;
+				<div class="card col border-primary">
+					<div class="card-header">Buyer</div>
+					<div class="card-body">
+					<h4 class="card-title">Register as Buyer</h4>
+					<p class="card-text"><a href="{% url 'buyer_reg' %}">Register as Buyer</a></p>
+					</div>
 				</div>
 			</div>
-			
-			<div class="card border-primary mb-3" style="max-width: 20rem;">
-				<div class="card-header">Buyer</div>
-				<div class="card-body">
-				<h4 class="card-title">Register as Buyer</h4>
-				<p class="card-text"><a href="{% url 'buyer_reg' %}">Register as Buyer</a></p>
-				</div>
-			</div>
-			
+			<br>
 			<form action="{% url 'login' %}">
 				<button type="submit"class="btn btn-primary my-2 my-sm-0">Login</button>
 			</form>
 			
 			{{ form.errors }}
 			{% if messages %}
-			<ul class="messages">
-				{% for message in messages %}
-				<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-				{% endfor %}
-			</ul>
+				<ul class="messages">
+					{% for message in messages %}
+					<li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+					{% endfor %}
+				</ul>
 			{% endif %}
 			<br><br>
 			{% endblock %}

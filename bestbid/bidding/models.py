@@ -67,6 +67,7 @@ class Auction(models.Model):
 		return str(self.id)
 
 
+
 class LiveAuction(models.Model):
 	asset = models.ForeignKey(Asset, null=True, on_delete=models.CASCADE)
 	buyer = models.ForeignKey(Buyer, null=True, on_delete=models.CASCADE)
@@ -84,7 +85,7 @@ class AuctionedAsset(models.Model):
 				)
 
 	auction_id = models.ForeignKey(Auction, null=True, on_delete=models.CASCADE)
-	asset = models.ForeignKey(Asset, null=True, on_delete=models.CASCADE)
+	asset = models.OneToOneField(Asset, null=True, on_delete=models.CASCADE, unique=True)
 	seller = models.ForeignKey(Seller, null=True, on_delete=models.CASCADE)
 	buyer = models.ForeignKey(Buyer, null=True, on_delete=models.CASCADE)
 	category = models.CharField(max_length=5, null=True, choices=CATEGORY, default=None)

@@ -16,32 +16,58 @@
 			{% block body %}
 				<div class="container">
 					<br>
-					<h2 style="text-align: center;">Recently Auctioned Assets</h2>
+					<h2 style="text-align: center;">Featured Assets</h2>
 					<br>
+					
 					<!-- Card for each asset -->
-					{% for l in last_five %}
-						<div class="row asset-details" style="display: inline-flex;">
-							<div class="img-box col-sm-12 col-md-6" style="float: left;">
-								<img src="{{ l.asset.image.url }}" alt="{{ l.asset.name }}" style="display: block" width="100%;">
+					{% for asset in assets %}
+						<div class="card " style="border-radius: 7px;">
+							<h3 class="card-header" style="text-align: center;"><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></h3>
+							<div class="row align-items-center">
+								<div class="col asset-img" style="display: inline-flex;">
+									<a href="{{ asset.get_abs_url }}">
+										<img src="{{ asset.image.url }}" alt="{{ asset.name|title }}" style="display: block; border-radius: 7px;" width="100%;">
+									</a>
+								</div>
+								<div class="col">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item"><h5>Name : {{ asset.name|title }}</h5></li>
+										<li class="list-group-item"><h5>Category : {{ asset.category|title }}</h5></li>
+										<li class="list-group-item"><h5>Baseprice : {{ asset.baseprice }}</h5></li>
+										<li class="list-group-item"><h5>Seller : {{ asset.seller }}</h5></li>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<br>
 					{% endfor %}
 					<br><br>
-					
-					<!-- Upcoming Auctions -->
-					<h2>Upcoming Auctions</h2>
 					<br>
-					{% for upcoming in auctions %}
-						<div class="card" style="width:400px">
-							<h3 class="card-header">{{ upcoming.asset }}</h3>
-							<div class="card-body">
-								<h5 class="card-title">{{ upcoming.category }}</h5>
-							</div>
-							<div class="card-body">
-								<p class="card-text">Sold at : ${{ upcoming.price }}</p>
+					<!-- Recently Sold Assets -->
+					<h2 style="text-align: center;">Recently Sold Assets</h2>
+					<br>
+					{% for item in last_five %}
+						<div class="card " style="border-radius: 7px;">
+							<div class="row align-items-center">
+								<div class="col asset-img" style="display: inline-flex;">
+									<a href="{{ item.asset.get_abs_url }}">
+										<img src="{{ item.asset.image.url }}" alt="{{ item.asset.name|title }}" style="display: block; border-radius: 7px;" width="100%;">
+									</a>
+								</div>
+								<div class="col">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item"><h5>Name : {{ item.asset.name|title }}</h5></li>
+										<li class="list-group-item"><h5>Category : {{ item.category|title }}</h5></li>
+										<li class="list-group-item"><h5>Bought For : {{ item.price }}</h5></li>
+										<li class="list-group-item"><h5>Seller : {{ item.seller|title }}</h5></li>
+										<li class="list-group-item"><h5>Buyer : {{ item.buyer|title }}</h5></li>
+									</ul>
+								</div>
 							</div>
 						</div>
+						<br>
+					{% empty %}
+						<h5 style="text-align: center;">No Assets Bought. <a href="{% url 'bid' %}">Bid Now</a></h5>
 					{% endfor %}
 				</div>
 			{% endblock %}

@@ -24,14 +24,25 @@
 							</div>
 						{% endif %}
 
-						<!-- Info if time is not between 10 and 12 -->
-						{% if allow_bid %}
+						<!-- Info if time is not between 10 and 13 -->
+						{% if not allow_bid %}
 							<div class="alert alert-dismissible alert-info">
 								<button type="button" class="close" data-dismiss="alert">&times;</button>
 								<h4 class="alert-heading">Bid Currently Disabled</h4>
-								<p class="mb-0">Bid can only be performed between 10:00 and 14:00</p>
+								<p class="mb-0">Bid can only be performed between 10:00 and 13:00</p>
 							</div>
 						{% endif %}
+
+						<!-- Bid about to end -->
+						{% if about_to_end %}
+							<div class="alert alert-dismissible alert-warning">
+								<button type="button" class="close" data-dismiss="alert">&times;</button>
+								<h4 class="alert-heading">Bid is About to end</h4>
+								<p class="mb-0">Bids will stop at 12:59</p>
+							</div>
+						{% endif %}
+
+						
 					</div>
 
 					<div class="jumbotron">
@@ -69,7 +80,7 @@
 												{% if request.session.user_type != 'buyer'%}
 													disabled ="true" aria-disabled="true"
 												{% endif %}
-												{% if allow_bid %}
+												{% if not allow_bid %}
 													disabled ="true" aria-disabled="true"
 												{% endif %}
 												>

@@ -7,10 +7,12 @@ from . import views
 
 urlpatterns = [
 
-	url(r'^adminLogin/$', views.adminLogin, name='adminLogin'),
+	url(r'^manager/$', views.manager, name='manager'),
+
 	url(r'^home/$', views.home, name='home'),
 	url(r'^bid/$', views.bid, name='bid'),
 	url(r'^search/$', views.search, name='search'),
+	url(r'^about/$', views.about, name='about'),
 
 	url(r'^login/$', views.login, name='login'),
 	url(r'^buyer_login/$', views.buyer_login, name='buyer_login'),
@@ -36,6 +38,7 @@ urlpatterns = [
 
 	url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
 
+	url(r'^change_password/$', views.change_password, name='change_password'),
 	url(r'^reset_password/$', views.reset_password, name='reset_password'),
 
 	path('asset/<int:id>/<edit>/', views.asset, name='asset'),

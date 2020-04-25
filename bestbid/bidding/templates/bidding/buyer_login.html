@@ -39,18 +39,23 @@
 							<div class="modal-body">
 								<div class="form-group">
 									<label for="forgot_email">Email</label>
-									<input type="email" class="form-control" id="forgot_email" name="forgot_email" placeholder="Email" required>
+									<input type="email" class="form-control" id="forgot_email" name="forgot_email" placeholder="Email">
 									<small id="emailHelp" class="form-text text-muted">We'll send you an One-Time-Password (OTP) on your provided email address.</small>
 								</div>
 								<div class="form-group">
-									<fieldset>
 										<label class="control-label" for="buyer">User Type</label>
 										<input class="form-control" value="buyer" id="buyer" type="text" placeholder="Buyer" readonly="">
-									</fieldset>
 								</div>
 							</div>
+
+							<!-- Forgot Password Modal -->
 							<div class="modal-footer">
-								<button type="button" class="btn btn-primary">Send OTP</button>
+								<form action="{% url 'reset_password' %}" method="POST">
+									{% csrf_token %}
+									<input type="hidden" name="user_type" value="buyer">
+									<input type="hidden" name="otp" value="otp">
+									<button type="submit" class="btn btn-primary">Send OTP</button>
+								</form>
 								<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
 							</div>
 						</div>

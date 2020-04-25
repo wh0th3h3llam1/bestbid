@@ -15,9 +15,9 @@
 			<div class="container">
 				<main>
 					<br>
-					<h1 style="text-align: center;">Seller Dashboard</h1>
+					<h1 style="text-align: center;">Dashboard</h1>
 					<br>
-					<table class="table table-hover w-50">
+					<table class="table table-hover">
 						<thead>
 							<tr>
 								<th scope="col">Name</th>
@@ -34,27 +34,41 @@
 						</tbody>
 					</table>
 					<br>
-					<div class="w-50">
+					<div>
 						<form action="{% url 'upload' %}" method="GET">
+							<input type="hidden" name="user_type" value="seller">
 							<input type="hidden" name="user_id" value="{{ user.id }}">
-							<input type="submit" class="btn btn-primary" value="Upload Asset">
+							<input type="submit" class="btn btn-primary btn-lg" value="Upload Asset">
 						</form>
 					</div>
 					<br><br>
 
 					<!-- Upcoming Auctions -->
-					<h2 style="text-align: center;">Upcoming Auctions</h2>
+					<h2 style="text-align: center;">Your Assets</h2>
 					<br>
-					{% for upcoming in auctions %}
-						<div class="card" style="width:400px">
-							<div class="card-body">
-								<h5 class="card-title">{{ upcoming.category }}</h5>
-							</div>
-							<div class="card-body">
-								<p class="card-text">BasePrice  : ${{ upcoming.price }}</p>
+					<!-- Card for each asset -->
+					{% for asset in assets %}
+						<div class="card " style="border-radius: 7px;">
+							<h3 class="card-header" style="text-align: center;"><a href="{{ asset.get_abs_url }}">{{ asset.name }}</a></h3>
+							<div class="row align-items-center">
+								<div class="col asset-img" style="display: inline-flex;">
+									<a href="{{ asset.get_abs_url }}">
+										<img src="{{ asset.image.url }}" alt="{{ asset.name|title }}" style="display: block; border-radius: 7px;" width="100%;">
+									</a>
+								</div>
+								<div class="col">
+									<ul class="list-group list-group-flush">
+										<li class="list-group-item">Name : {{ asset.name|title }}</li>
+										<li class="list-group-item">Category : {{ asset.category|title }}</li>
+										<li class="list-group-item">Baseprice : {{ asset.baseprice }}</li>
+										<li class="list-group-item">Seller : {{ asset.seller }}</li>
+									</ul>
+								</div>
 							</div>
 						</div>
 						<br>
+					{% empty %}
+						<h5 style="text-align: center;">No Assets Uploaded</h5>
 					{% endfor %}
 				</main>
 			</div>

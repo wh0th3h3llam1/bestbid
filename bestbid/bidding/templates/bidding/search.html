@@ -37,27 +37,28 @@
 					<br>
 					{% if search_results %}
 						{% for item in search_results %}
-							<div class="row">
-								<div class="col-md-4" style="width: auto;">	
-									<div class="card">
-										<h3 class="card-header"><a href="{{ item.get_abs_url }}">{{ item.name }}</a></h3>
-										<div class="card-body">
-											<h5 class="card-title">{{ item.category }}</h5>
+							<div class="row row-cols-1 row-cols-sm-2 row-cols-md-6">
+								<div class="card " style="border-radius: 7px;">
+									<h3 class="card-header" style="text-align: center;"><a href="{{ item.get_abs_url }}">{{ item.name }}</a></h3>
+									<div class="row align-items-center">
+										<div class="col asset-img" style="display: inline-flex;">
+											<a href="{{ item.get_abs_url }}">
+												<img src="{{ item.image.url }}" alt="{{ item.name|title }}" style="display: block; border-radius: 7px;" width="100%;">
+											</a>
 										</div>
-										<a href="{{ item.get_abs_url }}">
-											<img style="height: auto; width: 100%; display: block;" src='{{ item.image.url }}' alt="Asset Image">
-										</a>
-										<div class="card-body">
-											<p class="card-text">Baseprice : ${{ item.baseprice }}</p>
+										<div class="col">
+											<ul class="list-group list-group-flush">
+												<li class="list-group-item">Name : {{ item.name|title }}</li>
+												<li class="list-group-item">Category : {{ item.category|title }}</li>
+												<li class="list-group-item">Baseprice : {{ item.baseprice }}</li>
+												<li class="list-group-item">Seller : {{ item.seller|title }}</li>
+											</ul>
 										</div>
-										<ul class="list-group list-group-flush">
-											<li class="list-group-item">Seller : {{ item.seller.name }}</li>
-										</ul>
 									</div>
 								</div>
 							</div>
 							<br>
-						{% endfor %}
+							{% endfor %}
 					{% endif %}
 
 					{% if no_results %}

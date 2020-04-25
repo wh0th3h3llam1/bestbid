@@ -54,6 +54,10 @@
 							Assets Uploaded : {{ user_assets.count }}
 							<br>
 							Assets Sold : {{ assets_sold.count }}
+							<br>
+							{% for item in assets_sold %}
+								<a href="{{ item.asset.get_abs_url }}">{{ item.asset.name }}</a>
+							{% endfor %}
 						{% endif %}
 						
 						{% if request.session.user_type == 'buyer' %}
