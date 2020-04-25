@@ -16,7 +16,7 @@ from .models import *
 from .forms import *
 import datetime, random
 
-from credentials import *
+from bestbid.credentials import *
 
 
 # Create your views here.
@@ -499,9 +499,9 @@ def asset(request, id, edit=None):
 			asset_id = request.POST.get('asset_id')
 			try:
 				# If buyer has already placed bid, update value	
-				live_auction = get_object_or_404(LiveAuction, asset=asset_id, buyer=user_id)
-				asset = get_object_or_404(Asset, id=id)
-				live_auction_status = LiveAuction.objects.filter(Q(asset=asset_id)).order_by('price')
+				live_auction = LiveAuction.objects.get(asset=asset_id, buyer=user_id)
+				asset = Asset.objects.get(id=asset_id)
+				live_auction_status = LiveAuction.objects.filter(Q(asset=asset_id)).order_by('-price')
 				if int(live_auction.price) < int(bid_value):
 					# If bid value is greater than before 
 					live_auction.price = bid_value
@@ -540,7 +540,7 @@ def asset(request, id, edit=None):
 				)
 				live_auction.save()
 				print('New Bid Value Placed')
-				live_auction_status = LiveAuction.objects.filter(Q(asset=asset_id)).order_by('price')
+				live_auction_status = LiveAuction.objects.filter(Q(asset=asset_id)).order_by('-price')
 				context = {
 					'asset' : asset,
 					'now' : now,
@@ -551,7 +551,7 @@ def asset(request, id, edit=None):
 				return render(request, 'bidding/asset.html', context)
 	try:
 		asset = get_object_or_404(Asset, id=id)
-		live_auction_status = LiveAuction.objects.filter(Q(asset=id)).order_by('price')
+		live_auction_status = LiveAuction.objects.filter(Q(asset=id)).order_by('-price')
 		
 		# allow_bid = True # Temporary
 		context = {
