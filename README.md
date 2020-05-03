@@ -9,3 +9,7 @@ Live Auctioning System implemented in Django.
 ## Setup
 
 `pip install -r requirements.txt`
+
+## Upcoming
+
+Bid automatically updates without refreshing the page.
