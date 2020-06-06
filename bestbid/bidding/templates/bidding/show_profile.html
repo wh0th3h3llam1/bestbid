@@ -47,8 +47,8 @@
 						<input type="hidden" name="user_type" value="{{ request.session.user_type }}">
 						<button class="btn btn-info my-2 my-sm-0">Edit Profile</button>
 					</form>
-					
-					<br><br><br>
+					<hr>
+					<br>
 					<h4>
 						{% if request.session.user_type == 'seller' %}
 							Assets Uploaded : {{ user_assets.count }}

@@ -39,12 +39,14 @@ urlpatterns = [
 	url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
 
 	url(r'^change_password/$', views.change_password, name='change_password'),
+	
+	path('reset_password/<check_otp>', views.reset_password, name='reset_password'),
 	url(r'^reset_password/$', views.reset_password, name='reset_password'),
 
 	path('asset/<int:id>/<edit>/', views.asset, name='asset'),
 	path('asset/<int:id>/', views.asset, name='asset'),
 
-	url(r'^edit_asset/$', views.edit_asset, name='edit_asset'),
+	url(r'^edit_asset/$', views.edit_asset, name='edit_asset')
 ]
 
 if settings.DEBUG:
