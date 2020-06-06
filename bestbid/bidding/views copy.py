@@ -14,13 +14,13 @@ from django.conf import settings
 from django.urls import reverse
 from .models import *
 from .forms import *
-from .static.py.mail import send_mail
-from bestbid.credentials import EMAIL_HOST, EMAIL_HOST_PASSWORD, EMAIL_HOST_USER, EMAIL_PORT
 import datetime, random
 
-# from bestbid.credentials import *
+from bestbid.credentials import *
+
 
 # Create your views here.
+global otp
 
 # Admin - Login
 def manager(request):
@@ -605,47 +605,46 @@ def change_password(request):
 		return render(request, 'bidding/{user_type}_dashboard.html', context)
 
 
-def reset_password(request, check_otp=None):
+def reset_password(request):
 	if request.method == 'POST':
-		global otp
-		if check_otp:
-			if request.POST.get('verify_otp'):
-				# If otp matches, allow to reset password
-				provided_otp = int(request.POST.get('check_otp'))
-				generated_otp = otp
-				if generated_otp == provided_otp:
-					return render(request, 'bidding/reset_password.html')
-				else:
-					context = {
-						'verification_failed' : 'verification_failed'
-					}
-					return render(request, 'bidding/forgot_password.html', context)
-		
+		# global otp
+
 		if request.POST.get('otp'):
-			generated_otp = random.randrange(10000000, 99999999)
-			otp = generated_otp
-			user_type = request.POST.get('user_type')
-			recepient = request.POST.get('forgot_email')
+			otp = random.randrange(10000000, 99999999)
+			recepient = list()
+			recepient.append(request.POST.get('forgot_email'))
+			print(recepient)
 			subject = "One Time Password to reset your Password"
-			message = "Your OTP to reset the password for Bestbid.com is {0}".format(otp)
-			send_mail(recepient, subject, message)
+			message = "<h2>Your OTP to reset the password is </h2><h1>{0}</h1>".format(otp)
+			send_mail(subject, message, EMAIL_HOST_USER, recepient, fail_silently = False)
+
 			context = {
 				'check_otp' : 'check_otp',
+				'user_type' : request.POST.get('user_type')
 			}
-			request.session['user_type'] = user_type
-			request.session['user_email'] = recepient
 			return render(request, 'bidding/forgot_password.html', context)
+		
 
+		if request.POST.get('verify_otp'):
+			# If otp matches, allow to reset password
+			provided_otp = request.POST.get('otp')
+			otp = 951
+			if otp == provided_otp:
+				return render(request, 'bidding/reset_password.html')
+			else:
+				context = {
+					'verification_failed' : 'verification_failed'
+				}
+				return render(request, 'bidding/forgot_password.html', context)
 
 		if request.POST.get('reset'):
-			print("In reset")
-			user_type = request.session.get('user_type')
-			user_email = request.session.get('user_email')
+			user_type = request.POST.get('user_type')
+			user_id = request.POST.get('id')
 			pwd1 = request.POST.get('pwd1')
 			if user_type == 'seller':
-				user = get_object_or_404(Seller, email=user_email)
+				user = get_object_or_404(Seller, id=user_id)
 			elif user_type == 'buyer':
-				user = get_object_or_404(Buyer, email=user_email)
+				user = get_object_or_404(Buyer, id=user_id)
 			else:
 				return HttpResponse('Not Found')
 			user.password = pwd1
@@ -653,7 +652,25 @@ def reset_password(request, check_otp=None):
 			context = {
 				'user' : user,
 			}
-			return render(request, 'bidding/login.html', context)
+			return render(request, 'bidding/{user_type}_dashboard.html', context)
+
+def test(request):
+	if request.method == 'POST':
+		# global otp
+
+		if request.POST.get('otp'):
+			otp = random.randrange(10000000, 99999999)
+			recepient = request.POST.get('forgot_email')
+			print(recepient)
+			subject = "One Time Password to reset your Password"
+			message = "<h2>Your OTP to reset the password is </h2><h1>{0}</h1>".format(otp)
+			send_mail(subject, message, EMAIL_HOST_USER, recepient, fail_silently = False)
+
+			context = {
+				'check_otp' : 'check_otp',
+				'user_type' : request.POST.get('user_type')
+			}
+			return render(request, 'bidding/forgot_password.html', context)
 
 # About
 def about(request):
