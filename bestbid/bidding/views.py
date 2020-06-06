@@ -620,7 +620,13 @@ def reset_password(request):
 			otp = random.randrange(10000000, 99999999)
 			
 			recepient = request.POST.get('forgot_email')
-			print(recepient)
+			# if user_type == 'seller':
+			# 	user = get_object_or_404(Seller, email=recepient)
+			# elif user_type == 'buyer':
+			# 	user = get_object_or_404(Buyer, email=recepient)
+			# else:
+			# 	messages.error(request, "No User Found")
+			# 	return render(request, 'bidding/{0}_login.html'.format(user_type))
 			subject = "One Time Password to reset your Password"
 			message = "<h2>Your OTP to reset the password is </h2><h1>{0}</h1>".format(otp)
 			send_mail(subject, message, EMAIL_HOST_USER, recepient, fail_silently = False)
@@ -641,7 +647,7 @@ def reset_password(request):
 			elif user_type == 'buyer':
 				user = get_object_or_404(Buyer, id=user_id)
 			else:
-				return HttpResponse('Not Found')
+				return HttpResponse('User Not Found')
 			user.password = pwd1
 			user.save()
 			context = {
