@@ -7,7 +7,7 @@ attrs==19.3.0
 autobahn==20.4.1
 Automat==20.2.0
 billiard==3.6.3.0
-celery==4.4.2
+celery==5.2.2
 certifi==2019.11.28
 cffi==1.14.0
 colorama==0.4.1
